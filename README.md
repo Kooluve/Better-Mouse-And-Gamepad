@@ -17,7 +17,7 @@ A [Balatro](https://store.steampowered.com/app/2379780/Balatro/) functional mod.
 | click gamepad right shoulder | same as click X2 mouse button |
 | hold gamepad right stick | same as hold middle mouse button |
 
-Check .lua file to turn functions on or off, and change button mapping.
+Check *.lua file to turn functions on or off, and change button mapping.
 
 ## Installation
 Follow the installation instructions for the Balatro [ModLoader](https://github.com/Steamopollys/Steamodded/tree/0.6.0) to install.
