@@ -311,7 +311,7 @@ function Controller.button_press_update(self, button, dt)
     button_press_update_ref(self, button, dt)
 
     --swap hand sort by clicking shoulder
-    if not G.SETTINGS.paused and G.hand then
+    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND then
         if button == 'leftshoulder' and mod_functions_can["lsd_click"] then
             G.FUNCS.sort_hand_value()
         elseif button == 'rightshoulder' and mod_functions_can["rsd_click"] then
@@ -384,29 +384,35 @@ end
 
 function queue_X1_cursor_press()
     if C.locks.frame or not mod_functions_can["x1_click"] then return end
-    if not G.SETTINGS.paused and G.hand then 
+    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND then 
         G.FUNCS.sort_hand_suit()
     end
 end
 
 function queue_X2_cursor_press()
     if C.locks.frame or not mod_functions_can["x2_click"] then return end
-    if not G.SETTINGS.paused and G.hand then 
+    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND then 
         G.FUNCS.sort_hand_value()
     end
 end
 
 function queue_U_wheel_press()
     if C.locks.frame or not mod_functions_can["mmb_up"] then return end
-    if not G.SETTINGS.paused and G.hand and G.hand.highlighted[1] and G.GAME.current_round.hands_left > 0 then
-        G.FUNCS.play_cards_from_highlighted()
+    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND then 
+        local play_button = G.buttons:get_UIE_by_ID('play_button')
+        if play_button and play_button.config.button then
+            G.FUNCS.play_cards_from_highlighted()
+        end
     end
 end
 
 function queue_D_wheel_press()
     if C.locks.frame or not mod_functions_can["mmb_down"] then return end
-    if not G.SETTINGS.paused and G.hand and G.hand.highlighted[1] and G.GAME.current_round.discards_left > 0 then
-        G.FUNCS.discard_cards_from_highlighted()
+    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND then 
+        local discard_button = G.buttons:get_UIE_by_ID('discard_button')
+        if discard_button and discard_button.config.button then
+            G.FUNCS.discard_cards_from_highlighted()
+        end
     end
 end
 
