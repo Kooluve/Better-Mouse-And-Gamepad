@@ -2,14 +2,14 @@
 --- MOD_NAME: Better Mouse And Gamepad
 --- MOD_ID: BetterMouseAndGamepad
 --- MOD_AUTHOR: [Kooluve]
---- MOD_DESCRIPTION: Make mouse and gamepad more efficient and easier to use. View "README.md" and "*.lua" file for all functions and settings.
+--- MOD_DESCRIPTION: V1.0.3 Make mouse and gamepad more efficient and easier to use. View "README.md" and "*.lua" file for all functions and settings.
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
 --[[
 -------------------------------------
 --------FUNCTIONS DESCRIPTION--------
-01. click right mouse button     -> unselect all cards
+01. click right mouse button     -> unselect all cards (same as origin)
 02. hold right mouse button      -> multiply select cards (core function!)
 03. click middle mouse button    -> esc
 04. hold middle mouse button     -> quickly restart (same as key "r")
@@ -23,39 +23,27 @@
 12. hold gamepad right stick     -> same as hold middle mouse button
 -------------------------------------
 ------FUNCTIONS DESCRIPTION END------
-
--------------------------------------
-------------ABBREVIATION-------------
-l, r, m       -> left, right, middle
-lmb, rmb, mmb -> left, right, middle mouse button
-x1, x2        -> X1, X2 mouse buttion
-gpad          -> gamepad
-a, b, x, y    -> gamepad a, b, x, y button
-lsd, rsd      -> leftshoulder, rightshoulder
-lst, rst      -> leftstick, rightstick
--------------------------------------
-----------ABBREVIATION END-----------
 --]]
 
 -------------------------------------
-------------USER SETTING-------------
+------------USER SETTINGS------------
 --in orighinal game, no matter you use what gamepad, the comfirm button is always the bottom face button same as xbox
 --set parameter to false below to turn function off
 --note that if you turn certain function off, you ban the function, not the button, 
 --so if then you swap it's mapping, this button will still work to execute the other function
 mod_functions_can = {
-    ["rmb_click"] = true,
-    ["rmb_hold"] = true,
-    ["mmb_click"] = true,
-    ["mmb_hold"] = true,
-    ["mmb_up"] = true,
-    ["mmb_down"] = true,
+    ["right_mouse_button_click"] = true,
+    ["right_mouse_button_hold"] = true,
+    ["middle_mouse_button_click"] = true,
+    ["middle_mouse_button_hold"] = true,
+    ["middle_mouse_button_up"] = true,
+    ["middle_mouse_button_down"] = true,
     ["x1_click"] = true,
     ["x2_click"] = true,
     ["b_hold"] = true,
-    ["lsd_click"] = true,
-    ["rsd_click"] = true,
-    ["rst_hold"] = true
+    ["left_shoulder_click"] = true,
+    ["left_shoulder_click"] = true,
+    ["rightstick_hold"] = true
 }
 
 --set parameter to true to swap mapping
@@ -64,9 +52,9 @@ SWAP_MOUSE_WHEEL_WITH_X1_X2 = false
 
 --exchange the number with other existing number left to "=" to modify mouse button mapping
 mouse_button_mapping = {
-    [1] = "lmb",
-    [2] = "rmb",
-    [3] = "mmb",
+    [1] = "left_mouse_button",
+    [2] = "right_mouse_button",
+    [3] = "middle_mouse_button",
     [4] = "x1",
     [5] = "x2",
 }
@@ -124,13 +112,13 @@ end
 
 function love.mousepressed(x, y, button, touch)
     C:set_HID_flags(touch and 'touch' or 'mouse')
-    if mouse_button_mapping[button] == "lmb" then 
+    if mouse_button_mapping[button] == "left_mouse_button" then 
         C:queue_L_cursor_press(x, y)
 	end
-    if mouse_button_mapping[button] == "rmb" then 
+    if mouse_button_mapping[button] == "right_mouse_button" then 
         C:queue_R_cursor_press(x, y)
 	end
-    if mouse_button_mapping[button] == "mmb" then 
+    if mouse_button_mapping[button] == "middle_mouse_button" then 
 		queue_M_cursor_press()
 	end
     if mouse_button_mapping[button] == "x1" then 
@@ -150,9 +138,9 @@ function love.mousepressed(x, y, button, touch)
 end
 
 function love.mousereleased(x, y, button)
-    if mouse_button_mapping[button] == "lmb" then C:L_cursor_release(x, y) end
-    if mouse_button_mapping[button] == "rmb" then R_cursor_release(x, y) end
-	if mouse_button_mapping[button] == "mmb" then M_cursor_release(x, y) end
+    if mouse_button_mapping[button] == "left_mouse_button" then C:L_cursor_release(x, y) end
+    if mouse_button_mapping[button] == "right_mouse_button" then R_cursor_release(x, y) end
+	if mouse_button_mapping[button] == "middle_mouse_button" then M_cursor_release(x, y) end
 end
 
 function love.wheelmoved(x, y)
@@ -191,9 +179,9 @@ function Controller.update(self, dt)
         M_cursor_queue = nil
     end
 
-    --rmb
+    --right_mouse_button
     if not R_cursor_down.handled then
-        if mod_functions_can["rmb_hold"] then
+        if mod_functions_can["right_mouse_button_hold"] then
             R_dragging.can = true
         end
         R_cursor_down.handled = true
@@ -218,7 +206,7 @@ function Controller.update(self, dt)
         R_dragging.start = false  
         --Now, handle the Cursor release
         --Was the Cursor release in the same location as the Cursor press?
-        if R_cursor_down.target and mod_functions_can["rmb_click"] then 
+        if R_cursor_down.target and mod_functions_can["right_mouse_button_click"] then 
             if (not R_cursor_down.target.click_timeout or R_cursor_down.target.click_timeout*G.SPEEDFACTOR > R_cursor_up.time - R_cursor_down.time) then
                 if R_cursor_down.target.states.click.can then
                     if Vector_Dist(R_cursor_down.T, R_cursor_up.T) < 0.1*G.MIN_CLICK_DIST then 
@@ -230,28 +218,28 @@ function Controller.update(self, dt)
         R_cursor_up.handled = true
     end
 
-    --mmb
+    --middle_mouse_button
     if not M_cursor_down.handled then
-        if mod_functions_can["mmb_hold"] then
+        if mod_functions_can["middle_mouse_button_hold"] then
             C:key_press('r')
         end
         M_cursor_down.handled = true
     end
     if not M_cursor_up.handled then
-        if not mod_functions_can["mmb_click"] or ((C.locked) and not G.SETTINGS.paused) or (C.locks.frame) or (C.frame_buttonpress) then
+        if not mod_functions_can["middle_mouse_button_click"] or ((C.locked) and not G.SETTINGS.paused) or (C.locks.frame) or (C.frame_buttonpress) then
         else
             if C.held_key_times['r'] and C.held_key_times['r'] <= 0.7 then
                 M_clicked.handled = false
             end    
         end
-        if mod_functions_can["mmb_hold"] then
+        if mod_functions_can["middle_mouse_button_hold"] then
             C:key_release('r')
         end
         M_cursor_up.handled = true
     end
 
     ----Sending all input updates to the game objects----
-    --unselect by clicking rmb
+    --unselect by clicking right_mouse_button
     if not R_clicked.handled then
         if not G.SETTINGS.paused and G.hand and G.hand.highlighted[1] then 
             if (G.play and #G.play.cards > 0) or
@@ -259,11 +247,12 @@ function Controller.update(self, dt)
                 (C.locks.frame) or
                 (G.GAME.STOP_USE and G.GAME.STOP_USE > 0) then return end
             G.hand:unhighlight_all()
-        end
+        end   
+
         R_clicked.handled = true
     end
     
-    --multiply select by dragging with rmb
+    --multiply select by dragging with right_mouse_button
     if not R_dragging.handled 
         and C.hovering.target 
         and C.hovering.target:is(Card) 
@@ -295,7 +284,7 @@ function Controller.update(self, dt)
         end
     end
 
-    --escape by clicking mmb
+    --escape by clicking middle_mouse_button
     if not M_clicked.handled then
         C:key_press('escape')
         M_clicked.handled = true
@@ -306,28 +295,68 @@ end
 
 ----------------------------------------------
 ------------GAMEPAD BUTTON UPDATE-------------
-local button_press_update_ref = Controller.button_press_update
-function Controller.button_press_update(self, button, dt)
-    button_press_update_ref(self, button, dt)
+function Controller:button_press_update(button, dt)
+    if C.locks.frame then return end
+    C.held_button_times[button] = 0
+    C.interrupt.focus = false
 
-    --swap hand sort by clicking shoulder
-    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND then
-        if button == 'leftshoulder' and mod_functions_can["lsd_click"] then
-            G.FUNCS.sort_hand_value()
-        elseif button == 'rightshoulder' and mod_functions_can["rsd_click"] then
-            G.FUNCS.sort_hand_suit()
+    if not C:capture_focused_input(button, 'press', dt) then
+        if button == "dpup" then
+            C:navigate_focus('U')
+        end
+        if button == "dpdown" then
+            C:navigate_focus('D')
+        end
+        if button == "dpleft" then
+            C:navigate_focus('L')
+        end
+        if button == "dpright" then
+            C:navigate_focus('R')
         end
     end
-  
-    if button == 'b' and mod_functions_can["b_hold"] then
-        R_cursor_release()
-    end
 
-    if mod_functions_can["rst_hold"] and not (C.button_registry[button] and C.button_registry[button][1] and not C.button_registry[button][1].node.under_overlay) then     
-        --holding "a" and "b" together is same as holding mmd
-        if button == 'rightstick' then 
+    if ((C.locked) and not G.SETTINGS.paused) or (C.locks.frame) or (C.frame_buttonpress) then return end
+    C.frame_buttonpress = true
+
+    if C.button_registry[button] and C.button_registry[button][1] and not C.button_registry[button][1].node.under_overlay then
+        C.button_registry[button][1].click = true
+    else
+        if button == 'start' then
+            if G.STATE == G.STATES.SPLASH then 
+                G:delete_run()
+                G:main_menu()
+            end
+        end
+        if button == "a" then
+            if C.focused.target and
+            C.focused.target.config.focus_args and
+            C.focused.target.config.focus_args.type == 'slider' and 
+            (not G.CONTROLLER.HID.mouse and not G.CONTROLLER.HID.axis_cursor) then 
+            else
+                C:L_cursor_press()
+            end
+        end
+        --modification of this function start
+        if button == 'b' then 
+            if G.hand and C.focused.target and
+            C.focused.target.area == G.hand and 
+            mod_functions_can["b_click_and_hold"] then
+                C:queue_R_cursor_press()
+            else
+                C.interrupt.focus = true
+            end
+        end
+        if G.STATE == G.STATES.SELECTING_HAND then
+            if button == 'leftshoulder' and mod_functions_can["left_shoulder_click"] then
+                G.FUNCS.sort_hand_value()
+            elseif button == 'rightshoulder' and mod_functions_can["left_shoulder_click"] then
+                G.FUNCS.sort_hand_suit()
+            end
+        end
+        if button == 'rightstick' and mod_functions_can["rightstick_hold"] then 
             queue_M_cursor_press()
         end
+        --modification of this function end
     end
 end
 
@@ -356,12 +385,12 @@ local button_release_update_ref = Controller.button_release_update
 function Controller.button_release_update(self, button, dt)
     button_release_update_ref(self, button, dt)
 
-    --holding "b" is same as holding rmb
-    if button == 'b' and mod_functions_can["b_hold"] then
+    --holding "b" is same as holding right_mouse_button
+    if button == 'b' and mod_functions_can["b_click_and_hold"] then
         R_cursor_release()
     end
 
-    if button == 'rightstick' and mod_functions_can["rst_hold"] then
+    if button == 'rightstick' and mod_functions_can["rightstick_hold"] then
         M_cursor_release()
     end
 end
@@ -397,8 +426,8 @@ function queue_X2_cursor_press()
 end
 
 function queue_U_wheel_press()
-    if C.locks.frame or not mod_functions_can["mmb_up"] then return end
-    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND then 
+    if C.locks.frame or not mod_functions_can["middle_mouse_button_up"] then return end
+    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND then
         local play_button = G.buttons:get_UIE_by_ID('play_button')
         if play_button and play_button.config.button then
             G.FUNCS.play_cards_from_highlighted()
@@ -407,8 +436,8 @@ function queue_U_wheel_press()
 end
 
 function queue_D_wheel_press()
-    if C.locks.frame or not mod_functions_can["mmb_down"] then return end
-    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND then 
+    if C.locks.frame or not mod_functions_can["middle_mouse_button_down"] then return end
+    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND then
         local discard_button = G.buttons:get_UIE_by_ID('discard_button')
         if discard_button and discard_button.config.button then
             G.FUNCS.discard_cards_from_highlighted()
