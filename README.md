@@ -4,7 +4,7 @@ A [Balatro](https://store.steampowered.com/app/2379780/Balatro/) functional mod.
 ## How to Use
 | operations | functions |
 |--|--|
-| click right mouse button | unselect all cards |
+| click right mouse button | unselect all cards (same as origin) |
 | hold right mouse button | **multiply select cards (core function!)** |
 | click middle mouse button | esc |
 | hold middle mouse button | quickly restart (same as key "r") |
