@@ -2,7 +2,7 @@
 --- MOD_NAME: Better Mouse And Gamepad
 --- MOD_ID: BetterMouseAndGamepad
 --- MOD_AUTHOR: [Kooluve]
---- MOD_DESCRIPTION: [V1.0.4] Make mouse and gamepad more efficient and easier to use. View "README.md" and "*.lua" file for all functions and settings. https://github.com/Kooluve/Better-Mouse-And-Gamepad
+--- MOD_DESCRIPTION: [V1.0.5] Make mouse and gamepad more efficient and easier to use. View "README.md" and "*.lua" file for all functions and settings. https://github.com/Kooluve/Better-Mouse-And-Gamepad
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
@@ -437,7 +437,8 @@ end
 
 function queue_U_wheel_press()
     if C.locks.frame or not mod_functions_can["middle_mouse_button_up"] then return end
-    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND and Game_state_change_to_selecting_hand and C.cursor_down.target.states.drag.is == false then
+    if C.cursor_down.target and C.cursor_down.target.states.drag.is then return end
+    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND and Game_state_change_to_selecting_hand then
         local play_button = G.buttons:get_UIE_by_ID('play_button')
         if play_button and play_button.config.button then
             G.FUNCS.play_cards_from_highlighted()
@@ -448,7 +449,8 @@ end
 
 function queue_D_wheel_press()
     if C.locks.frame or not mod_functions_can["middle_mouse_button_down"] then return end
-    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND and Game_state_change_to_selecting_hand and C.cursor_down.target.states.drag.is == false then
+    if C.cursor_down.target and C.cursor_down.target.states.drag.is then return end
+    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND and Game_state_change_to_selecting_hand then
         local discard_button = G.buttons:get_UIE_by_ID('discard_button')
         if discard_button and discard_button.config.button then
             G.FUNCS.discard_cards_from_highlighted()
