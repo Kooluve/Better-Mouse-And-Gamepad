@@ -1,5 +1,6 @@
 # Better Mouse And Gamepad
 English | [简体中文](/README-ZH.md)
+
 A [Balatro](https://store.steampowered.com/app/2379780/Balatro/) functional mod. Make mouse and gamepad more efficient and easier to use. For example multiply select cards by holding and dragging right mouse button.
 
 ## How to Use
