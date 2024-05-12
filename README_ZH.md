@@ -1,5 +1,7 @@
 # 更好的鼠标和手柄
-这是一个[小丑牌（Balatro）](https://store.steampowered.com/app/2379780/Balatro/)的功能mod。优化了鼠标和手柄的操作，更加简单高效，尤其是长按多选卡牌的功能，有效缓解手指压力！
+[English](/README.md) | 简体中文
+
+这是一个[小丑牌（Balatro）](https://store.steampowered.com/app/2379780/Balatro/)的功能性mod。优化了鼠标和手柄的操作，更加简单高效，尤其是长按多选卡牌的功能，有效缓解手指压力！
 
 ## 使用方法
 | 操作 | 功能 |
