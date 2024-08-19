@@ -2,9 +2,9 @@
 --- MOD_NAME: Better Mouse And Gamepad
 --- MOD_ID: BetterMouseAndGamepad
 --- MOD_AUTHOR: [Kooluve]
---- MOD_DESCRIPTION: Make mouse and gamepad more efficient and easier to use.
+--- MOD_DESCRIPTION: Make mouse and gamepad more efficient and easier to use, effectively relieve finger pressure. I guess this maybe one of the most useful mods ;)
 --- PRIORITY: -10000
---- VERSION: 1.0.6
+--- VERSION: 1.0.6b
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
@@ -168,38 +168,6 @@ function love.mousepressed(x, y, button, touch)
             queue_U_wheel_press()
         end
     end
-
-    -- if not BMAG.config.swap_x1_with_x2 then
-    --     if mouse_button_mapping[button] == 'x1' then 
-    --         if not BMAG.config.swap_mouse_wheel_with_x1_and_x2 then
-    --             queue_X1_cursor_press()
-    --         else
-    --             queue_D_wheel_press()
-    --         end
-    --     end
-    --     if mouse_button_mapping[button] == 'x2' then 
-    --         if not BMAG.config.swap_mouse_wheel_with_x1_and_x2 then
-    --             queue_X2_cursor_press()
-    --         else
-    --             queue_U_wheel_press()
-    --         end
-    --     end
-    -- else
-    --     if mouse_button_mapping[button] == 'x2' then 
-    --         if not BMAG.config.swap_mouse_wheel_with_x1_and_x2 then
-    --             queue_X1_cursor_press()
-    --         else
-    --             queue_D_wheel_press()
-    --         end
-    --     end
-    --     if mouse_button_mapping[button] == 'x1' then 
-    --         if not BMAG.config.swap_mouse_wheel_with_x1_and_x2 then
-    --             queue_X2_cursor_press()
-    --         else
-    --             queue_U_wheel_press()
-    --         end
-    --     end
-    -- end
 end
 
 function love.mousereleased(x, y, button)
@@ -292,23 +260,36 @@ function Controller.update(self, dt)
     end
 
     --middle_mouse_button
-    if not M_cursor_down.handled then
-        if BMAG.config.middle_mouse_button_hold then
-            C:key_press('r')
-        end
-        M_cursor_down.handled = true
-    end
-    if not M_cursor_up.handled then
-        if not BMAG.config.middle_mouse_button_click or ((C.locked) and not G.SETTINGS.paused) or (C.locks.frame) or (C.frame_buttonpress) then
-        else
-            if C.held_key_times['r'] and C.held_key_times['r'] <= 0.7 then
+    if not BMAG.config.middle_mouse_button_hold and BMAG.config.middle_mouse_button_click then
+        if not M_cursor_down.handled then
+            if ((C.locked) and not G.SETTINGS.paused) or (C.locks.frame) or (C.frame_buttonpress) then
+            else
                 M_clicked.handled = false
-            end    
+            end
+            M_cursor_down.handled = true
         end
-        if BMAG.config.middle_mouse_button_hold then
-            C:key_release('r')
+        if not M_cursor_up.handled then
+            M_cursor_up.handled = true
         end
-        M_cursor_up.handled = true
+    else
+        if not M_cursor_down.handled then
+            if BMAG.config.middle_mouse_button_hold or BMAG.config.middle_mouse_button_click then
+                C:key_press('r')
+            end
+            M_cursor_down.handled = true
+        end
+        if not M_cursor_up.handled then
+            if not BMAG.config.middle_mouse_button_click or ((C.locked) and not G.SETTINGS.paused) or (C.locks.frame) or (C.frame_buttonpress) then
+            else
+                if C.held_key_times['r'] and C.held_key_times['r'] <= 0.7 then
+                    M_clicked.handled = false
+                end
+            end
+            if BMAG.config.middle_mouse_button_hold or BMAG.config.middle_mouse_button_click then
+                C:key_release('r')
+            end
+            M_cursor_up.handled = true
+        end
     end
 
     ----Sending all input updates to the game objects----
