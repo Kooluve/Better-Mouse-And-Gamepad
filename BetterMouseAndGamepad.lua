@@ -2,85 +2,106 @@
 --- MOD_NAME: Better Mouse And Gamepad
 --- MOD_ID: BetterMouseAndGamepad
 --- MOD_AUTHOR: [Kooluve]
---- MOD_DESCRIPTION: [V1.0.5] Make mouse and gamepad more efficient and easier to use. View "README.md" and "*.lua" file for all functions and settings. https://github.com/Kooluve/Better-Mouse-And-Gamepad
+--- MOD_DESCRIPTION: Make mouse and gamepad more efficient and easier to use.
+--- PRIORITY: -10000
+--- VERSION: 1.0.6
+
 ----------------------------------------------
 ------------MOD CODE -------------------------
-
---[[
 -------------------------------------
---------FUNCTIONS DESCRIPTION--------
-01. click right mouse button     -> unselect all cards (same as origin)
-02. hold right mouse button      -> multiply select cards (core function!)
-03. click middle mouse button    -> esc
-04. hold middle mouse button     -> quickly restart (same as key "r")
-05. middle mouse up              -> play cards
-06. middle mouse down            -> discard cards
-07. click X1 mouse button        -> sort hand by suit
-08. click X2 mouse button        -> sort hand by value
-09. hold gamepad b button        -> same as hold right mouse button
-10. click gamepad left shoulder  -> same as click X1 mouse button
-11. click gamepad right shoulder -> same as click X2 mouse button
-12. hold gamepad right stick     -> same as hold middle mouse button
--------------------------------------
-------FUNCTIONS DESCRIPTION END------
---]]
-
--------------------------------------
-------------USER SETTINGS------------
---in orighinal game, no matter you use what gamepad, the comfirm button is always the bottom face button same as xbox
---set parameter to false below to turn function off
---note that if you turn certain function off, you ban the function, not the button, 
---so if then you swap it's mapping, this button will still work to execute the other function
-mod_functions_can = {
-    ["right_mouse_button_click"] = true,
-    ["right_mouse_button_hold"] = true,
-    ["middle_mouse_button_click"] = true,
-    ["middle_mouse_button_hold"] = true,
-    ["middle_mouse_button_up"] = true,
-    ["middle_mouse_button_down"] = true,
-    ["x1_click"] = true,
-    ["x2_click"] = true,
-    ["b_click_and_hold"] = true,
-    ["left_shoulder_click"] = true,
-    ["left_shoulder_click"] = true,
-    ["rightstick_hold"] = true
-}
-
---set parameter to true to swap mapping
-SWAP_MOUSE_WHEEL_UP_WITH_DOWN = false
-SWAP_MOUSE_WHEEL_WITH_X1_X2 = false
-
---exchange the number with other existing number left to "=" to modify mouse button mapping
+------------EXTRA SETTINGS------------
+--in general, you don't need to change the following settings, be careful when making modifications
+--exchange the number with other existing number left to '=' to modify mouse button mapping
 mouse_button_mapping = {
-    [1] = "left_mouse_button",
-    [2] = "right_mouse_button",
-    [3] = "middle_mouse_button",
-    [4] = "x1",
-    [5] = "x2",
+    [1] = 'left_mouse_button',
+    [2] = 'right_mouse_button',
+    [3] = 'middle_mouse_button',
+    [4] = 'x1',
+    [5] = 'x2',
 }
 
---exchange the string with other existing string left to "=" to modify mouse button mapping
+--in general, you don't need to change the following settings, be careful when making modifications
+--exchange the string with other existing string left to '=' to modify mouse button mapping
 gpad_button_mapping = {
-    ["a"] = "a",
-    ["b"] = "b",
-    ["x"] = "x",
-    ["y"] = "y",
-    ["leftshoulder"] = "leftshoulder",
-    ["rightshoulder"] = "rightshoulder",
-    ["back"] = "back",
-    ["start"] = "start",
-    ["dpleft"] = "dpleft",
-    ["dpright"] = "dpright",
-    ["dpup"] = "dpup",
-    ["dpdown"] = "dpdown",
-    ["leftstick"] = "leftstick", --no function in original game
-    ["rightstick"] = "rightstick", --no function in original game
+    ['a'] = 'a',
+    ['b'] = 'b',
+    ['x'] = 'x',
+    ['y'] = 'y',
+    ['leftshoulder'] = 'leftshoulder',
+    ['rightshoulder'] = 'rightshoulder',
+    ['back'] = 'back',
+    ['start'] = 'start',
+    ['dpleft'] = 'dpleft',
+    ['dpright'] = 'dpright',
+    ['dpup'] = 'dpup',
+    ['dpdown'] = 'dpdown',
+    ['leftstick'] = 'leftstick', --no function in original game
+    ['rightstick'] = 'rightstick', --no function in original game
     -- can't map trigger to other button, reason unknown, maybe need to modify ui functions
-    -- ["triggerleft"] = "triggerleft",
-    -- ["triggerright"] = "triggerright",
+    -- ['triggerleft'] = 'triggerleft',
+    -- ['triggerright'] = 'triggerright',
 }
 -------------------------------------
------------USER SETTING END----------
+-----------EXTRA SETTING END----------
+
+-----------------------------------
+------------CONFIG MENU------------
+BMAG = SMODS.current_mod
+
+tab_content_config = {align = 'tm', r = 0.1, padding = 0.3, outline = 1, colour = G.C.BLACK, minh = 8, maxw = 16}
+
+BMAG.config_tab = function()
+    return {n = G.UIT.ROOT, config = {r = 0.1, minw = 10, align = 'cm', padding = 0.1, colour = G.C.BLACK}, nodes = {
+        create_tabs({
+            tabs = {
+                {
+                    label = localize('tabs_mouse_page_1'),
+                    chosen = true,
+                    tab_definition_function = function() return {n = G.UIT.ROOT, config = tab_content_config, nodes={
+                        {
+                            n = G.UIT.R, config = {align = 'rm'}, nodes={
+                                create_toggle({label = localize('right_mouse_button_click'), ref_table = BMAG.config, ref_value = 'right_mouse_button_click'}),
+                                create_toggle({label = localize('right_mouse_button_hold'), ref_table = BMAG.config, ref_value = 'right_mouse_button_hold'}),
+                                create_toggle({label = localize('middle_mouse_button_click'), ref_table = BMAG.config, ref_value = 'middle_mouse_button_click'}),
+                                create_toggle({label = localize('middle_mouse_button_hold'), ref_table = BMAG.config, ref_value = 'middle_mouse_button_hold'}),
+                                create_toggle({label = localize('middle_mouse_button_up'), ref_table = BMAG.config, ref_value = 'middle_mouse_button_up'}),
+                                create_toggle({label = localize('middle_mouse_button_down'), ref_table = BMAG.config, ref_value = 'middle_mouse_button_down'}),
+                                create_toggle({label = localize('x1_click'), ref_table = BMAG.config, ref_value = 'x1_click'}),
+                                create_toggle({label = localize('x2_click'), ref_table = BMAG.config, ref_value = 'x2_click'}),
+                            }
+                        }
+                    }} end
+                },
+                {
+                    label = localize('tabs_mouse_page_2'),
+                    tab_definition_function = function() return {n = G.UIT.ROOT, config = tab_content_config, nodes={
+                        create_toggle({label = localize('swap_mouse_wheel_up_with_down'), ref_table = BMAG.config, ref_value = 'swap_mouse_wheel_up_with_down'}),
+                        create_toggle({label = localize('swap_x1_with_x2'), ref_table = BMAG.config, ref_value = 'swap_x1_with_x2'}),
+                        create_toggle({label = localize('swap_mouse_wheel_with_x1_and_x2'), ref_table = BMAG.config, ref_value = 'swap_mouse_wheel_with_x1_and_x2'}),
+                    }} end
+                },
+                {
+                    label = localize('tabs_gamepad'),
+                    tab_definition_function = function() return {n = G.UIT.ROOT, config = tab_content_config, nodes={
+                        create_toggle({label = localize('b_click_or_hold'), ref_table = BMAG.config, ref_value = 'b_click_or_hold', info = localize('b_click_or_hold_info')}),
+                        create_toggle({label = localize('rightstick_click_or_hold'), ref_table = BMAG.config, ref_value = 'rightstick_click_or_hold', info = localize('rightstick_click_or_hold_info')}),
+                        create_toggle({label = localize('left_shoulder_click'), ref_table = BMAG.config, ref_value = 'left_shoulder_click'}),
+                        create_toggle({label = localize('right_shoulder_click'), ref_table = BMAG.config, ref_value = 'right_shoulder_click'}),
+                        create_toggle({label = localize('swap_a_with_b'), ref_table = BMAG.config, ref_value = 'swap_a_with_b'}),
+                    }} end
+                },
+                {
+                    label = localize('tabs_help'),
+                    tab_definition_function = function() return {n = G.UIT.ROOT, config = tab_content_config, nodes={
+                        {n = G.UIT.T, config = {text = localize('help'), scale = 0.4, colour = G.C.UI.TEXT_LIGHT}},
+                    }} end
+                },
+            }
+        })
+    }}
+end
+------------------------------------
+-----------CONFIG MENU END----------
 
 C = G.CONTROLLER
 
@@ -99,6 +120,9 @@ Game_state_change_to_selecting_hand = false --prevent repetitive playing card an
 function love.gamepadpressed(joystick, button)
     button = G.button_mapping[button] or button
     button = gpad_button_mapping[button] or button
+    if BMAG.config.swap_a_with_b then
+        if button == 'a' then button = 'b' elseif button == 'b' then button = 'a' end
+    end
 	G.CONTROLLER:set_gamepad(joystick)
     G.CONTROLLER:set_HID_flags('button', button)
     G.CONTROLLER:button_press(button)
@@ -107,6 +131,9 @@ end
 function love.gamepadreleased(joystick, button)
 	button = G.button_mapping[button] or button
     button = gpad_button_mapping[button] or button
+    if BMAG.config.swap_a_with_b then
+        if button == 'a' then button = 'b' elseif button == 'b' then button = 'a' end
+    end
     G.CONTROLLER:set_gamepad(joystick)
     G.CONTROLLER:set_HID_flags('button', button)
     G.CONTROLLER:button_release(button)
@@ -114,48 +141,84 @@ end
 
 function love.mousepressed(x, y, button, touch)
     C:set_HID_flags(touch and 'touch' or 'mouse')
-    if mouse_button_mapping[button] == "left_mouse_button" then 
+    if mouse_button_mapping[button] == 'left_mouse_button' then 
         C:queue_L_cursor_press(x, y)
 	end
-    if mouse_button_mapping[button] == "right_mouse_button" then 
+    if mouse_button_mapping[button] == 'right_mouse_button' then 
         C:queue_R_cursor_press(x, y)
 	end
-    if mouse_button_mapping[button] == "middle_mouse_button" then 
+    if mouse_button_mapping[button] == 'middle_mouse_button' then 
 		queue_M_cursor_press()
 	end
-    if mouse_button_mapping[button] == "x1" then 
-        if not SWAP_MOUSE_WHEEL_WITH_X1_X2 then
-		    queue_X1_cursor_press()
+
+    local is_x1 = mouse_button_mapping[button] == 'x1'
+    local is_x2 = mouse_button_mapping[button] == 'x2'
+    local is_x_swapped = BMAG.config.swap_x1_with_x2
+    local is_wheel_swapped = BMAG.config.swap_mouse_wheel_with_x1_and_x2
+    if (is_x1 and not is_swapped) or (is_x2 and is_swapped) then
+        if not is_wheel_swapped then
+            queue_X1_cursor_press()
         else
             queue_D_wheel_press()
         end
-	end
-    if mouse_button_mapping[button] == "x2" then 
-        if not SWAP_MOUSE_WHEEL_WITH_X1_X2 then
-		    queue_X2_cursor_press()
+    elseif (is_x2 and not is_swapped) or (is_x1 and is_swapped) then
+        if not is_wheel_swapped then
+            queue_X2_cursor_press()
         else
             queue_U_wheel_press()
         end
-	end
+    end
+
+    -- if not BMAG.config.swap_x1_with_x2 then
+    --     if mouse_button_mapping[button] == 'x1' then 
+    --         if not BMAG.config.swap_mouse_wheel_with_x1_and_x2 then
+    --             queue_X1_cursor_press()
+    --         else
+    --             queue_D_wheel_press()
+    --         end
+    --     end
+    --     if mouse_button_mapping[button] == 'x2' then 
+    --         if not BMAG.config.swap_mouse_wheel_with_x1_and_x2 then
+    --             queue_X2_cursor_press()
+    --         else
+    --             queue_U_wheel_press()
+    --         end
+    --     end
+    -- else
+    --     if mouse_button_mapping[button] == 'x2' then 
+    --         if not BMAG.config.swap_mouse_wheel_with_x1_and_x2 then
+    --             queue_X1_cursor_press()
+    --         else
+    --             queue_D_wheel_press()
+    --         end
+    --     end
+    --     if mouse_button_mapping[button] == 'x1' then 
+    --         if not BMAG.config.swap_mouse_wheel_with_x1_and_x2 then
+    --             queue_X2_cursor_press()
+    --         else
+    --             queue_U_wheel_press()
+    --         end
+    --     end
+    -- end
 end
 
 function love.mousereleased(x, y, button)
-    if mouse_button_mapping[button] == "left_mouse_button" then C:L_cursor_release(x, y) end
-    if mouse_button_mapping[button] == "right_mouse_button" then R_cursor_release(x, y) end
-	if mouse_button_mapping[button] == "middle_mouse_button" then M_cursor_release(x, y) end
+    if mouse_button_mapping[button] == 'left_mouse_button' then C:L_cursor_release(x, y) end
+    if mouse_button_mapping[button] == 'right_mouse_button' then R_cursor_release(x, y) end
+	if mouse_button_mapping[button] == 'middle_mouse_button' then M_cursor_release(x, y) end
 end
 
 function love.wheelmoved(x, y)
-    y = SWAP_MOUSE_WHEEL_UP_WITH_DOWN and -y or y
+    y = BMAG.config.swap_mouse_wheel_up_with_down and -y or y
     if y > 0 then 
-        if not SWAP_MOUSE_WHEEL_WITH_X1_X2 then
+        if not BMAG.config.swap_mouse_wheel_with_x1_and_x2 then
 		    queue_U_wheel_press()
         else
             queue_X2_cursor_press()
         end
     end
     if y < 0 then 
-        if not SWAP_MOUSE_WHEEL_WITH_X1_X2 then
+        if not BMAG.config.swap_mouse_wheel_with_x1_and_x2 then
 		    queue_D_wheel_press()
         else
             queue_X1_cursor_press()
@@ -191,7 +254,7 @@ function Controller.update(self, dt)
 
     --right_mouse_button
     if not R_cursor_down.handled then
-        if mod_functions_can["right_mouse_button_hold"] then
+        if BMAG.config.right_mouse_button_hold then
             R_dragging.can = true
         end
         R_cursor_down.handled = true
@@ -216,7 +279,7 @@ function Controller.update(self, dt)
         R_dragging.start = false  
         --Now, handle the Cursor release
         --Was the Cursor release in the same location as the Cursor press?
-        if R_cursor_down.target and mod_functions_can["right_mouse_button_click"] then 
+        if R_cursor_down.target and BMAG.config.right_mouse_button_click then 
             if (not R_cursor_down.target.click_timeout or R_cursor_down.target.click_timeout*G.SPEEDFACTOR > R_cursor_up.time - R_cursor_down.time) then
                 if R_cursor_down.target.states.click.can then
                     if Vector_Dist(R_cursor_down.T, R_cursor_up.T) < 0.1*G.MIN_CLICK_DIST then 
@@ -230,19 +293,19 @@ function Controller.update(self, dt)
 
     --middle_mouse_button
     if not M_cursor_down.handled then
-        if mod_functions_can["middle_mouse_button_hold"] then
+        if BMAG.config.middle_mouse_button_hold then
             C:key_press('r')
         end
         M_cursor_down.handled = true
     end
     if not M_cursor_up.handled then
-        if not mod_functions_can["middle_mouse_button_click"] or ((C.locked) and not G.SETTINGS.paused) or (C.locks.frame) or (C.frame_buttonpress) then
+        if not BMAG.config.middle_mouse_button_click or ((C.locked) and not G.SETTINGS.paused) or (C.locks.frame) or (C.frame_buttonpress) then
         else
             if C.held_key_times['r'] and C.held_key_times['r'] <= 0.7 then
                 M_clicked.handled = false
             end    
         end
-        if mod_functions_can["middle_mouse_button_hold"] then
+        if BMAG.config.middle_mouse_button_hold then
             C:key_release('r')
         end
         M_cursor_up.handled = true
@@ -311,16 +374,16 @@ function Controller:button_press_update(button, dt)
     C.interrupt.focus = false
 
     if not C:capture_focused_input(button, 'press', dt) then
-        if button == "dpup" then
+        if button == 'dpup' then
             C:navigate_focus('U')
         end
-        if button == "dpdown" then
+        if button == 'dpdown' then
             C:navigate_focus('D')
         end
-        if button == "dpleft" then
+        if button == 'dpleft' then
             C:navigate_focus('L')
         end
-        if button == "dpright" then
+        if button == 'dpright' then
             C:navigate_focus('R')
         end
     end
@@ -337,7 +400,7 @@ function Controller:button_press_update(button, dt)
                 G:main_menu()
             end
         end
-        if button == "a" then
+        if button == 'a' then
             if C.focused.target and
             C.focused.target.config.focus_args and
             C.focused.target.config.focus_args.type == 'slider' and 
@@ -350,20 +413,20 @@ function Controller:button_press_update(button, dt)
         if button == 'b' then 
             if G.hand and C.focused.target and
             C.focused.target.area == G.hand and 
-            mod_functions_can["b_click_and_hold"] then
+            BMAG.config.b_click_or_hold then
                 C:queue_R_cursor_press()
             else
                 C.interrupt.focus = true
             end
         end
         if G.STATE == G.STATES.SELECTING_HAND then
-            if button == 'leftshoulder' and mod_functions_can["left_shoulder_click"] then
+            if button == 'leftshoulder' and BMAG.config.left_shoulder_click then
                 G.FUNCS.sort_hand_value()
-            elseif button == 'rightshoulder' and mod_functions_can["left_shoulder_click"] then
+            elseif button == 'rightshoulder' and BMAG.config.right_shoulder_click then
                 G.FUNCS.sort_hand_suit()
             end
         end
-        if button == 'rightstick' and mod_functions_can["rightstick_hold"] then 
+        if button == 'rightstick' and BMAG.config.rightstick_click_or_hold then 
             queue_M_cursor_press()
         end
         --modification of this function end
@@ -395,12 +458,12 @@ local button_release_update_ref = Controller.button_release_update
 function Controller.button_release_update(self, button, dt)
     button_release_update_ref(self, button, dt)
 
-    --holding "b" is same as holding right_mouse_button
-    if button == 'b' and mod_functions_can["b_click_and_hold"] then
+    --holding 'b' is same as holding right_mouse_button
+    if button == 'b' and BMAG.config.b_click_or_hold then
         R_cursor_release()
     end
 
-    if button == 'rightstick' and mod_functions_can["rightstick_hold"] then
+    if button == 'rightstick' and BMAG.config.rightstick_click_or_hold then
         M_cursor_release()
     end
 end
@@ -422,21 +485,21 @@ function queue_M_cursor_press()
 end
 
 function queue_X1_cursor_press()
-    if C.locks.frame or not mod_functions_can["x1_click"] then return end
+    if C.locks.frame or not BMAG.config.x1_click then return end
     if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND then 
         G.FUNCS.sort_hand_suit()
     end
 end
 
 function queue_X2_cursor_press()
-    if C.locks.frame or not mod_functions_can["x2_click"] then return end
+    if C.locks.frame or not BMAG.config.x2_click then return end
     if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND then 
         G.FUNCS.sort_hand_value()
     end
 end
 
 function queue_U_wheel_press()
-    if C.locks.frame or not mod_functions_can["middle_mouse_button_up"] then return end
+    if C.locks.frame or not BMAG.config.middle_mouse_button_up then return end
     if C.cursor_down.target and C.cursor_down.target.states.drag.is then return end
     if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND and Game_state_change_to_selecting_hand then
         local play_button = G.buttons:get_UIE_by_ID('play_button')
@@ -448,7 +511,7 @@ function queue_U_wheel_press()
 end
 
 function queue_D_wheel_press()
-    if C.locks.frame or not mod_functions_can["middle_mouse_button_down"] then return end
+    if C.locks.frame or not BMAG.config.middle_mouse_button_down then return end
     if C.cursor_down.target and C.cursor_down.target.states.drag.is then return end
     if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND and Game_state_change_to_selecting_hand then
         local discard_button = G.buttons:get_UIE_by_ID('discard_button')
