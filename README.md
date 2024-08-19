@@ -6,6 +6,8 @@ A [Balatro](https://store.steampowered.com/app/2379780/Balatro/) qol (quality of
 
 <img src="https://github.com/user-attachments/assets/5afcd2ff-c6fa-400f-897f-ab7325f0cf00" alt="English config" width="300" />
 
+Includes configuration interface
+
 ## How to Use
 
 | operations                        | functions                                  |
