@@ -2,7 +2,7 @@
 --- MOD_NAME: Better Mouse And Gamepad
 --- MOD_ID: BetterMouseAndGamepad
 --- MOD_AUTHOR: [Kooluve]
---- MOD_DESCRIPTION: [V1.0.5b] [for steammoded 0.9.8-] Make mouse and gamepad more efficient and easier to use. View 'README.md' and '*.lua' file for all functions and settings. https://github.com/Kooluve/Better-Mouse-And-Gamepad
+--- MOD_DESCRIPTION: [V1.0.5c] [for steammoded 0.9.8-] Make mouse and gamepad more efficient and easier to use. View '*.lua' file for all functions and settings. https://github.com/Kooluve/Better-Mouse-And-Gamepad
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
@@ -35,7 +35,7 @@ mod_functions_can = {
     ['right_mouse_button_click'] = true,
     ['right_mouse_button_hold'] = true,
     ['middle_mouse_button_click'] = true,
-    ['middle_mouse_button_hold'] = true,
+    ['middle_mouse_button_hold'] = false,
     ['middle_mouse_button_up'] = true,
     ['middle_mouse_button_down'] = true,
     ['x1_click'] = true,
@@ -243,23 +243,36 @@ function Controller.update(self, dt)
     end
 
     --middle_mouse_button
-    if not M_cursor_down.handled then
-        if mod_functions_can['middle_mouse_button_hold'] then
-            C:key_press('r')
-        end
-        M_cursor_down.handled = true
-    end
-    if not M_cursor_up.handled then
-        if not mod_functions_can['middle_mouse_button_click'] or ((C.locked) and not G.SETTINGS.paused) or (C.locks.frame) or (C.frame_buttonpress) then
-        else
-            if C.held_key_times['r'] and C.held_key_times['r'] <= 0.7 then
+    if not mod_functions_can['middle_mouse_button_hold'] and mod_functions_can['middle_mouse_button_click'] then
+        if not M_cursor_down.handled then
+            if ((C.locked) and not G.SETTINGS.paused) or (C.locks.frame) or (C.frame_buttonpress) then
+            else
                 M_clicked.handled = false
-            end    
+            end
+            M_cursor_down.handled = true
         end
-        if mod_functions_can['middle_mouse_button_hold'] then
-            C:key_release('r')
+        if not M_cursor_up.handled then
+            M_cursor_up.handled = true
         end
-        M_cursor_up.handled = true
+    else
+        if not M_cursor_down.handled then
+            if mod_functions_can['middle_mouse_button_hold'] or mod_functions_can['middle_mouse_button_click'] then
+                C:key_press('r')
+            end
+            M_cursor_down.handled = true
+        end
+        if not M_cursor_up.handled then
+            if not mod_functions_can['middle_mouse_button_click'] or ((C.locked) and not G.SETTINGS.paused) or (C.locks.frame) or (C.frame_buttonpress) then
+            else
+                if C.held_key_times['r'] and C.held_key_times['r'] <= 0.7 then
+                    M_clicked.handled = false
+                end
+            end
+            if mod_functions_can['middle_mouse_button_hold'] or mod_functions_can['middle_mouse_button_click'] then
+                C:key_release('r')
+            end
+            M_cursor_up.handled = true
+        end
     end
 
     ----Sending all input updates to the game objects----
