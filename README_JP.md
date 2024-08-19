@@ -4,6 +4,10 @@
 
 これは[Balatro](https://store.steampowered.com/app/2379780/Balatro/)の便利なmodです。マウスとコントローラーの操作を最適化し、より簡単で効率的になり、指の負担を効果的に軽減します。これは最も実用的なmodの一つかもしれないと感じています ;)
 
+<img src="https://github.com/user-attachments/assets/ee072a73-0360-4863-bd18-35c23580940e" alt="English config" width="300" />
+
+構成インタフェースを含む
+
 ## 使用方法
 
 | 操作       | 機能              |
