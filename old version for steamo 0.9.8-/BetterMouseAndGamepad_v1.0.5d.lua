@@ -2,7 +2,8 @@
 --- MOD_NAME: Better Mouse And Gamepad
 --- MOD_ID: BetterMouseAndGamepad
 --- MOD_AUTHOR: [Kooluve]
---- MOD_DESCRIPTION: [V1.0.5c] [for steammoded 0.9.8-] Make mouse and gamepad more efficient and easier to use. View '*.lua' file for all functions and settings. https://github.com/Kooluve/Better-Mouse-And-Gamepad
+--- MOD_DESCRIPTION: [V1.0.5d] [for steammoded 0.9.8-] Make mouse and gamepad more efficient and easier to use. View *.lua file for all functions and settings. https://github.com/Kooluve/Better-Mouse-And-Gamepad
+--- PREFIX: bmag_k
 ----------------------------------------------
 ------------MOD CODE -------------------------
 
