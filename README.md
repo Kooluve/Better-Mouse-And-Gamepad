@@ -28,6 +28,8 @@ Includes configuration interface
 ## Installation
 
 Follow the installation instructions for the Balatro modloader [Steamodded](https://github.com/Steamopollys/Steamodded/tree/0.6.0) to install.
+Steamodded >=1.0.0 ------> lasted version
+Steamodded <=0.9.8 ------> 1.0.5+ lasted version
 
 ## Known Issues
 
