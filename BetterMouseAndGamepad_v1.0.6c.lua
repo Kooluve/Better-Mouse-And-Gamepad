@@ -4,7 +4,8 @@
 --- MOD_AUTHOR: [Kooluve]
 --- MOD_DESCRIPTION: Make mouse and gamepad more efficient and easier to use, effectively relieve finger pressure. I guess this maybe one of the most useful mods ;)
 --- PRIORITY: -10000
---- VERSION: 1.0.6b
+--- PREFIX: bmag_k
+--- VERSION: 1.0.6c
 
 ----------------------------------------------
 ------------MOD CODE -------------------------
