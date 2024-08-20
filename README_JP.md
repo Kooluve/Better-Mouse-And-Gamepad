@@ -28,7 +28,9 @@
 ## インストール
 
 modローダ[Steamodded](https://github.com/Steamopollys/Steamodded/tree/0.6.0)のインストールチュートリアルを参照
+
 Steamodded >=1.0.0 ------> 最新版
+
 Steamodded <=0.9.8 ------> 1.0.5最新版(例えば1.0.5d)
 
 ## 既知の問題
