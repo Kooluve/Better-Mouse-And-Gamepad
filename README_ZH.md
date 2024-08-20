@@ -25,6 +25,8 @@
 
 ## 安装
 参照mod加载器 [Steamodded](https://github.com/Steamopollys/Steamodded/tree/0.6.0)的安装教程
+Steamodded >=1.0.0 ------> 最新版
+Steamodded <=0.9.8 ------> 1.0.5 最新版（如1.0.5d）
 
 ## 已知问题
 用了太多代码重写，也许会与其他的修改键位mod冲突
