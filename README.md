@@ -35,7 +35,7 @@ Steamodded <=0.9.8 ------> 1.0.5 lasted version (like 1.0.5d)
 
 ## Known Issues
 
-Too much code override, may conflict with other mod which also modify key mapping.
+Too much code override, may conflict with other mods which also modify key mapping.
 
 ## Contributing
 
