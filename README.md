@@ -65,7 +65,7 @@ Mod configuration is split into 3 menus: **Features**, **Modifiers**, and **Game
 **Features** enables and disables the base functionality of the mod.
 **Modifiers** changes the behaviour of the mouse bindings.
 **Gamepad** binds gamepad buttons to the base functions
-(which can still be toggled under **Functions**).
+(which can still be toggled under **Features**).
 
 ## Known Issues
 

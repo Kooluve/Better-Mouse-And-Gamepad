@@ -23,13 +23,11 @@ return {
             swap_mouse_wheel_with_x1_and_x2 = 'Swap Mouse 4/5 with Mouse Wheel',
 
             -- Gamepad --
-            b_click_or_hold = 'B (Hold) -> Mouse 2 (Hold)',
-            b_click_or_hold_info = {'(See \'Mouse 2 (Hold)\' in \'Features\')'},
-            rightstick_click_or_hold = 'Right Joystick -> Mouse 3',
-            rightstick_click_or_hold_info = {'(See \'Mouse 3\'/\'Mouse 3 (Hold)\' in \'Features\')'},
+            b_click_or_hold = 'B / (Hold) -> Mouse 2 / (Hold)',
+            rightstick_click_or_hold = 'Right Joystick / (Hold) -> Mouse / (Hold)',
             left_shoulder_click = 'Left Shoulder -> Mouse 4',
             right_shoulder_click = 'Right Shoulder -> Mouse 5',
-            swap_a_with_b = 'Swap A & B buttons',
+            swap_a_with_b = 'Swap A with B',
 
             -- Help Text --
             help = [[The 'Features' page allows for enabling and disabling
@@ -38,12 +36,14 @@ subject to the underlying mouse features they bind to.
 
 In the original game, no matter what gamepad you use,
 the confirm button is always at the bottom (e.g. Xbox 'A'
-or PlayStation 'X'). If you need to swap it (like for a
-Nintendo controller), use 'Swap A & B buttons'.
+). If you need to swap it (like for a Nintendo controller)
+, use 'Swap A & B buttons'.
 
 Report any bugs or issues here:
 https://github.com/Kooluve/Better-Mouse-And-Gamepad]],
-            --to transfor: 1. use newlines to make width and size similar to other pages. 
+
+            --to transfor:
+            --1. use newlines to make width and size similar to other pages. 
             --2. delete all spaces before lines as shown above, otherwise they will be read and appear in game.
         },
     }
