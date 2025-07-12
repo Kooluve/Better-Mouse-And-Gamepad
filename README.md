@@ -31,12 +31,12 @@ user's thumb.
 Gamepad bindings bind to the mouse bindings, allowing toggling via the
 `Features` config menu. See [Configuration](#configuration) for more details.
 
-| Binding                     | Function                               |
-| ---                         | ---                                    |
-| B Button (Hold)             | same as '`Mouse 2` (Hold)'             |
-| Right Joystick (Click/Hold) | same as '`Mouse 3`'/'`Mouse 3` (Hold)' |
-| Left Shoulder Button        | Same as '`Mouse 4`'                    |
-| Right Shoulder Button       | Same as '`Mouse 5`'                    |
+| Binding                       | Function                               |
+| ---                           | ---                                    |
+| `B Button` (Hold)             | same as '`Mouse 2` (Hold)'             |
+| `Right Joystick` (Click/Hold) | same as '`Mouse 3`'/'`Mouse 3` (Hold)' |
+| `Left Shoulder Button`        | Same as '`Mouse 4`'                    |
+| `Right Shoulder Button`       | Same as '`Mouse 5`'                    |
 
 ## Installation
 
@@ -54,10 +54,10 @@ and extract the archive into the `Mods` folder.
 
 ### Supported Steamodded version
 
-| Steamodded version | Better-Mouse-And-Gamepad version |
-| ---                | ---                              |
-| v1.0.0 or newer    | [latest](https://github.com/Kooluve/Better-Mouse-And-Gamepad/releases/latest) |
-| v0.9.8 or older    | v1.0.5 ([latest patch](https://github.com/Kooluve/Better-Mouse-And-Gamepad/releases/tag/v1.0.5d)) |
+| Steamodded version   | Better-Mouse-And-Gamepad version |
+| ---                  | ---                              |
+| `v1.0.0` or newer    | [`latest`](https://github.com/Kooluve/Better-Mouse-And-Gamepad/releases/latest) |
+| `v0.9.8` or older    | `v1.0.5` ([latest patch](https://github.com/Kooluve/Better-Mouse-And-Gamepad/releases/tag/v1.0.5d)) |
 
 ## Configuration
 
