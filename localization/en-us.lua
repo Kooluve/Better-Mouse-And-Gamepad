@@ -1,39 +1,48 @@
 return {
     misc = {
         dictionary = {
-            tabs_mouse_page_1 = 'Mouse Page 1',
-            tabs_mouse_page_2 = 'Mouse Page 2',
+            -- Headers --
+            tabs_mouse_page_1 = 'Features',
+            tabs_mouse_page_2 = 'Modifiers',
             tabs_gamepad = 'Gamepad',
             tabs_help = 'Help',
 
-            right_mouse_button_click = 'click right button | unselect cards',
-            right_mouse_button_hold = 'hold right button | multiply select cards',
-            middle_mouse_button_click = 'click middle button | esc',
-            middle_mouse_button_hold = 'hold middle button | quickly restart (disabled by default)',
-            middle_mouse_button_up = 'wheel up | play cards',
-            middle_mouse_button_down = 'wheel down | discard cards',
-            x1_click = 'click X1 button | sort hand by suit',
-            x2_click = 'click X2 button | sort hand by value',
+            -- Mouse Page 1 (Features) --
+            right_mouse_button_click = 'Mouse 2: Deselect all cards',
+            right_mouse_button_hold = 'Mouse 2 (Hold): Select multiple cards',
+            middle_mouse_button_click = 'Mouse 3: Show menu (maps to ESC)',
+            middle_mouse_button_hold = 'Mouse 3 (Hold): Restart (disabled by default; maps to R)',
+            middle_mouse_button_up = 'Mouse Wheel Up: Play hand',
+            middle_mouse_button_down = 'Mouse Wheel Down: Discard cards',
+            x1_click = 'Mouse 4: Sort hand by suit',
+            x2_click = 'Mouse 5: Sort hand by value',
 
-            swap_mouse_wheel_up_with_down = 'swap wheel up with down',
-            swap_x1_with_x2 = 'swap X1 with X2',
-            swap_mouse_wheel_with_x1_and_x2 = 'swap wheel with X1 & X2',
+            -- Mouse Page 2 (Modifiers) --
+            swap_mouse_wheel_up_with_down = 'Invert mouse wheel direction',
+            swap_x1_with_x2 = 'Swap Mouse 4 with Mouse 5',
+            swap_mouse_wheel_with_x1_and_x2 = 'Swap Mouse 4/5 with Mouse Wheel',
 
-            b_click_or_hold = 'hold B button | same as right mouse button',
-            b_click_or_hold_info = {'this toggle is also controlled by \'hold right button\''},
-            rightstick_click_or_hold = 'click or hold right stick | same as middle mouse button',
-            rightstick_click_or_hold_info = {'this toggle is also controlled by \'click middle button\' and \'hold middle button\''},
-            left_shoulder_click = 'click left shoulder | sort hand by suit',
-            right_shoulder_click = 'click right shoulder | sort hand by value',
-            swap_a_with_b = 'swap A with B',
+            -- Gamepad --
+            b_click_or_hold = 'B (Hold) -> Mouse 2 (Hold)',
+            b_click_or_hold_info = {'(See \'Mouse 2 (Hold)\' in \'Features\')'},
+            rightstick_click_or_hold = 'Right Joystick -> Mouse 3',
+            rightstick_click_or_hold_info = {'(See \'Mouse 3\'/\'Mouse 3 (Hold)\' in \'Features\')'},
+            left_shoulder_click = 'Left Shoulder -> Mouse 4',
+            right_shoulder_click = 'Right Shoulder -> Mouse 5',
+            swap_a_with_b = 'Swap A & B buttons',
 
-            help = [[1. If you turn certain function off, you ban the function,
-not the button, so if then you swap its mapping,
-this button will still work to execute the other function.
-2. In orighinal game, no matter what gamepad you use,
-the comfirm button is always at the bottom same as Xbox,
-use 'swap A with B' toggle if you need.
-3. https://github.com/Kooluve/Better-Mouse-And-Gamepad]],
+            -- Help Text --
+            help = [[The 'Features' page allows for enabling and disabling
+the basic mod functionality. All Gamepad bindings are
+subject to the underlying mouse features they bind to.
+
+In the original game, no matter what gamepad you use,
+the confirm button is always at the bottom (e.g. Xbox 'A'
+or PlayStation 'X'). If you need to swap it (like for a
+Nintendo controller), use 'Swap A & B buttons'.
+
+Report any bugs or issues here:
+https://github.com/Kooluve/Better-Mouse-And-Gamepad]],
             --to transfor: 1. use newlines to make width and size similar to other pages. 
             --2. delete all spaces before lines as shown above, otherwise they will be read and appear in game.
         },
