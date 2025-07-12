@@ -23,8 +23,10 @@ return {
             swap_mouse_wheel_with_x1_and_x2 = 'Swap Mouse 4/5 with Mouse Wheel',
 
             -- Gamepad --
-            b_click_or_hold = 'B / (Hold) -> Mouse 2 / (Hold)',
-            rightstick_click_or_hold = 'Right Joystick / (Hold) -> Mouse / (Hold)',
+            b_click_or_hold = 'B -> Mouse 2',
+            b_click_or_hold_info = {'(See \'Mouse 2\'/\'Mouse 2 (Hold)\' in \'Features\')'},
+            rightstick_click_or_hold = 'Right Joystick -> Mouse 3',
+            rightstick_click_or_hold_info = {'(See \'Mouse 3\'/\'Mouse 3 (Hold)\' in \'Features\')'},
             left_shoulder_click = 'Left Shoulder -> Mouse 4',
             right_shoulder_click = 'Right Shoulder -> Mouse 5',
             swap_a_with_b = 'Swap A with B',
@@ -35,8 +37,8 @@ the basic mod functionality. All Gamepad bindings are
 subject to the underlying mouse features they bind to.
 
 In the original game, no matter what gamepad you use,
-the confirm button is always at the bottom (e.g. Xbox 'A'
-). If you need to swap it (like for a Nintendo controller)
+the confirm button is always at the bottom (e.g. Xbox 'A'). 
+If you need to swap it (like for a Nintendo controller)
 , use 'Swap A & B buttons'.
 
 Report any bugs or issues here:

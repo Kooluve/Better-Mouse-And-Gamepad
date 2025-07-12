@@ -24,7 +24,9 @@ return {
 
             -- ゲームパッド --
             b_click_or_hold = 'Bボタンクリック/長押し -> マウス右クリック/長押し同等',
+            b_click_or_hold_info = {'(参考\'機能\'ページの\'右クリック\'/\'長押し右クリック\')'},
             rightstick_click_or_hold = '右スティッククリック/長押し -> マウス中クリック/長押し同等',
+            rightstick_click_or_hold_info = {'(参考\'機能\'ページの\'中クリック\'/\'長押し中クリック\')'},
             left_shoulder_click = '左ショルダーボタン -> マウスサイドボタンX1同等',
             right_shoulder_click = '右ショルダーボタン -> マウスサイドボタンX2同等',
             swap_a_with_b = 'AボタンとBボタンを入れ替え',

@@ -24,7 +24,9 @@ return {
 
             -- Gamepad --
             b_click_or_hold = '单击或长按B键 -> 同单击或长按鼠标右键',
+            b_click_or_hold_info = {'(参考\'功能\'页的\'单击右键\'/\'长按右键\')'},
             rightstick_click_or_hold = '单击或长按右摇杆 -> 同单击或长按鼠标中键',
+            rightstick_click_or_hold_info = {'(参考\'功能\'页的\'单击中键\'/\'长按中键\')'},
             left_shoulder_click = '单击左肩键 -> 同鼠标侧键X1',
             right_shoulder_click = '单击右肩键 -> 同鼠标侧键X2',
             swap_a_with_b = '交换A键和B键',
