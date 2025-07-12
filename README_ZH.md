@@ -36,7 +36,7 @@
 
 ## 安装
 可以简单参考mod框架的教程[Steamodded wiki](https://github.com/Steamodded/smods/wiki)
-详细中文教程可以参考我写的教程[小丑牌mod安装保姆级教程](https://www.bilibili.com/opus/906807917074710537)
+详细中文教程可以参考我写的教程[小丑牌mod安装保姆级教程](https://www.bilibili.com/opus/906807917074710537),大概是国内最全的教程。
 
 ### 支持的Steamodded框架版本
 | Steamodded版本   | mod版本 |
@@ -54,6 +54,15 @@ mod配置页主要分为三个部分：**功能**，**修改**和**手柄**。
 ## 已知问题
 
 用了太多代码重写，也许会与其他的修改键位mod冲突。
+
+## 发现更多mod
+
+ちなみに、以下の場所でより多くのMODを見つけることができます:
+[awesome-balatro](https://github.com/jie65535/awesome-balatro)
+[Balatro Mod Index](https://docs.google.com/spreadsheets/d/1aoJrrC7Y-dkvJwBu_U6amelYnoCrZgWqpoGRAfHN1ys)
+[discord--modding](https://discord.com/channels/1116389027176787968/1209506514763522108)
+[mod wiki](https://balatromods.miraheze.org/wiki/Main_Page)
+[nexus](https://www.nexusmods.com/games/balatro/mods)
 
 ## 贡献
 

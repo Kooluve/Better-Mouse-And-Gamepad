@@ -80,6 +80,15 @@ Mod configuration is split into 3 menus: **Features**, **Modifiers**, and **Game
 Too much code is overwritten and may conflict with other mods which also modify
 key mapping.
 
+## Find More Mods
+
+By the way, you can find more mods in these places:
+[awesome-balatro](https://github.com/jie65535/awesome-balatro)
+[Balatro Mod Index](https://docs.google.com/spreadsheets/d/1aoJrrC7Y-dkvJwBu_U6amelYnoCrZgWqpoGRAfHN1ys)
+[discord--modding](https://discord.com/channels/1116389027176787968/1209506514763522108)
+[mod wiki](https://balatromods.miraheze.org/wiki/Main_Page)
+[nexus](https://www.nexusmods.com/games/balatro/mods)
+
 ## Contributing
 
 Pull requests are welcome!

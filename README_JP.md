@@ -31,6 +31,7 @@
 | 右ショルダーボタン クリック | マウスサイドボタンX2と同じ |
 
 ## インストール
+
 簡単なインストール方法は[Steamodded wiki](https://github.com/Steamodded/smods/wiki)を参照してください。
 
 ### 対応Steamoddedフレームワークバージョン
@@ -49,6 +50,15 @@ MOD設定ページは主に3つの部分に分かれています：**機能**、
 ## 既知の問題
 
 コードを多くリライトしたため、他のキー割り当て変更modと衝突する可能性があります。
+
+## もっとMODを発見しよう
+
+ちなみに、以下の場所でより多くのMODを見つけることができます:
+[awesome-balatro](https://github.com/jie65535/awesome-balatro)
+[Balatro Mod Index](https://docs.google.com/spreadsheets/d/1aoJrrC7Y-dkvJwBu_U6amelYnoCrZgWqpoGRAfHN1ys)
+[discord--modding](https://discord.com/channels/1116389027176787968/1209506514763522108)
+[mod wiki](https://balatromods.miraheze.org/wiki/Main_Page)
+[nexus](https://www.nexusmods.com/games/balatro/mods)
 
 ## 貢献
 
