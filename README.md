@@ -10,7 +10,7 @@ regular *Balatro* player.
 I highly recommend using [Handy](https://github.com/SleepyG11/HandyBalatro) instead.
 It was released last August and has been consistently maintained since then,
 has more features, includes many shortcut operations, and allows highly customizable
-key bindings, outperforming my mod in every way. As of July 12, 2025, the drawbacks
+key bindings, almost outperforming my mod in every way. As of July 12, 2025, the drawbacks
 are: slightly cumbersome settings, and somewhat different controls (mainly the
 inability to continuously select and cancel cards during a single right-click hold,
 making it less smooth than my mod).
