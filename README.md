@@ -2,40 +2,75 @@
 
 English | [简体中文](/README_ZH.md) | [日本語](/README_JP.md)
 
-A [Balatro](https://store.steampowered.com/app/2379780/Balatro/) qol (quality of life) mod. Make mouse and gamepad more efficient and easier to use, effectively relieve finger pressure. I guess this maybe one of the most useful mods ;)
+A [*Balatro*](https://store.steampowered.com/app/2379780/Balatro/) quality of life
+mod that makes the mouse and gamepad controls more efficient and easier to use,
+reducing hand strain. This is possibly one of the most essential mods for any
+regular *Balatro* player.
 
-<img src="https://github.com/user-attachments/assets/5afcd2ff-c6fa-400f-897f-ab7325f0cf00" alt="English config" width="300" />
+## Controls
 
-Includes configuration interface
+### Mouse
+On right-handed mice, `Mouse 2` corresponds to the right mouse button.
+`Mouse 3` is the middle mouse button, usually a clickable scroll wheel.
+`Mouse 4` and `Mouse 5` are less common, but are usually found by the
+user's thumb.
 
-## How to Use
+| Binding               | Function                                         |
+| ---                   | ---                                              |
+| `Mouse 2`             | Deselect all cards (same as the unmodified game) |
+| `Mouse 2` (Hold/Drag) | Select multiple cards                            |
+| `Mouse 3`             | Open menu (same as `ESC`)                        |
+| `Mouse 3` (Hold)      | Start new run (same as `R`)                      |
+| `Mouse Wheel Up`      | Play hand                                        |
+| `Mouse Wheel Down`    | Discard cards                                    |
+| `Mouse 4`             | Sort hand by suit                                |
+| `Mouse 5`             | Sort hand by value                               |
 
-| operations                        | functions                                  |
-| --------------------------------- | ------------------------------------------ |
-| click right mouse button          | unselect all cards (same as origin)        |
-| hold right mouse button           | **multiply select cards (core function!)** |
-| click middle mouse button         | esc                                        |
-| hold middle mouse button          | quickly restart (same as key "r")          |
-| wheel up                          | play cards                                 |
-| wheel down                        | discard cards                              |
-| click X1 mouse button             | sort hand by suit                          |
-| click X2 mouse button             | sort hand by value                         |
-| hold gamepad b button             | same as right mouse button                 |
-| click or hold gamepad right stick | same as middle mouse button                |
-| click gamepad left shoulder       | sort hand by suit                          |
-| click gamepad right shoulder      | sort hand by value                         |
+### Gamepad
+
+Gamepad bindings bind to the mouse bindings, allowing toggling via the
+`Features` config menu. See [Configuration](#configuration) for more details.
+
+| Binding                       | Function                               |
+| ---                           | ---                                    |
+| `B Button` (Hold)             | same as '`Mouse 2` (Hold)'             |
+| `Right Joystick` (Click/Hold) | same as '`Mouse 3`'/'`Mouse 3` (Hold)' |
+| `Left Shoulder Button`        | Same as '`Mouse 4`'                    |
+| `Right Shoulder Button`       | Same as '`Mouse 5`'                    |
 
 ## Installation
 
-Follow the installation instructions for the Balatro modloader [Steamodded](https://github.com/Steamopollys/Steamodded/tree/0.6.0) to install.
+Follow the
+[installation instructions](https://github.com/Steamodded/smods/wiki)
+for
+[Steamodded](https://github.com/Steamodded/smods)
+to install. This will at least include
+[installing the Lovely injector](https://github.com/ethangreen-dev/lovely-injector?tab=readme-ov-file#manual-installation),
+adding a `Mods` folder in your *Balatro* `%appdata%` folder, and adding
+Steamodded to this folder. Once Steamodded is installed, download a
+release of this repository
+[here](https://github.com/Kooluve/Better-Mouse-And-Gamepad/releases),
+and extract the archive into the `Mods` folder.
 
-Steamodded >=1.0.0 ------> lasted version
+### Supported Steamodded version
 
-Steamodded <=0.9.8 ------> 1.0.5 lasted version (like 1.0.5d)
+| Steamodded version   | Better-Mouse-And-Gamepad version |
+| ---                  | ---                              |
+| `v1.0.0` or newer    | [`latest`](https://github.com/Kooluve/Better-Mouse-And-Gamepad/releases/latest) |
+| `v0.9.8` or older    | `v1.0.5` ([latest patch](https://github.com/Kooluve/Better-Mouse-And-Gamepad/releases/tag/v1.0.5d)) |
+
+## Configuration
+
+Mod configuration is split into 3 menus: **Features**, **Modifiers**, and **Gamepad**.
+**Features** enables and disables the base functionality of the mod.
+**Modifiers** changes the behaviour of the mouse bindings.
+**Gamepad** binds gamepad buttons to the base functions
+(which can still be toggled under **Functions**).
 
 ## Known Issues
 
-Too much code override, may conflict with other mods which also modify key mapping.
+Too much code is overwritten and may conflict with other mods which also modify
+key mapping.
 
 ## Contributing
 
@@ -43,4 +78,6 @@ Pull requests are welcome!
 
 ## License
 
-This project is licensed under the GNU General Public License. This ensures that the software is free to use, modify, and distribute. For more details, see the LICENSE file in the repository
+This project is licensed under the GNU General Public License. This ensures that
+the software is free to use, modify, and distribute. For more details, see the
+LICENSE file in the repository
