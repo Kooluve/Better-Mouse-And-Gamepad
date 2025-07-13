@@ -2,25 +2,25 @@ return {
     misc = {
         dictionary = {
             -- ヘッダー --
-            tabs_mouse_page_1 = '機能',
-            tabs_mouse_page_2 = '変更',
+            tabs_features = '機能',
+            tabs_modifiers = '変更',
             tabs_gamepad = 'ゲームパッド',
             tabs_help = 'ヘルプ',
 
             -- マウスページ1（機能） --
-            right_mouse_button_click = '右クリック：カード選択解除',
-            right_mouse_button_hold = '右長押し：カード複数選択',
-            middle_mouse_button_click = '中クリック：メニュー（ESCキー同等）',
-            middle_mouse_button_hold = '中長押し：クイックリスタート（デフォルト無効；Rキー同等）',
-            middle_mouse_button_up = 'ホイール上：カードを出す',
-            middle_mouse_button_down = 'ホイール下：カードを捨てる',
-            x1_click = 'サイドボタンX1：数字で並べ替え',
-            x2_click = 'サイドボタンX2：スートで並べ替え',
+            m2_click = '右クリック：カード選択解除',
+            m2_hold = '右長押し：カード複数選択',
+            m3_click = '中クリック：メニュー（ESCキー同等）',
+            m3_hold = '中長押し：クイックリスタート（デフォルト無効；Rキー同等）',
+            m_wheel_up = 'ホイール上：カードを出す',
+            m_wheel_down = 'ホイール下：カードを捨てる',
+            m4_click = 'サイドボタンX1：数字で並べ替え',
+            m5_click = 'サイドボタンX2：スートで並べ替え',
             
             -- マウスページ2（変更） --
-            swap_mouse_wheel_up_with_down = 'ホイール方向を反転',
-            swap_x1_with_x2 = 'サイドボタンを入れ替え',
-            swap_mouse_wheel_with_x1_and_x2 = 'ホイールとサイドボタンを入れ替え',
+            swap_m_wheel_up_with_down = 'ホイール方向を反転',
+            swap_m4_with_m5 = 'サイドボタンを入れ替え',
+            swap_m_wheel_with_m4_and_m5 = 'ホイールとサイドボタンを入れ替え',
 
             -- ゲームパッド --
             b_click_or_hold = 'Bボタンクリック/長押し -> マウス右クリック/長押し同等',
