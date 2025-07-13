@@ -2,25 +2,25 @@ return {
     misc = {
         dictionary = {
             -- Headers --
-            tabs_mouse_page_1 = '功能',
-            tabs_mouse_page_2 = '修改',
+            tabs_features = '功能',
+            tabs_modifiers = '修改',
             tabs_gamepad = '手柄',
             tabs_help = '帮助',
 
             -- Mouse Page 1 (Features) --
-            right_mouse_button_click = '单击右键：取消选牌',
-            right_mouse_button_hold = '长按右键：多选牌',
-            middle_mouse_button_click = '单击中键：菜单（同ESC键）',
-            middle_mouse_button_hold = '长按中键：快速重启（默认禁用;同R键）',
-            middle_mouse_button_up = '滚轮向上：出牌',
-            middle_mouse_button_down = '滚轮向下：弃牌',
-            x1_click = '侧键X1：按点数理牌',
-            x2_click = '侧键X2：按花色理牌',
+            deselect = '单击右键：取消选牌',
+            multiselect = '长按右键：多选牌',
+            quick_menu = '单击中键：菜单（同ESC键）',
+            quick_restart = '长按中键：快速重启（默认禁用;同R键）',
+            quick_play = '滚轮向上：出牌',
+            quick_discard = '滚轮向下：弃牌',
+            quick_sort_suit = '侧键X1：按点数理牌',
+            quick_sort_value = '侧键X2：按花色理牌',
             
             -- Mouse Page 2 (Modifiers) --
-            swap_mouse_wheel_up_with_down = '交换滚轮方向',
-            swap_x1_with_x2 = '交换两个侧键',
-            swap_mouse_wheel_with_x1_and_x2 = '交换滚轮和侧键',
+            swap_m_wheel_up_with_down = '交换滚轮方向',
+            swap_m4_with_m5 = '交换两个侧键',
+            swap_m_wheel_with_m4_and_m5 = '交换滚轮和侧键',
 
             -- Gamepad --
             b_click_or_hold = '单击或长按B键 -> 同单击或长按鼠标右键',
