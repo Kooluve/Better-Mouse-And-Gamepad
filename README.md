@@ -56,10 +56,10 @@ for
 to install. This will at least include
 [installing the Lovely injector](https://github.com/ethangreen-dev/lovely-injector?tab=readme-ov-file#manual-installation),
 adding a `Mods` folder in your *Balatro* `%appdata%` folder, and adding
-Steamodded to this folder. Once Steamodded is installed, download a
-release of this repository
-[here](https://github.com/uptudev/bmag/releases),
-and extract the archive into the `Mods` folder.
+Steamodded to this folder. Once Steamodded is installed, download a release of
+this repository
+[here](https://github.com/uptudev/bmag/releases), and extract the source code
+archive into the `Mods` folder.
 
 ### Supported Steamodded version
 
