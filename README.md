@@ -58,15 +58,15 @@ to install. This will at least include
 adding a `Mods` folder in your *Balatro* `%appdata%` folder, and adding
 Steamodded to this folder. Once Steamodded is installed, download a
 release of this repository
-[here](https://github.com/Kooluve/Better-Mouse-And-Gamepad/releases),
+[here](https://github.com/uptudev/bmag/releases),
 and extract the archive into the `Mods` folder.
 
 ### Supported Steamodded version
 
-| Steamodded version   | Better-Mouse-And-Gamepad version |
-| ---                  | ---                              |
-| `v1.0.0` or newer    | [`latest`](https://github.com/Kooluve/Better-Mouse-And-Gamepad/releases/latest) |
-| `v0.9.8` or older    | `v1.0.5` ([latest patch](https://github.com/Kooluve/Better-Mouse-And-Gamepad/releases/tag/v1.0.5d)) |
+| Steamodded version | BMAG version |
+| --- | --- |
+| `v1.0.0` or newer | [`latest`](https://github.com/uptudev/bmag/releases/latest) |
+| `v0.9.8` or older | `v1.0.5e` ([latest patch](https://github.com/uptudev/bmag/releases/tag/v1.0.5e)) |
 
 ## Configuration
 
