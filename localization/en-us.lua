@@ -8,14 +8,14 @@ return {
             tabs_help = 'Help',
 
             -- Mouse Page 1 (Features) --
-            m2_click = 'Mouse 2: Deselect all cards',
-            m2_hold = 'Mouse 2 (Hold): Select multiple cards',
-            m3_click = 'Mouse 3: Show menu (maps to ESC)',
-            m3_hold = 'Mouse 3 (Hold): Restart (disabled by default; maps to R)',
-            m_wheel_up = 'Mouse Wheel Up: Play hand',
-            m_wheel_down = 'Mouse Wheel Down: Discard cards',
-            m4_click = 'Mouse 4: Sort hand by suit',
-            m5_click = 'Mouse 5: Sort hand by value',
+            deselect = 'Mouse 2: Deselect all cards',
+            multiselect = 'Mouse 2 (Hold): Select multiple cards',
+            quick_menu = 'Mouse 3: Show menu (maps to ESC)',
+            quick_restart = 'Mouse 3 (Hold): Restart (disabled by default; maps to R)',
+            quick_play = 'Mouse Wheel Up: Play hand',
+            quick_discard = 'Mouse Wheel Down: Discard cards',
+            quick_sort_suit = 'Mouse 4: Sort hand by suit',
+            quick_sort_value = 'Mouse 5: Sort hand by value',
 
             -- Mouse Page 2 (Modifiers) --
             swap_m_wheel_up_with_down = 'Invert mouse wheel direction',

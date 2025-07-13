@@ -8,14 +8,14 @@ return {
             tabs_help = 'ヘルプ',
 
             -- マウスページ1（機能） --
-            m2_click = '右クリック：カード選択解除',
-            m2_hold = '右長押し：カード複数選択',
-            m3_click = '中クリック：メニュー（ESCキー同等）',
-            m3_hold = '中長押し：クイックリスタート（デフォルト無効；Rキー同等）',
-            m_wheel_up = 'ホイール上：カードを出す',
-            m_wheel_down = 'ホイール下：カードを捨てる',
-            m4_click = 'サイドボタンX1：数字で並べ替え',
-            m5_click = 'サイドボタンX2：スートで並べ替え',
+            deselect = '右クリック：カード選択解除',
+            multiselect = '右長押し：カード複数選択',
+            quick_menu = '中クリック：メニュー（ESCキー同等）',
+            quick_restart = '中長押し：クイックリスタート（デフォルト無効；Rキー同等）',
+            quick_play = 'ホイール上：カードを出す',
+            quick_discard = 'ホイール下：カードを捨てる',
+            quick_sort_suit = 'サイドボタンX1：数字で並べ替え',
+            quick_sort_value = 'サイドボタンX2：スートで並べ替え',
             
             -- マウスページ2（変更） --
             swap_m_wheel_up_with_down = 'ホイール方向を反転',

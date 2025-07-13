@@ -1,14 +1,14 @@
 return {
     -- Default Features --
     ----------------------
-    m2_click = true,
-    m2_hold = true,
-    m3_click = true,
-    m3_hold = false,
-    m_wheel_up = true,
-    m_wheel_down = true,
-    m4_click = true,
-    m5_click = true,
+    deselect = true,
+    multiselect = true,
+    quick_menu = true,
+    quick_restart = false,
+    quick_play = true,
+    quick_discard = true,
+    quick_sort_suit = true,
+    quick_sort_value = true,
     
     -- Default Modifiers --
     -----------------------
