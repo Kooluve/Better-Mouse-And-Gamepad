@@ -13,7 +13,6 @@
 
 -- Steamodded init --
 MOD = SMODS.current_mod
-C = G.CONTROLLER
 
 -- Event data --
 EVENT = {
@@ -62,6 +61,81 @@ STATE = {
 ------------------------
 -- Love2D Event Hooks --
 ------------------------
+CONTROLLER = G.CONTROLLER
+
+-- Mouse button press event override --
+function love.mousepressed(x, y, button, touch)
+    CONTROLLER:set_HID_flags(touch and 'touch' or 'mouse')
+
+    if MOD.config.mouse_map[button] == 'm1' then
+        CONTROLLER:queue_L_cursor_press(x, y)
+    elseif MOD.config.mouse_map[button] == 'm2' then
+        CONTROLLER:m2_press(x, y)
+    elseif
+        MOD.config.mouse_map[button] == 'm3' and
+        not CONTROLLER.locks.frame
+    then
+        HANDLED.m3_down_event = false
+    elseif MOD.config.mouse_map[button] == 'm4' then
+        if MOD.config.swap_m_wheel_with_m4_and_m5 then
+            if MOD.config.swap_m4_with_m5 then
+                CONTROLLER:wheel_up()
+            else
+                CONTROLLER:wheel_down()
+            end
+        elseif MOD.config.swap_m4_with_m5 then
+            CONTROLLER:m5_press()
+        else
+            CONTROLLER:m4_press()
+        end
+    elseif MOD.config.mouse_map[button] == 'm5' then
+        if MOD.config.swap_m_wheel_with_m4_and_m5 then
+            if MOD.config.swap_m4_with_m5 then
+                CONTROLLER:wheel_down()
+            else
+                CONTROLLER:wheel_up()
+            end
+        elseif MOD.config.swap_m4_with_m5 then
+            CONTROLLER:m4_press()
+        else
+            CONTROLLER:m5_press()
+        end
+    end
+end
+
+-- Mouse button release event override --
+function love.mousereleased(x, y, button)
+    if MOD.config.mouse_map[button] == 'm1' then
+        CONTROLLER:L_cursor_release(x, y)
+    elseif MOD.config.mouse_map[button] == 'm2' then
+        CONTROLLER:m2_release(x, y)
+    elseif 
+        MOD.config.mouse_map[button] == 'm3' and
+        not CONTROLLER.locks.frame
+    then
+        HANDLED.m3_up_event = false
+    end
+    -- m4 / m5 press events are instantaneous; don't need release calls --
+end
+
+-- Mouse wheel movement event override --
+function love.wheelmoved(x, y)
+    if MOD.config.swap_m_wheel_up_with_down then y = -y end
+    if y > 0 then
+        if not MOD.config.swap_m_wheel_with_m4_and_m5 then
+		    CONTROLLER:wheel_up()
+        else
+            CONTROLLER:m5_press()
+        end
+    end
+    if y < 0 then
+        if not MOD.config.swap_m_wheel_with_m4_and_m5 then
+		    CONTROLLER:wheel_down()
+        else
+            CONTROLLER:m4_press()
+        end
+    end
+end
 
 -- Gamepad button press event remapping --
 function love.gamepadpressed(joystick, button)
@@ -77,9 +151,9 @@ function love.gamepadpressed(joystick, button)
         end
     end
 
-	C:set_gamepad(joystick)
-    G.CONTROLLER:set_HID_flags('button', button)
-    G.CONTROLLER:button_press(button)
+	CONTROLLER:set_gamepad(joystick)
+    CONTROLLER:set_HID_flags('button', button)
+    CONTROLLER:button_press(button)
 end
 
 -- Gamepad button release event remapping --
@@ -96,104 +170,36 @@ function love.gamepadreleased(joystick, button)
         end
     end
 
-    G.CONTROLLER:set_gamepad(joystick)
-    G.CONTROLLER:set_HID_flags('button', button)
-    G.CONTROLLER:button_release(button)
+    CONTROLLER:set_gamepad(joystick)
+    CONTROLLER:set_HID_flags('button', button)
+    CONTROLLER:button_release(button)
 end
 
--- Mouse button press event override --
-function love.mousepressed(x, y, button, touch)
-    G.CONTROLLER:set_HID_flags(touch and 'touch' or 'mouse')
+----------------------------
+-- Controller Parse Loops --
+----------------------------
 
-    if MOD.config.mouse_map[button] == 'm1' then
-        G.CONTROLLER:queue_L_cursor_press(x, y)
-    elseif MOD.config.mouse_map[button] == 'm2' then
-        G.CONTROLLER:queue_R_cursor_press(x, y)
-    elseif MOD.config.mouse_map[button] == 'm3' then
-		queue_M_cursor_press()
-	end
+local c_update_old = Controller.update
 
-    local is_m4 = MOD.config.mouse_map[button] == 'm4'
-    local is_m5 = MOD.config.mouse_map[button] == 'm5'
-    local swapped = MOD.config.swap_m4_with_m5
-    local wheel_swapped = MOD.config.swap_m_wheel_with_m4_and_m5
-
-    if
-        (is_m4 and not swapped) or
-        (is_m5 and swapped)
-    then
-        if not wheel_swapped then
-            queue_m4_cursor_press()
-        else
-            queue_D_wheel_press()
-        end
-    elseif 
-        (is_m5 and not swapped) or
-        (is_m4 and swapped)
-    then
-        if not wheel_swapped then
-            queue_m5_cursor_press()
-        else
-            queue_U_wheel_press()
-        end
-    end
-end
-
--- Mouse button release event override --
-function love.mousereleased(x, y, button)
-    if MOD.config.mouse_map[button] == 'm1' then
-        G.CONTROLLER:L_cursor_release(x, y) end
-    if MOD.config.mouse_map[button] == 'm2' then
-        R_cursor_release(x, y) end
-	if MOD.config.mouse_map[button] == 'm3' then
-        M_cursor_release(x, y) end
-end
-
--- Mouse wheel movement event override --
-function love.wheelmoved(x, y)
-    if MOD.config.swap_m_wheel_up_with_down then y = -y end
-    if y > 0 then
-        if not MOD.config.swap_m_wheel_with_m4_and_m5 then
-		    queue_U_wheel_press()
-        else
-            queue_m5_cursor_press()
-        end
-    end
-    if y < 0 then
-        if not MOD.config.swap_m_wheel_with_m4_and_m5 then
-		    queue_D_wheel_press()
-        else
-            queue_m4_cursor_press()
-        end
-    end
-end
-
-local update_old = Controller.update
-function Controller.update(self, dt)
-    update_old(self, dt)
+-- Control parsing loop --
+function Controller:update(dt)
+    c_update_old(self, dt)
 
     -- Determine if player is currently selecting a hand --
-    if STATE.last ~= G.STATES.SELECTING_HAND and G.STATE == G.STATES.SELECTING_HAND then
+    if
+        STATE.last ~= G.STATES.SELECTING_HAND and
+        G.STATE == G.STATES.SELECTING_HAND
+    then
         STATE.selecting_hand = true
-    end
-    if STATE.last == G.STATES.SELECTING_HAND and G.STATE ~= G.STATES.SELECTING_HAND then
+    elseif
+        STATE.last == G.STATES.SELECTING_HAND and
+        G.STATE ~= G.STATES.SELECTING_HAND
+    then
         STATE.selecting_hand = false
     end
 
     -- Update stored game state --
     STATE.last = G.STATE
-
-    -- If m2 event queue isn't empty, send an event on this game tick --
-    if R_cursor_queue then 
-        R_cursor_press(R_cursor_queue.x, R_cursor_queue.y)
-        R_cursor_queue = nil
-    end
-
-    -- If m3 event queue isn't empty, send an event on this game tick --
-    if M_cursor_queue then 
-        M_cursor_press()
-        M_cursor_queue = nil
-    end
 
     -- If a Mouse2 down event hasn't been handled, handle it --
     if not HANDLED.m2_down then
@@ -211,7 +217,7 @@ function Controller.update(self, dt)
         and EVENT.m2_down.target then
 
         -- ...and if the cursor has moved since clicking, drag until Mouse2 release event --
-        if Vector_Dist(EVENT.m2_down.pos, G.CONTROLLER.cursor_hover.T) >= 0.1 * G.MIN_CLICK_DIST then
+        if Vector_Dist(EVENT.m2_down.pos, self.cursor_hover.T) >= 0.1 * G.MIN_CLICK_DIST then
             HANDLED.m2_drag = false
             EVENT.m2_drag.active = true
             EVENT.m2_drag.allowed = false
@@ -250,11 +256,11 @@ function Controller.update(self, dt)
         if not HANDLED.m3_down_event then
             if
                 MOD.config.quick_menu and
-                (not (G.CONTROLLER.locked) or G.SETTINGS.paused) and
-                not G.CONTROLLER.locks.frame and
-                not G.CONTROLLER.frame_buttonpress
+                (not (self.locked) or G.SETTINGS.paused) and
+                not self.locks.frame and
+                not self.frame_buttonpress
             then
-                G.CONTROLLER:key_press('escape')
+                self:key_press('escape')
             end
             HANDLED.m3_down_event = true
         end
@@ -264,210 +270,346 @@ function Controller.update(self, dt)
     -- If Mouse3 (Hold) to restart is enabled
     else
         if not HANDLED.m3_down_event then
-            G.CONTROLLER:key_press('r')
+            self:key_press('r')
             HANDLED.m3_down_event = true
         end
         if not HANDLED.m3_up_event then
             if
                 MOD.config.quick_menu and
-                (not (G.CONTROLLER.locked) or G.SETTINGS.paused) and
-                not G.CONTROLLER.locks.frame and
-                not G.CONTROLLER.frame_buttonpress
+                (not (self.locked) or G.SETTINGS.paused) and
+                not self.locks.frame and
+                not self.frame_buttonpress
             then
-                if G.CONTROLLER.held_key_times['r'] and G.CONTROLLER.held_key_times['r'] <= 0.7 then
-                    G.CONTROLLER:key_press('escape')
+                if
+                    self.held_key_times['r'] and
+                    self.held_key_times['r'] <= 0.7
+                then
+                    self:key_press('escape')
                 end
             end
-            G.CONTROLLER:key_release('r')
+            self:key_release('r')
             HANDLED.m3_up_event = true
         end
     end
 
-    ----Sending all input updates to the game objects----
-    --unselect by clicking m2
+    -- Mouse2 (Click) to deselect --
     if not HANDLED.m2_click then
-        if not G.SETTINGS.paused and G.hand and G.hand.highlighted[1] then 
-            if (G.play and #G.play.cards > 0) or
-                (G.CONTROLLER.locked) or 
-                (G.CONTROLLER.locks.frame) or
-                (G.GAMEVENT.STOP_USE and G.GAME.STOP_USE > 0) then return end
+        if
+            not G.SETTINGS.paused and
+            G.hand and
+            G.hand.highlighted[1]
+        then
+            if
+                (G.play and #G.play.cards > 0) or
+                self.locked or
+                self.locks.frame or
+                (G.GAMEVENT.STOP_USE and G.GAME.STOP_USE > 0)
+            then
+                return
+            end
             G.hand:unhighlight_all()
-        end   
-
+        end
         HANDLED.m2_click = true
     end
-    
-    --multiply select by dragging with m2
-    if not HANDLED.m2_drag 
-        and G.CONTROLLER.hovering.target 
-        and G.CONTROLLER.hovering.target:is(Card) 
-        and G.CONTROLLER.hovering.target.area == G.hand then
+
+    -- Mouse2 (Hold/Drag) to select multiple cards --
+    if
+        not HANDLED.m2_drag
+        and self.hovering.target
+        and self.hovering.target:is(Card)
+        and self.hovering.target.area == G.hand
+    then
         if EVENT.m2_drag.active then
-            --Was the gamepad button or Cursor is hoding
-            if G.CONTROLLER.held_buttons['b'] then
-                --Was the gamepad left or right button is hoding? If not, the thumbstick is moving
-                if G.CONTROLLER.held_buttons['dpleft'] or G.CONTROLLER.held_buttons['dpright'] then
-                    if G.CONTROLLER.hovering.prev_target:is(Card) then
-                        G.CONTROLLER.hovering.prev_target:click()
+            -- Gamepad multiselect --
+            if self.held_buttons['b'] then
+                if
+                    self.held_buttons['dpleft'] or
+                    self.held_buttons['dpright']
+                then
+                    if self.hovering.prev_target:is(Card) then
+                        self.hovering.prev_target:click()
                     end
-                    G.CONTROLLER.hovering.target:click()
+                    self.hovering.target:click()
                 else
-                    G.CONTROLLER.hovering.target:click()
+                    self.hovering.target:click()
                 end
+            -- Mouse multiselect --
             else
-                G.CONTROLLER.hovering.target:click()
+                self.hovering.target:click()
             end
             EVENT.m2_drag.active = false
-        elseif G.CONTROLLER.hovering.prev_target ~= G.CONTROLLER.hovering.target then 
-            if EVENT.m2_drag.prev_target == G.CONTROLLER.hovering.target then 
-                if G.CONTROLLER.hovering.prev_target:is(Card) then
-                    G.CONTROLLER.hovering.prev_target:click()
-                end
-        end
-            G.CONTROLLER.hovering.target:click()
-            EVENT.m2_drag.prev_target = G.CONTROLLER.hovering.prev_target
+        -- Begin a new drag event --
+        elseif
+            self.hovering.prev_target ~= self.hovering.target
+        then
+            if
+                EVENT.m2_drag.prev_target == self.hovering.target and
+                self.hovering.prev_target:is(Card)
+            then
+                self.hovering.prev_target:click()
+            end
+            self.hovering.target:click()
+            EVENT.m2_drag.prev_target = self.hovering.prev_target
         end
     end
 end
-----------CONTROLLER UPDATE END-----------
-------------------------------------------
 
-----------------------------------------------
-------------GAMEPAD BUTTON UPDATE-------------
+----------------------------
+-- Gamepad Event Handlers --
+----------------------------
+
+-- Gamepad button press event handler --
 function Controller:button_press_update(button, dt)
-    if G.CONTROLLER.locks.frame then return end
-    G.CONTROLLER.held_button_times[button] = 0
-    G.CONTROLLER.interrupt.focus = false
+    if
+        (self.locked and not G.SETTINGS.paused) or
+        self.locks.frame or
+        self.frame_buttonpress
+    then
+        return
+    end
 
-    if not G.CONTROLLER:capture_focused_input(button, 'press', dt) then
+    self.held_button_times[button] = 0
+    self.interrupt.focus = false
+    self.frame_buttonpress = true
+
+    if not self:capture_focused_input(button, 'press', dt) then
         if button == 'dpup' then
-            G.CONTROLLER:navigate_focus('U')
-        end
-        if button == 'dpdown' then
-            G.CONTROLLER:navigate_focus('D')
-        end
-        if button == 'dpleft' then
-            G.CONTROLLER:navigate_focus('L')
-        end
-        if button == 'dpright' then
-            G.CONTROLLER:navigate_focus('R')
+            self:navigate_focus('U')
+        elseif button == 'dpdown' then
+            self:navigate_focus('D')
+        elseif button == 'dpleft' then
+            self:navigate_focus('L')
+        elseif button == 'dpright' then
+            self:navigate_focus('R')
         end
     end
 
-    if ((G.CONTROLLER.locked) and not G.SETTINGS.paused) or (G.CONTROLLER.locks.frame) or (G.CONTROLLER.frame_buttonpress) then return end
-    G.CONTROLLER.frame_buttonpress = true
-
-    if G.CONTROLLER.button_registry[button] and G.CONTROLLER.button_registry[button][1] and not G.CONTROLLER.button_registry[button][1].node.under_overlay then
-        G.CONTROLLER.button_registry[button][1].click = true
-    else
-        if button == 'start' then
-            if G.STATE == G.STATES.SPLASH then 
-                G:delete_run()
-                G:main_menu()
-            end
+    if
+        self.button_registry[button] and
+        self.button_registry[button][1] and
+        not self.button_registry[button][1].node.under_overlay
+    then
+        self.button_registry[button][1].click = true
+    elseif
+        button == 'start' and
+        G.STATE == G.STATES.SPLASH
+    then
+        G:delete_run()
+        G:main_menu()
+    elseif
+        button == 'a' and
+        not (
+            self.focused.target and
+            self.focused.target.config.focus_args and
+            self.focused.target.config.focus_args.type == 'slider' and
+            not (self.HID.mouse or self.HID.axis_cursor)
+        )
+    then
+        self:L_cursor_press()
+    elseif button == 'b' then
+        if
+            G.hand and
+            self.focused.target and
+            self.focused.target.area == G.hand and
+            MOD.config.b_click_or_hold
+        then
+            self:m2_press(self.cursor_position.x, self.cursor_position.y)
+        else
+            self.interrupt.focus = true
         end
-        if button == 'a' then
-            if G.CONTROLLER.focused.target and
-            G.CONTROLLER.focused.target.config.focus_args and
-            G.CONTROLLER.focused.target.config.focus_args.type == 'slider' and 
-            (not G.CONTROLLER.HID.mouse and not G.CONTROLLER.HID.axis_cursor) then 
-            else
-                G.CONTROLLER:L_cursor_press()
-            end
+    elseif G.STATE == G.STATES.SELECTING_HAND then
+        if
+            button == 'leftshoulder' and
+            MOD.config.left_shoulder_click
+        then
+            G.FUNCS.sort_hand_value()
+        elseif
+            button == 'rightshoulder' and
+            MOD.config.right_shoulder_click
+        then
+            G.FUNCS.sort_hand_suit()
         end
-        --modification of this function start
-        if button == 'b' then 
-            if G.hand and G.CONTROLLER.focused.target and
-            G.CONTROLLER.focused.target.area == G.hand and 
-            MOD.config.b_click_or_hold then
-                G.CONTROLLER:queue_R_cursor_press()
-            else
-                G.CONTROLLER.interrupt.focus = true
-            end
-        end
-        if G.STATE == G.STATES.SELECTING_HAND then
-            if button == 'leftshoulder' and MOD.config.left_shoulder_click then
-                G.FUNCS.sort_hand_value()
-            elseif button == 'rightshoulder' and MOD.config.right_shoulder_click then
-                G.FUNCS.sort_hand_suit()
-            end
-        end
-        if button == 'rightstick' and MOD.config.rightstick_click_or_hold then 
-            queue_M_cursor_press()
-        end
-        --modification of this function end
+    elseif
+        button == 'rightstick' and
+        MOD.config.rightstick_click_or_hold
+    then
+        HANDLED.m3_down_event = false
     end
 end
 
+-- Gamepad button hold event handler --
 function Controller:button_hold_update(button, dt)
-    --modification of this function start
-    --enable hold multiple button
-    --if ((self.locked) and not G.SETTINGS.paused) or (self.locks.frame) or (self.frame_buttonpress) then return end
-    if ((G.CONTROLLER.locked) and not G.SETTINGS.paused) or (G.CONTROLLER.locks.frame) then return end
-    --modification of this function end
-    G.CONTROLLER.frame_buttonpress = true
-    if G.CONTROLLER.held_button_times[button] then
-        G.CONTROLLER.held_button_times[button] = G.CONTROLLER.held_button_times[button] + dt
-        G.CONTROLLER:capture_focused_input(button, 'hold', dt)
+    if
+        (self.locked and not G.SETTINGS.paused) or
+        self.locks.frame
+    then
+        return
     end
-    if (button == 'dpleft' or button == 'dpright' or button == 'dpup' or button == 'dpdown') and not G.CONTROLLER.no_holdcap then
-        G.CONTROLLER.repress_timer = G.CONTROLLER.repress_timer or 0.3
-        if G.CONTROLLER.held_button_times[button] and (G.CONTROLLER.held_button_times[button] > G.CONTROLLER.repress_timer) then
-            G.CONTROLLER.repress_timer = 0.1
-            G.CONTROLLER.held_button_times[button] = 0
-            G.CONTROLLER:button_press_update(button, dt)
+
+    self.frame_buttonpress = true
+    if self.held_button_times[button] then
+        self.held_button_times[button] = self.held_button_times[button] + dt
+        self:capture_focused_input(button, 'hold', dt)
+    end
+    if
+        (button == 'dpleft' or button == 'dpright' or button == 'dpup' or button == 'dpdown') and
+        not self.no_holdcap
+    then
+        self.repress_timer = self.repress_timer or 0.3
+        if
+            self.held_button_times[button] and
+            self.held_button_times[button] > self.repress_timer
+        then
+            self.repress_timer = 0.1
+            self.held_button_times[button] = 0
+            self:button_press_update(button, dt)
         end
     end
 end
 
-local button_release_update_ref = Controller.button_release_update
-function Controller.button_release_update(self, button, dt)
-    button_release_update_ref(self, button, dt)
+local old_button_release_update = Controller.button_release_update
 
-    --holding 'b' is same as holding m2
-    if button == 'b' and MOD.config.b_click_or_hold then
-        R_cursor_release()
+-- Gamepad button release event handler --
+function Controller:button_release_update(button, dt)
+    old_button_release_update(self, button, dt)
+
+    if
+        button == 'b' and
+        MOD.config.b_click_or_hold
+    then
+        self:m2_release()
     end
 
-    if button == 'rightstick' and MOD.config.rightstick_click_or_hold then
-        M_cursor_release()
+    if
+        button == 'rightstick' and
+        MOD.config.rightstick_click_or_hold
+    then
+        HANDLED.m3_up_event = false
     end
 end
-----------GAMEPAD BUTTON UPDATE END-----------
-----------------------------------------------
 
-------------------------------------------
-------------PRESS AND RELEASE-------------
-function Controller:queue_R_cursor_press(x, y)
-    if G.CONTROLLER.locks.frame then return end
-    --modification of this function start
-    R_cursor_queue = {x = x, y = y}
-    --modification of this function end
+--------------------------
+-- Mouse Event Handlers --
+--------------------------
+
+-- Mouse 2 Press event handler
+function Controller:m2_press(x, y)
+    x = x or self.cursor_position.x
+    y = y or self.cursor_position.y
+
+    if
+        (self.locked and (not G.SETTINGS.paused or G.screenwipe)) or
+        (self.locks.frame)
+    then
+        return
+    end
+
+    EVENT.m2_down.target = nil
+    EVENT.m2_down.pos = {
+        x = x / (G.TILESCALE * G.TILESIZE),
+        y = y / (G.TILESCALE * G.TILESIZE),
+    }
+    EVENT.m2_down.time = G.TIMERS.TOTAL
+    HANDLED.m2_down = false
+
+    local press_node = 
+        (self.HID.touch and self.cursor_hover.target) or
+        self.hovering.target or
+        self.focused.target
+
+    if press_node then
+        EVENT.m2_down.target = press_node.states.click.can and press_node or press_node:can_drag() or nil
+    end
+
+    if EVENT.m2_down.target == nil then
+        EVENT.m2_down.target = G.ROOM
+    end
 end
 
-function queue_M_cursor_press()
-    if G.CONTROLLER.locks.frame then return end
-    M_cursor_queue = {}
+-- Mouse 2 Release event handler
+function Controller:m2_release(x, y)
+    x = x or self.cursor_position.x
+    y = y or self.cursor_position.y
+
+    if
+        (self.locked and (not G.SETTINGS.paused or G.screenwipe)) or
+        (self.locks.frame)
+    then
+        return
+    end
+
+    EVENT.m2_up.target = nil
+    EVENT.m2_up.pos = {
+        x = x / (G.TILESCALE * G.TILESIZE),
+        y = y / (G.TILESCALE * G.TILESIZE),
+    }
+    EVENT.m2_up.time = G.TIMERS.TOTAL
+    HANDLED.m2_up = false
+
+    EVENT.m2_up.target =
+        self.hovering.target or
+        self.focused.target
+
+    if EVENT.m2_up.target == nil then
+        EVENT.m2_up.target = G.ROOM
+    end
 end
 
-function queue_m4_cursor_press()
-    if G.CONTROLLER.locks.frame or not MOD.config.quick_sort_suit then return end
-    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND then 
+-- Mouse4 Press event handler --
+function Controller:m4_press()
+    if
+        self.locks.frame or
+        not MOD.config.quick_sort_suit
+    then
+        return
+    end
+
+    if
+        not G.SETTINGS.paused and
+        G.STATE == G.STATES.SELECTING_HAND
+    then
         G.FUNCS.sort_hand_suit()
     end
 end
 
-function queue_m5_cursor_press()
-    if G.CONTROLLER.locks.frame or not MOD.config.quick_sort_value then return end
-    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND then 
+-- Mouse5 Press event handler --
+function Controller:m5_press()
+    if
+        self.locks.frame or
+        not MOD.config.quick_sort_value
+    then
+        return
+    end
+
+    if
+        not G.SETTINGS.paused and
+        G.STATE == G.STATES.SELECTING_HAND
+    then
         G.FUNCS.sort_hand_value()
     end
 end
 
-function queue_U_wheel_press()
-    if G.CONTROLLER.locks.frame or not MOD.config.quick_play then return end
-    if G.CONTROLLER.cursor_down.target and G.CONTROLLER.cursor_down.target.states.drag.is then return end
-    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND and STATE.selecting_hand then
+-- Mouse Wheel Up event handler --
+function Controller:wheel_up()
+    if
+        self.locks.frame or
+        not MOD.config.quick_play
+    then
+        return
+    end
+
+    if
+        self.cursor_down.target and
+        self.cursor_down.target.states.drag.is
+    then
+        return
+    end
+
+    if
+        not G.SETTINGS.paused and
+        G.STATE == G.STATES.SELECTING_HAND and
+        STATE.selecting_hand
+    then
         local play_button = G.buttons:get_UIE_by_ID('play_button')
         if play_button and play_button.config.button then
             G.FUNCS.play_cards_from_highlighted()
@@ -476,10 +618,27 @@ function queue_U_wheel_press()
     end
 end
 
-function queue_D_wheel_press()
-    if G.CONTROLLER.locks.frame or not MOD.config.quick_discard then return end
-    if G.CONTROLLER.cursor_down.target and G.CONTROLLER.cursor_down.target.states.drag.is then return end
-    if not G.SETTINGS.paused and G.STATE == G.STATES.SELECTING_HAND and STATE.selecting_hand then
+-- Mouse Wheel Down event handler --
+function Controller:wheel_down()
+    if
+        self.locks.frame or
+        not MOD.config.quick_discard
+    then
+        return
+    end
+
+    if
+        self.cursor_down.target and
+        self.cursor_down.target.states.drag.is
+    then
+        return
+    end
+
+    if
+        not G.SETTINGS.paused and
+        G.STATE == G.STATES.SELECTING_HAND and
+        STATE.selecting_hand
+    then
         local discard_button = G.buttons:get_UIE_by_ID('discard_button')
         if discard_button and discard_button.config.button then
             G.FUNCS.discard_cards_from_highlighted()
@@ -488,59 +647,9 @@ function queue_D_wheel_press()
     end
 end
 
-function R_cursor_press(x, y)
-    x = x or G.CONTROLLER.cursor_position.x
-    y = y or G.CONTROLLER.cursor_position.y
-
-    if ((G.CONTROLLER.locked) and (not G.SETTINGS.paused or G.screenwipe)) or (G.CONTROLLER.locks.frame) then return end
-
-    EVENT.m2_down.pos = {x = x/(G.TILESCALE*G.TILESIZE), y = y/(G.TILESCALE*G.TILESIZE)}
-    EVENT.m2_down.time = G.TIMERS.TOTAL
-    HANDLED.m2_down = false
-    EVENT.m2_down.target = nil
-
-    local press_node =  (G.CONTROLLER.HID.touch and G.CONTROLLER.cursor_hover.target) or G.CONTROLLER.hovering.target or G.CONTROLLER.focused.target
-
-    if press_node then
-        EVENT.m2_down.target = press_node.states.click.can and press_node or press_node:can_drag() or nil
-    end
-
-    if EVENT.m2_down.target == nil then 
-        EVENT.m2_down.target = G.ROOM
-    end
-end
-
-function R_cursor_release(x, y)
-    x = x or G.CONTROLLER.cursor_position.x
-    y = y or G.CONTROLLER.cursor_position.y
-
-    if ((G.CONTROLLER.locked) and (not G.SETTINGS.paused or G.screenwipe)) or (G.CONTROLLER.locks.frame) then return end
-
-    EVENT.m2_up.pos = {x = x/(G.TILESCALE*G.TILESIZE), y = y/(G.TILESCALE*G.TILESIZE)}
-    EVENT.m2_up.time = G.TIMERS.TOTAL
-    HANDLED.m2_up = false
-    EVENT.m2_up.target = nil
-
-    EVENT.m2_up.target = G.CONTROLLER.hovering.target or G.CONTROLLER.focused.target
-
-    if EVENT.m2_up.target == nil then
-        EVENT.m2_up.target = G.ROOM
-    end
-end
-
-function M_cursor_press()
-    HANDLED.m3_down_event = false
-end
-
-function M_cursor_release()
-    HANDLED.m3_up_event = false
-end
-
-----------PRESS AND RELEASE END-----------
-------------------------------------------
-
---- Config menu tabs ---
-------------------------
+-------------------
+--- Config menu ---
+-------------------
 
 --- Features tab ---
 function cfg_features_tab()
@@ -718,9 +827,3 @@ MOD.config_tab = function()
         }
     }
 end
-
-----------------------------
---- Config menu tabs END ---
-
-----------------------------------------------
-------------MOD CODE END----------------------
