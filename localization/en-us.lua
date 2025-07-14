@@ -34,7 +34,7 @@ return {
             -- Help Text --
             help = [[The 'Features' page allows for enabling and disabling
 the basic mod functionality. All Gamepad bindings are
-subject to the underlying m features they bind to.
+subject to the underlying mouse features they bind to.
 
 In the original game, no matter what gamepad you use,
 the confirm button is always at the bottom (e.g. Xbox 'A').
