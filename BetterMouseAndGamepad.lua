@@ -303,7 +303,7 @@ function Controller:update(dt)
                 (G.play and #G.play.cards > 0) or
                 self.locked or
                 self.locks.frame or
-                (G.GAMEVENT.STOP_USE and G.GAME.STOP_USE > 0)
+                (G.GAME.STOP_USE and G.GAME.STOP_USE > 0)
             then
                 return
             end
