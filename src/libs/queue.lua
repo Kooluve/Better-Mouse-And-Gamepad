@@ -1,4 +1,10 @@
-Queue = {}
+--[[
+    Queue<_>
+
+    A simple FIFO queue that can hold anything, and won't overflow for at least 200 years of runtime.
+--]]
+Queue = {};
+
 --[[
     Queue<_>:new(q: {}) -> Queue<_>
 
@@ -15,7 +21,7 @@ Queue = {}
 function Queue:new(q)
     local q = q or {
         first = 1,
-        last = 1,
+        last = 0,
     };
     setmetatable(q, self);
     self.__index = self;
@@ -35,9 +41,8 @@ end
     to a new memory table upon exceeding the threshold.
 --]]
 function Queue:push(v)
-    local last = self.last + 1;
-    self.last = last;
-    self[last] = v;
+    self.last = self.last + 1;
+    self[self.last] = v;
 end
 
 --[[
@@ -47,46 +52,11 @@ end
     the `first` position.
 --]]
 function Queue:pop()
-    local first = self.first;
-    if first > self.last then
+    if self.first > self.last then
         return nil;
     end
-    local v = self[first];
-    self[first] = nil;
-    self.first = first + 1;
+    local v = self[self.first];
+    self[self.first] = nil;
+    self.first = self.first + 1;
     return v;
-end
-
-local q = Queue:new({
-    [1] = "test",
-    first = 1,
-    last = 1,
-});
-local size = (q.last - q.first) + 1;
-print("Size (empty): " .. size);
-
-print("Pushing test values...");
-q:push("test1");
-q:push("test2");
-q:push("test3");
-
-size = (q.last - q.first) + 1;
-print("Size (filled): " .. size);
-
-print("Popping test values...");
-if size <= 0 then error("queue is still empty uh oh") end
-for i = q.first, size, 1 do
-    local r = q:pop();
-    if r == nil then
-        print(i .. ": nil");
-    else
-        print(i .. ": " .. r);
-    end
-end
-
-size = (q.last - q.first) + 1;
-print("Size (popped): " .. size);
-
-if q:pop() == nil then
-    print("Attempting to pop further returns `nil`.")
 end
