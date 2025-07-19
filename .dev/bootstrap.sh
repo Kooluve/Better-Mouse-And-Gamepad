@@ -54,23 +54,44 @@ install_hooks() (
         return 1
     fi
 
-    # Check for differences between the directories; copy repo files if discrepancies exist
-    git diff --quiet "$hook_src_dir" "$hook_dest_dir" 2> /dev/null || {
-        log 'Configuring git hooks...'
+    if 
+        [ $# -eq 0 ]
+    then
+        git diff --quiet "$hook_src_dir" "$hook_dest_dir" 2> /dev/null || {
+            log 'Configuring git hooks...'
 
-        # World's longest `printf` call I swear
-        printf \
-        "[\x1b[0;1;34m*\x1b[0m] %s: \x1b[0;34m%s\n\tfrom \x1b[0m\`%s\`\n\t\x1b[0;34minto \x1b[0m\`%s\`\x1b[0;34m...\x1b[0m\n" \
-        "$(basename $0)" \
-        "Installing git hooks for repository" \
-        "$hook_src_dir" \
-        "$hook_dest_dir"
+            # World's longest `printf` call I swear
+            printf \
+            "[\x1b[0;1;34m*\x1b[0m] %s: \x1b[0;34m%s\n\tfrom \x1b[0m\`%s\`\n\t\x1b[0;34minto \x1b[0m\`%s\`\x1b[0;34m...\x1b[0m\n" \
+            "$(basename $0)" \
+            "Installing git hooks for repository" \
+            "$hook_src_dir" \
+            "$hook_dest_dir"
 
-        rm -rf "$hook_dest_dir"
-        cp -r "$hook_src_dir" "$hook_dest_dir"
+            rm -rf "$hook_dest_dir"
+            cp -r "$hook_src_dir" "$hook_dest_dir"
 
-        s_log 'Git hooks configured successfully!'
-    }
+            s_log 'Git hooks configured successfully!'
+        }
+    else
+        # Check for differences between the directories; copy repo files if discrepancies exist
+        git diff --quiet "$1" "$2" "$hook_src_dir" 2> /dev/null || {
+            log 'Configuring git hooks...'
+
+            # World's longest `printf` call I swear
+            printf \
+            "[\x1b[0;1;34m*\x1b[0m] %s: \x1b[0;34m%s\n\tfrom \x1b[0m\`%s\`\n\t\x1b[0;34minto \x1b[0m\`%s\`\x1b[0;34m...\x1b[0m\n" \
+            "$(basename $0)" \
+            "Installing git hooks for repository" \
+            "$hook_src_dir" \
+            "$hook_dest_dir"
+
+            rm -rf "$hook_dest_dir"
+            cp -r "$hook_src_dir" "$hook_dest_dir"
+
+            s_log 'Git hooks configured successfully!'
+        }
+    fi
 )
 
 setup_git "$@"
