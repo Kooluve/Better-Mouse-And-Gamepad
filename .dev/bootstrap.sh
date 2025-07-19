@@ -8,11 +8,13 @@ if
     [ $# -eq 0 ]
 then
     # ...then current directory is target directory...
-    DIR="$(pwd)"
+    DIR="$(pwd)/.dev"
 else
     # ...else set argument as target directory and cd into it.
     DIR="$(cd "$(dirname $0)" && pwd)"
 fi
+cd "$DIR/.." || exit 1
+DIR="$(pwd)"
 
 # Default info logging function
 log() {
