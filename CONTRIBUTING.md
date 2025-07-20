@@ -59,6 +59,9 @@ This script:
   * Sets `git commit` template for the repository to `./.dev/commit-template`, and
   * Copies the contents of `./.dev/hooks/` to `./.git/hooks/`.
 
+**Ensure that you skim through `./.dev/bootstrap.sh` before running it, as you
+should never run an unfamiliar script that you found on the internet.**
+
 ### Troubleshoot
 
 If you run into any issues when setting up your environment, message me through GitHub
