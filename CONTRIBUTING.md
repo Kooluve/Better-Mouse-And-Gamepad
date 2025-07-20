@@ -50,14 +50,15 @@ Before you start contributing, ensure you have the following:
 
 To set up your environment, perform the following actions:
 
-* Clone the repository with either:
-  * `git clone https://github.com/uptudev/bmag` (HTTPS), or
-  * `git clone git@github.com:uptudev/bmag` (SSH)
-* Bootstrap the `git commit` template and `git-hooks` by running `./.dev/bootstrap.sh`.
+1. Clone the repository with either:
+    1. `git clone https://github.com/uptudev/bmag` (HTTPS), or
+    1. `git clone git@github.com:uptudev/bmag` (SSH)
+1. Bootstrap the `git commit` template and `git-hooks` by running `./.dev/bootstrap.sh`.
 This script:
-  * Sets up `git` `Signed-off-by:` trailers indicating commit author,
-  * Sets `git commit` template for the repository to `./.dev/commit-template`, and
-  * Copies the contents of `./.dev/hooks/` to `./.git/hooks/`.
+    1. Sets up `git` `Signed-off-by:` trailers indicating commit author,
+    1. Sets `git commit` template for the repository to `./.dev/commit-template`,
+    and
+    1. Copies the contents of `./.dev/hooks/` to `./.git/hooks/`.
 
 **Ensure that you skim through `./.dev/bootstrap.sh` before running it, as you
 should never run an unfamiliar script that you found on the internet.**
