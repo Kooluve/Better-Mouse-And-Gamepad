@@ -1,11 +1,12 @@
 -------------
 -- IMPORTS --
 -------------
--- `./input_map.lua`: A keybind map for ease of lookup and management
-assert(SMODS.load_file('libs/input_map.lua'))();
+-- `./input.lua`: A keybind map for ease of lookup and management
 -- `./timers.lua`: A timer table for checking keypress duration
-assert(SMODS.load_file('libs/timers.lua'))();
 -- `./queue.lua`: A simple FIFO queue implementation
+
+assert(SMODS.load_file('libs/input.lua'))();
+assert(SMODS.load_file('libs/timers.lua'))();
 assert(SMODS.load_file('libs/queue.lua'))();
 
 ------------------
@@ -23,5 +24,3 @@ STATE = {
     timers = TimerTable:new(),
     queue = Queue:new(),
 };
-
-
