@@ -1,4 +1,4 @@
-# BMAG Contributing Guide
+# Contributing
 
 ## Welcome
 
@@ -32,9 +32,9 @@ To share your new ideas for the project, perform the following actions:
 
 1. Open a *Feature Request*
 [GitHub Issue](https://github.com/uptudev/bmag/issues).
-1. Wait for a maintainer to address the potential feature.
-1. If the feature request is closed without being incorporated, please do not open
-another one. It will be closed as a duplicate without substantial reasoning behind
+1. Wait for a maintainer to consider the potential feature.
+1. If we close the feature request without implementing it, do not open
+another one. We will close it as a duplicate without enough reasoning behind
 reopening it.
 
 ## Before you start
@@ -61,8 +61,8 @@ This script:
 
 ### Troubleshoot
 
-If you encounter issues as you set up your environment, message me through GitHub
-or message the IRC group on
+If you run into any issues when setting up your environment, message me through GitHub
+or through IRC *(Internet Relay Chat)* group on
 [LiberaChat](https://libera.chat/)
 at `#BMAG`.
 
@@ -71,8 +71,14 @@ at `#BMAG`.
 Our project uses the
 [Olivine Labs Lua style guide](https://github.com/Olivine-Labs/lua-style-guide)
 as our parent guide for best practices. Reference the guide to familiarize yourself
-with the best practices we want contributors to follow. Exceptions may be made
-as long as they are cleaned up during review.
+with the best practices we want contributors to follow. We might make exceptions
+provided that potential contributors make them compliant before the final review.
+
+Documentation must follow the rules in the
+[Red Hat supplementary style guide for documentation](https://redhat-documentation.github.io/supplementary-style-guide/).
+This guide lays out a consistent style for writing clear documentation, and whenever
+writing code comments, documentation, or any front-facing interfaces, ensure that
+you follow these guidelines for clarity and concision.
 
 ## Contribution workflow
 
@@ -87,7 +93,7 @@ Please follow all instructions within the report template.
 Commit messages are automatically made compliant with
 [Conventional Commits v1](https://www.conventionalcommits.org/en/v1.0.0/)
 by the `commit-template` file and the `commit-msg` `git-hook`, but if this does
-not work, they must be of the below format:
+not work, they must be of the following format:
 
 ```text
 <type>(scope): <description>
@@ -126,21 +132,26 @@ about this update below.
 ### Releases
 
 Release naming follows [Semantic Versioning](https://semver.org/).
-All releases will be created with *only*:
+When packaging a release archive, include only the following files:
 
 * `./src/`: the main mod code directory
-* `./bmag.lua`: contains metadata and calls `./src/main.lua`
-* `./CHANGELOG.md`: contains changes between release versions; is compliant with
+* `./bmag.lua`: stores mod metadata and calls `./src/main.lua`
+* `./CHANGELOG.md`: tracks changes between release versions; is compliant with
 [Keep A Changelog](https://keepachangelog.com/)
-* `./LICENSE`: must be included with any licensed source code
+* `./LICENSE`: any distributed source code must have a copy of the license file
 * `./README.md`: user guide for the mod
 
-All other files should not be packaged in any release archives.
+Release archives should not contain any other files.
 Release naming convention is of the following form:
 `bmag_v<VERSION>.<EXTENSION>`, for example: `bmag_v2.0.0.tar.xz` or `bmag_v2.0.0.zip`.
 
 ### Text formats
 
-Keep all files in UTF-8 for portability. Also ensure CRLF is handled in `git`
-correctly according to your platform so as to not modify source code when
+Keep all files in UTF-8 for portability. Also ensure `git` handles `CRLF`
+correctly according to your platform so as to not corrupt source code when
 pushing to the repository.
+
+---
+
+We heavily base our contribution guidelines off of
+[The Good Docs Project's contributing guide template](https://gitlab.com/tgdp/templates/-/blob/main/contributing-guide/template_contributing-guide.md).
