@@ -138,8 +138,8 @@ about this update below.
 Release naming follows [Semantic Versioning](https://semver.org/).
 When packaging a release archive, include only the following files:
 
-* `./src/`: the main mod code directory
-* `./bmag.lua`: stores mod metadata and calls `./src/main.lua`
+* `./src/`: the source code directory
+* `./bmag.json`: stores mod metadata
 * `./CHANGELOG.md`: tracks changes between release versions; is compliant with
 [Keep A Changelog](https://keepachangelog.com/)
 * `./LICENSE`: any distributed source code must have a copy of the license file

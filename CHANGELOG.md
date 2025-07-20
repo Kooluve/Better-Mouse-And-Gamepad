@@ -10,9 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `.gitignore`: Set up to ignore my notes (because they keep getting tracked).
-- `bmag.lua`: The entry point loaded by Steamodded; contains metadata and loads
-`src/main.lua`.
-- `CHANGELOG.md`: This repository should have a changelog.
+- `bmag.json`: The mod metadata.
+- `CHANGELOG.md`: This repository should have a changelog (this file).
 - `src/`: All source code has moved here except localization. If there was a way
 to get Steamodded to point to a custom directory, it would be in here too.
   - `src/libs/`: Handwritten Lua libraries put in here so as to not pollute the

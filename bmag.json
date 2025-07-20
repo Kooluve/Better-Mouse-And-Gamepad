@@ -1,0 +1,18 @@
+{
+    "id": "BetterMouseAndGamepad",
+	"name": "Better Mouse and Gamepad",
+	"display_name": "BMAG",
+	"author": ["uptu", "Kooluve"],
+	"description": "Makes the mouse and gamepad controls more easy and efficient to use. Among other features, allows the selection of multiple cards and rebinding common actions.",
+	"prefix": "bmag_v2",
+	"main_file": "src/main.lua",
+	"priority": -10000,
+	"badge_colour": "8651B8",
+	"badge_text_colour": "DEC9F2",
+	"version": "v2.0.0-alpha",
+	"dependencies": [
+        "Steamodded (>=1.*)",
+        "Lovely (>=0.6)",
+        "Balatro (>=1.0.1m)"
+    ]
+}
