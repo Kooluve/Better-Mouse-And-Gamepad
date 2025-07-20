@@ -39,21 +39,21 @@ function InputMap:insert(button, feature)
 end
 
 --[[
+    InputMap:get(button: KeyCode) -> Option<Feature>
+
+    Gets the associated feature for a button.
+--]]
+function InputMap:get(button)
+    return self.button_to_feature[button];
+end
+
+--[[
     InputMap:get_button(feature: Feature) -> Option<KeyCode>
 
     Gets the associated button for a feature.
 --]]
 function InputMap:get_button(feature)
     return self.feature_to_button[feature];
-end
-
---[[
-    InputMap:get_feature(button: KeyCode) -> Option<Feature>
-
-    Gets the associated feature for a button.
---]]
-function InputMap:get_feature(button)
-    return self.button_to_feature[button];
 end
 
 --[[
