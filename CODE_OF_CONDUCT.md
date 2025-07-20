@@ -58,10 +58,13 @@ representative at an online or offline event.
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be
+Instances of abusive, harassing, or otherwise unacceptable behavior can be
 reported to the community leaders responsible for enforcement through
-[GitHub Issues](https://github.com/uptudev/bmag/issues) by creating a new
-issue with the template *Code of Conduct violation*.
+[GitHub Issues](https://github.com/uptudev/bmag/issues)
+by creating a new issue with the template *Code of Conduct violation*, or by messaging
+the developers through IRC *(Internet Relay Chat)* at
+[LiberaChat](https://libera.chat/)
+in the `#BMAG` channel.
 All complaints will be reviewed and investigated promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of the
