@@ -1,23 +1,18 @@
---[[
-    TimerTable
+--- timers.lua
+--
+--  This file contains the @{TimerTable} object.
 
-    Monotonic int clock table; increments by 1 each frame during keypress, so not
-    real-time. Lua's table library should do most of the heavy lifting. Used to
-    determine if a keypress is a held or clicked key. If the timer passes a user's
-    set threshold, it is a hold event, else it is a click. Effectively clicks are
-    handled upon keyrelease, while holds start handling a given threshold after
-    keypress.
---]]
+--- A table of monotoninc integer clocks.
+-- Checked every frame to determine whether to send a click or hold event.
 TimerTable = {};
 
---[[
-    TimerTable:new() -> TimerTable
-
-    Creates a new TimerTable.
-
-    Example:
-    local timers = TimerTable:new()   -- creates new empty TimerTable
---]]
+--- Creates a new TimerTable.
+-- Creates a new empty TimerTable.
+--
+-- Example:
+-- local timers = TimerTable:new()
+--
+-- @return the new TimerTable instance
 function TimerTable:new()
     local t = {};
     setmetatable(t, self);
@@ -25,39 +20,40 @@ function TimerTable:new()
     return t;
 end
 
---[[
-    TimerTable:start(button: Keycode) -> Self
-
-    Starts a timer for the specified button.
---]]
+--- Starts a timer for the specified button.
+-- Sets the timer to `0` for the given button.
+--
+-- @param button the keycode to begin a timer for
+-- @return the @{TimerTable} instance for chain-calling
 function TimerTable:start(button)
     self[button] = 0;
     return self;
 end
 
---[[
-    TimerTable:stop(button: Keycode) -> Self
-
-    Stops the timer for the specified button.
---]]
+--- Stops a timer for the specified button.
+-- Sets the timer to `nil` for the given button.
+--
+-- @param button the keycode to stop the timer for
+-- @return the @{TimerTable} instance for chain-calling
 function TimerTable:stop(button)
     self[button] = nil;
     return self;
 end
---[[
-    TimerTable:get(button: Keycode) -> Int
 
-    Gets the current timer duration for the specified button.
---]]
+--- Gets the elapsed time for the specified button.
+-- Gets the amount of updates since the button was pressed last.
+--
+-- @param button the keycode to return the elapsed time for
+-- @return the amount of time elapsed
 function TimerTable:get(button)
     return self[button];
 end
 
---[[
-    TimerTable:increment() -> Self
-
-    Increments all timers currently active in the TimerTable by 1.
---]]
+--- Increments all active timers.
+-- Runs on every controller update cycle; iterates over all entries in the TimerTable instance
+-- and adds `1` to the value of all of the timers.
+--
+-- @return the @{TimerTable} instance for chain-calling
 function TimerTable:increment()
     for i, v in self do
         self[i] = v + 1;

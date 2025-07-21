@@ -1,22 +1,23 @@
---[[
-    BindMap
+--- bindmap.lua
+--
+--  This file contains the @{BindMap} object.
 
-    Contains all custom binds set by the mod. Used to determine whether or not
-    to fallback to the standard Love2D event handling. Uses 2 maps, one for each
-    association direction to make lookup much faster.
-
-    Binds a button code to a Lua function.
---]]
+--- A map of all custom binds set by the mod.
+-- Binds a button code to a Lua function.
+-- Used to determine whether or not to fallback to the standard Love2D event handling.
+-- Uses 2 maps, one for each association direction to make lookup much faster.
+--
+-- @field button_to_binding an associative array of keycodes to @{Binding} objects
+-- @field binding_to_button an associative array of @{Binding} objects to keycodes
 BindMap = {
     button_to_binding = {},
     binding_to_button = {},
 };
 
---[[
-    BindMap:new() -> Self
-
-    Creates a new BindMap; should only be run once during runtime.
---]]
+--- Creates a new @{BindMap}.
+-- Creates a new @{BindMap}; should only be run once during runtime.
+--
+-- @return the new @{BindMap}
 function BindMap:new()
     local im = {
         button_to_binding = {},
@@ -27,52 +28,50 @@ function BindMap:new()
     return im;
 end
 
---[[
-    BindMap:insert(button: KeyCode, binding: Binding) -> Self
-
-    Inserts a binding to a given binding into the input map.
---]]
+--- Inserts a @{Binding} into the input map.
+--
+-- @param button the keycode to bind the @{Binding} to
+-- @param binding the @{Binding} to be bound
+-- @return the @{BindMap} instance for chain-calling
 function BindMap:insert(button, binding)
     self.button_to_binding[button] = binding;
     self.binding_to_button[binding] = button;
     return self;
 end
 
---[[
-    BindMap:get(button: KeyCode) -> Option<Binding>
-
-    Gets the associated binding for a button.
---]]
+--- Gets the associated @{Binding} for a button.
+--
+-- @param button the keycode to query
+-- @return the queried @{Binding}, or nil
 function BindMap:get(button)
     return self.button_to_binding[button];
 end
 
---[[
-    BindMap:get_button(binding: Binding) -> Option<KeyCode>
-
-    Gets the associated button for a binding.
---]]
+--- Gets the associated button for a @{Binding}.
+--
+-- @param binding the @{Binding} to query
+-- @return the queried button, or nil
 function BindMap:get_button(binding)
     return self.binding_to_button[binding];
 end
 
---[[
-    BindMap:clear_button(button: KeyCode)
-
-    Clears the association to a given button (regardless of bound binding).
---]]
-function BindMap:clear_button(button)
+--- Clears the @{Binding} from a given button.
+-- Clears the @{Binding} from a given button, regardless of bound @{Binding}.
+--
+-- @param button the keycode to clear the @{Binding} for
+-- @return the @{BindMap} instance for chain-calling
+function BindMap:clear(button)
     local binding = self.button_to_binding[button];
     self.button_to_binding[button] = nil;
     self.binding_to_button[binding] = nil;
     return self;
 end
 
---[[
-    BindMap:clear_binding(binding: Binding)
-
-    Clears the association to a given binding (regardless of bound button).
---]]
+--- Clears the button from a given @{Binding}.
+-- Clears the button from a given @{Binding}, regardless of bound button.
+--
+-- @param button the @{Binding} to clear the button for
+-- @return the @{BindMap} instance for chain-calling
 function BindMap:clear_binding(binding)
     local button = self.binding_to_button[binding];
     self.button_to_binding[button] = nil;

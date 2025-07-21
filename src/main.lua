@@ -1,26 +1,19 @@
--------------
--- IMPORTS --
--------------
+--- Imports
 -- `./bindmap.lua`: A keybind map for ease of lookup and management
 -- `./input.lua`: The Love2D event hook override functions
 -- `./timers.lua`: A timer table for checking keypress duration
 -- `./queue.lua`: A simple FIFO queue implementation
-
 assert(SMODS.load_file('src/libs/bindmap.lua'))();
 assert(SMODS.load_file('src/libs/input.lua'))();
 assert(SMODS.load_file('src/libs/timers.lua'))();
 assert(SMODS.load_file('src/libs/queue.lua'))();
 
-------------------
--- GLOBAL STATE --
-------------------
--- put any and all mutable state in here. we don't need 3 different state types...
+--- BMAG mutable state.
+-- Contains all mutable state for the mod.
 --
--- `timers`:
---     See `./libs/timers.lua` for more details.
--- `queue`:
---     See `./libs/queue.lua` for more details.
-
+-- @field bind_map @{BindMap} for binding input
+-- @field timers @{TimerTable} for checking keypress duration
+-- @field queue @{Queue} for holding excess events for load balancing
 STATE = {
     bind_map = BindMap:new(),
     timers = TimerTable:new(),
