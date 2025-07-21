@@ -1,81 +1,94 @@
---[[
-    InputMap
+--  input.lua
+--  This file contains the Love2D input event hooks. All hooks should point to
+--  utility functions elsewhere, but this is where they interface with L2D.
 
-    Contains all custom binds set by the mod. Used to determine whether or not
-    to fallback to the standard Love2D event handling. Uses 2 maps, one for each
-    association direction to make lookup much faster.
-
-    Binds a button code to a Lua function.
---]]
-InputMap = {
-    button_to_feature = {},
-    feature_to_button = {},
-};
+-- All functions in this file work by overriding the default event hooks in Love2D.
+-- Default event hooks are used as fallback when the input signal being handled
+-- is not bound to a mod feature in the InputMap.
 
 --[[
-    InputMap:new() -> Self
+    love.mousepressed(x, y, button, touch)
 
-    Creates a new InputMap; should only be run once during runtime.
+    Mouse press event hook
 --]]
-function InputMap:new()
-    local im = {
-        button_to_feature = {},
-        feature_to_button = {},
-    };
-    setmetatable(im, self);
-    self.__index = self;
-    return im;
+local mousepressed_fb = love.mousepressed;      -- old event hook used for fallback
+function love.mousepressed(x, y, button, touch)
+    local mapped_input = STATE.bind_map:get(button);
+    if mapped_input then
+        mapped_input:on_press(x, y, button, touch)
+    else
+        mousepressed_fb(x, y, button, touch);
+    end
 end
 
 --[[
-    InputMap:insert(button: KeyCode, feature: Feature) -> Self
+    love.mousereleased(x, y, button)
 
-    Inserts a binding to a given feature into the input map.
+    Mouse release event hook
 --]]
-function InputMap:insert(button, feature)
-    self.button_to_feature[button] = feature;
-    self.feature_to_button[feature] = button;
-    return self;
+local mousereleased_fb = love.mousereleased;    -- old event hook used for fallback
+function love.mousereleased(x, y, button, touch)
+    local mapped_input = STATE.bind_map:get(button);
+    if mapped_input then
+        mapped_input:on_release(x, y, button, touch)
+    else
+        mousereleased_fb(x, y, button, touch);
+    end
 end
 
 --[[
-    InputMap:get(button: KeyCode) -> Option<Feature>
+    love.wheelmoved(x, y)
 
-    Gets the associated feature for a button.
+    Mouse wheel movement event hook
 --]]
-function InputMap:get(button)
-    return self.button_to_feature[button];
+local wheelmoved_fb = love.wheelmoved;          -- old event hook used for fallback
+function love.wheelmoved(x, y)
+    -- L2D does not store mouse wheel movement as a KeyCode; spoofing with pseudovalues
+    local button = 'wheel_error';
+
+    -- check wheel movement direction
+    -- TODO: find out what x direction wheel movement represents and handle if needed;
+    if y > 0 then
+        button = 'wheel_up';
+    elseif y < 0 then
+        button = 'wheel_down';
+    end
+
+    local mapped_input = STATE.bind_map:get(button);
+    if mapped_input then
+        mapped_input:on_press(x, y, button, nil);
+        mapped_input:on_release(x, y, button, nil);
+    else
+        wheelmoved_fb(x, y);
+    end
 end
 
 --[[
-    InputMap:get_button(feature: Feature) -> Option<KeyCode>
+    love.gamepadpressed(joystick, button)
 
-    Gets the associated button for a feature.
+    Gamepad button press event hook
 --]]
-function InputMap:get_button(feature)
-    return self.feature_to_button[feature];
+local gamepadpressed_fb = love.gamepadpressed;
+function love.gamepadpressed(joystick, button)
+    local mapped_input = STATE.bind_map:get(button);
+    if mapped_input then
+        mapped_input:on_press(nil, nil, button, nil);
+    else
+        gamepadpressed_fb(joystick, button);
+    end
 end
 
 --[[
-    InputMap:clear_button(button: KeyCode)
+    love.gamepadreleased(joystick, button)
 
-    Clears the association to a given button (regardless of bound feature).
+    Gamepad button release event hook
 --]]
-function InputMap:clear_button(button)
-    local feature = self.button_to_feature[button];
-    self.button_to_feature[button] = nil;
-    self.feature_to_button[feature] = nil;
-    return self;
-end
-
---[[
-    InputMap:clear_feature(feature: Feature)
-
-    Clears the association to a given feature (regardless of bound button).
---]]
-function InputMap:clear_feature(feature)
-    local button = self.feature_to_button[feature];
-    self.button_to_feature[button] = nil;
-    self.feature_to_button[feature] = nil;
-    return self;
+local gamepadreleased_fb = love.gamepadreleased;
+function love.gamepadreleased(joystick, button)
+    local mapped_input = STATE.bind_map:get(button);
+    if mapped_input then
+        mapped_input:on_release(nil, nil, button, nil);
+    else
+        gamepadreleased_fb(joystick, button);
+    end
 end

@@ -1,13 +1,13 @@
 -------------
 -- IMPORTS --
 -------------
--- `./input.lua`: A keybind map for ease of lookup and management
--- `./l2d.lua`: The Love2D event hook override functions
+-- `./bindmap.lua`: A keybind map for ease of lookup and management
+-- `./input.lua`: The Love2D event hook override functions
 -- `./timers.lua`: A timer table for checking keypress duration
 -- `./queue.lua`: A simple FIFO queue implementation
 
+assert(SMODS.load_file('src/libs/bindmap.lua'))();
 assert(SMODS.load_file('src/libs/input.lua'))();
-assert(SMODS.load_file('src/libs/l2d.lua'))();
 assert(SMODS.load_file('src/libs/timers.lua'))();
 assert(SMODS.load_file('src/libs/queue.lua'))();
 
@@ -22,7 +22,7 @@ assert(SMODS.load_file('src/libs/queue.lua'))();
 --     See `./libs/queue.lua` for more details.
 
 STATE = {
-    input_map = InputMap:new(),
+    input_map = BindMap:new(),
     timers = TimerTable:new(),
     queue = Queue:new(),
 };
