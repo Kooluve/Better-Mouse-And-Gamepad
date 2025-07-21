@@ -15,7 +15,7 @@ local mousepressed_fb = love.mousepressed;      -- old event hook used for fallb
 function love.mousepressed(x, y, button, touch)
     local mapped_input = STATE.bind_map:get(button);
     if mapped_input then
-        mapped_input:on_press(x, y, button, touch)
+        mapped_input:press(x, y, button, touch)
     else
         mousepressed_fb(x, y, button, touch);
     end
@@ -30,7 +30,7 @@ local mousereleased_fb = love.mousereleased;    -- old event hook used for fallb
 function love.mousereleased(x, y, button, touch)
     local mapped_input = STATE.bind_map:get(button);
     if mapped_input then
-        mapped_input:on_release(x, y, button, touch)
+        mapped_input:release(x, y, button, touch)
     else
         mousereleased_fb(x, y, button, touch);
     end
@@ -56,8 +56,8 @@ function love.wheelmoved(x, y)
 
     local mapped_input = STATE.bind_map:get(button);
     if mapped_input then
-        mapped_input:on_press(x, y, button, nil);
-        mapped_input:on_release(x, y, button, nil);
+        mapped_input:press(x, y, button, nil);
+        mapped_input:release(x, y, button, nil);
     else
         wheelmoved_fb(x, y);
     end
@@ -72,7 +72,7 @@ local gamepadpressed_fb = love.gamepadpressed;
 function love.gamepadpressed(joystick, button)
     local mapped_input = STATE.bind_map:get(button);
     if mapped_input then
-        mapped_input:on_press(nil, nil, button, nil);
+        mapped_input:press(nil, nil, button, nil);
     else
         gamepadpressed_fb(joystick, button);
     end
@@ -87,7 +87,7 @@ local gamepadreleased_fb = love.gamepadreleased;
 function love.gamepadreleased(joystick, button)
     local mapped_input = STATE.bind_map:get(button);
     if mapped_input then
-        mapped_input:on_release(nil, nil, button, nil);
+        mapped_input:release(nil, nil, button, nil);
     else
         gamepadreleased_fb(joystick, button);
     end
