@@ -22,7 +22,7 @@ assert(SMODS.load_file('src/libs/queue.lua'))();
 --     See `./libs/queue.lua` for more details.
 
 STATE = {
-    input_map = BindMap:new(),
+    bind_map = BindMap:new(),
     timers = TimerTable:new(),
     queue = Queue:new(),
 };
