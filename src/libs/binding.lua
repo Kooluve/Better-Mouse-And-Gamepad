@@ -1,89 +1,85 @@
 --- Represents how a key is bound.
 --
--- @field press_fn Option<Fn(x, y, button, touch)>
--- @field release_fn Option<Fn(x, y, button, touch)>
+-- @field click_fn Option<Fn(x, y, button, touch)>
+-- @field hold_fn Option<Fn(x, y, button, touch)>
 Binding = {
-    press_fn = nil,
-    release_fn = nil,
+    click_fn = nil,
+    hold_fn = nil,
 };
 
 --- Creates a new @{Binding}.
 --
---  @param press_fn Option<Fn(x, y, button, touch)>
---  @param release_fn Option<Fn(x, y, button, touch)>
+--  @param click_fn Option<Fn(x, y, button, touch)>
+--  @param hold_fn Option<Fn(x, y, button, touch)>
 --  @return the new @{Binding}
-function Binding:new(press_fn, release_fn)
+function Binding:new(click_fn, hold_fn)
     local b = {
-        press_fn = press_fn,
-        release_fn = release_fn,
+        click_fn = click_fn,
+        hold_fn = hold_fn,
     };
     setmetatable(b, self);
     self.__index = self;
     return b;
 end
 
---- Runs the bound `press_fn`.
--- Runs the bound `press_fn`, throwing an error if a function isn't bound.
--- Also starts the timer for the corresponding keypress.
+--- Runs the bound `click_fn`.
+-- Runs the bound `click_fn`, throwing an error if a function isn't bound.
 --
 -- @param x the mouse x coordinate or `nil`
 -- @param y the mouse y coordinate or `nil`
--- @param button the keycode for the button pressed
+-- @param button the keycode for the button clicked
 -- @param istouch boolean indicating whether touchscreen sent signal
 -- @return the @{Binding} instance for chain-calling
-function Binding:press(x, y, button, istouch)
-    if self.press_fn == nil then
-        error('attempted to press a binding without a press function');
+function Binding:click(x, y, button, istouch)
+    if self.click_fn == nil then
+        error('attempted to click a binding without a click function');
     end
-    STATE.timers:start(button);
-    self.press_fn(x, y, button, istouch);
+    self.click_fn(x, y, button, istouch);
     return self;
 end
 
---- Sets the bound `press_fn`.
--- @param press_fn the function to call when pressed
+--- Sets the bound `click_fn`.
+-- @param click_fn the function to call when clicked
 -- @return the @{Binding} instance for chain-calling
-function Binding:set_press(press_fn)
-    self.press_fn = press_fn;
+function Binding:set_click(click_fn)
+    self.click_fn = click_fn;
     return self;
 end
 
---- Unsets the bound `press_fn`.
+--- Unsets the bound `click_fn`.
 -- @return the @{Binding} instance for chain-calling
-function Binding:unset_press()
-    self.press_fn = nil;
+function Binding:unset_click()
+    self.click_fn = nil;
     return self;
 end
 
---- Runs the bound `release_fn`.
--- Runs the bound `release_fn`, throwing an error if a function isn't bound.
--- Also stops the timer for the corresponding keypress.
+--- Runs the bound `hold_fn`.
+-- Runs the bound `hold_fn`, throwing an error if a function isn't bound.
 --
 -- @param x the mouse x coordinate or `nil`
 -- @param y the mouse y coordinate or `nil`
--- @param button the keycode for the button pressed
+-- @param button the keycode for the button held
 -- @param istouch boolean indicating whether touchscreen sent signal
 -- @return the @{Binding} instance for chain-calling
-function Binding:release(x, y, button, istouch)
-    if self.release_fn == nil then
-        error('attempted to release a binding without a release function');
+function Binding:hold(x, y, button, istouch)
+    if self.hold_fn == nil then
+        error('attempted to hold a binding without a hold function');
     end
-    STATE.timers:stop(button);
-    self.release_fn(x, y, button, istouch);
+    self.hold_fn(x, y, button, istouch);
     return self;
 end
 
---- Sets the bound `release_fn`.
--- @param release_fn the function to call when released
+--- Sets the bound `hold_fn`.
+-- @param hold_fn the function to call when held
 -- @return the @{Binding} instance for chain-calling
-function Binding:set_release(release_fn)
-    self.release_fn = release_fn;
+function Binding:set_hold(hold_fn)
+    self.hold_fn = hold_fn;
     return self;
 end
 
---- Unsets the bound `release_fn`.
+--- Unsets the bound `hold_fn`.
 -- @return the @{Binding} instance for chain-calling
-function Binding:unset_release()
-    self.release_fn = nil;
+function Binding:unset_hold()
+    self.hold_fn = nil;
     return self;
 end

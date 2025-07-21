@@ -1,7 +1,7 @@
 --- input.lua
 --
---  This file contains the Love2D input event hooks. All hooks should point to
---  utility functions elsewhere, but this is where they interface with L2D.
+-- This file contains the Love2D input event hooks. All hooks should do is call
+-- methods on the @{TimerTable} instance, which starts the mod's input pipeline.
 
 -- old event hooks used for fallback
 local mousepressed_fb = love.mousepressed;
@@ -20,7 +20,7 @@ local gamepadreleased_fb = love.gamepadreleased;
 function love.mousepressed(x, y, button, istouch)
     local mapped_input = STATE.bind_map:get(button);
     if mapped_input then
-        mapped_input:press(x, y, button, touch)
+        STATE.timers.start(button);
     else
         mousepressed_fb(x, y, button, touch);
     end
@@ -36,7 +36,7 @@ end
 function love.mousereleased(x, y, button, touch)
     local mapped_input = STATE.bind_map:get(button);
     if mapped_input then
-        mapped_input:release(x, y, button, touch)
+        STATE.timers.stop(button);
     else
         mousereleased_fb(x, y, button, touch);
     end
@@ -61,8 +61,8 @@ function love.wheelmoved(x, y)
 
     local mapped_input = STATE.bind_map:get(button);
     if mapped_input then
-        mapped_input:press(x, y, button, nil);
-        mapped_input:release(x, y, button, nil);
+        STATE.timers:start(button);
+        STATE.timers:stop(button);
     else
         wheelmoved_fb(x, y);
     end
@@ -76,7 +76,7 @@ end
 function love.gamepadpressed(joystick, button)
     local mapped_input = STATE.bind_map:get(button);
     if mapped_input then
-        mapped_input:press(nil, nil, button, nil);
+        STATE.timers:start(button);
     else
         gamepadpressed_fb(joystick, button);
     end
@@ -90,7 +90,7 @@ end
 function love.gamepadreleased(joystick, button)
     local mapped_input = STATE.bind_map:get(button);
     if mapped_input then
-        mapped_input:release(nil, nil, button, nil);
+        STATE.timers:stop(button);
     else
         gamepadreleased_fb(joystick, button);
     end
