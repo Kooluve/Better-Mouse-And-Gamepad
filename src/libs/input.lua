@@ -22,7 +22,7 @@ function love.mousepressed(x, y, button, istouch)
     if mapped_input then
         STATE.timers.start(button);
     else
-        mousepressed_fb(x, y, button, touch);
+        mousepressed_fb(x, y, button, istouch);
     end
 end
 
@@ -33,12 +33,12 @@ end
 -- @param y cursor y position
 -- @param button cursor button released
 -- @param istouch boolean true if from a touchscreen
-function love.mousereleased(x, y, button, touch)
+function love.mousereleased(x, y, button, istouch)
     local mapped_input = STATE.bind_map:get(button);
     if mapped_input then
         STATE.timers.stop(button);
     else
-        mousereleased_fb(x, y, button, touch);
+        mousereleased_fb(x, y, button, istouch);
     end
 end
 
