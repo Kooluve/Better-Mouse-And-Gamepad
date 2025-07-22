@@ -73,6 +73,11 @@ flowchart LR
     style ModFunctions fill:#39294f,color:#F8f8f2
   end
 
+  subgraph Config["Configuration Menu"]
+    style Config fill:#703821,color:#F8f8f2
+  end
+
+  Config -- Mutates --> BM
   CIB -. Query binding in map .-o BM
   CIBY -- Start/Stop Timers --> TT
   TT -- Click/Hold Events --> BM
