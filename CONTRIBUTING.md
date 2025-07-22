@@ -11,6 +11,73 @@ The purpose of BMAG is to extend the current *Balatro* control schema to be more
 comfortable and ergonomic. It allows for binding custom buttons to a set of in-game
 functions, making the controls more fluid than in the base game.
 
+### Mod flowchart
+
+This is the general route the mod takes to process input, starting from the Love2D
+event hooks. It is in [Mermaid](https://mermaidchart.com/) format. Contributors
+can view the graph online by using [their web viewer](https://mermaidchart.com/play).
+
+```mermaid
+flowchart LR
+  subgraph InputHooks["Input Hooks"]
+    L2D(["Love2D Event Hooks"])
+    CIB{"Is the button bound in the **BindMap**?"}
+    CIBY{"Yes"}
+    CIBN{"No"}
+    FBF(["Love2D fallback function"])
+
+    L2D -- Press/Release Events --> CIB
+    CIB --> CIBY & CIBN
+    CIBN -- Press/Release Events --> FBF
+
+    style L2D fill:#424242,color:#F8f8f2
+    style CIB fill:#424242,color:#F8f8f2
+    style CIBY fill:#424242,color:#f8f8f2
+    style CIBN fill:#424242,color:#F8f8f2
+    style FBF fill:#424242,color:#F8f8f2
+
+    style InputHooks fill:#887300,color:#F8f8f2
+  end
+
+  subgraph GameUpdate["Game Update"]
+    CU(["Controller Update Loop"])
+    TT("TimerTable")
+
+    CU L_CU_CU_0@-. Updates once per frame .-> CU
+    CU -- Increment Timers --> TT
+
+    L_CU_CU_0@{ animation: slow } 
+    style CU fill:#424242,color:#F8f8f2
+    style TT fill:#424242,color:#F8f8f2
+
+    style GameUpdate fill:#007432,color:#F8f8f2
+  end
+
+  subgraph ModFunctions["Mod Functions"]
+    BM("BindMap")
+    MS(["Multiselect"])
+    DS(["Deselect"])
+    SBV(["Sort by value"])
+    SBS(["Sort by suit"])
+    DDD(["..."])
+
+    BM --> MS & DS & SBV & SBS & DDD
+
+    style BM fill:#424242,color:#F8f8f2
+    style MS fill:#424242,color:#F8f8f2
+    style DS fill:#424242,color:#f8f8f2
+    style SBV fill:#424242,color:#F8f8f2
+    style SBS fill:#424242,color:#F8f8f2
+    style DDD fill:#424242,color:#F8f8f2
+
+    style ModFunctions fill:#39294f,color:#F8f8f2
+  end
+
+  CIB -. Query binding in map .-o BM
+  CIBY -- Start/Stop Timers --> TT
+  TT -- Click/Hold Events --> BM
+```
+
 ## Ground rules
 
 Before contributing, read our
