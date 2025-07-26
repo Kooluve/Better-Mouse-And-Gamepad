@@ -12,10 +12,10 @@ Binding = {
 --  @param click_fn Option<Fn(x, y, button, touch)>
 --  @param hold_fn Option<Fn(x, y, button, touch)>
 --  @return the new @{Binding}
-function Binding:new(click_fn, hold_fn)
+function Binding:new()
     local b = {
-        click_fn = click_fn,
-        hold_fn = hold_fn,
+        click_fn = nil,
+        hold_fn = nil,
     };
     setmetatable(b, self);
     self.__index = self;
