@@ -12,6 +12,7 @@
 BindMap = {
     button_to_binding = {},
     binding_to_button = {},
+    click_hold_threshold = 8,
 };
 
 --- Creates a new @{BindMap}.

@@ -2,7 +2,7 @@
 --
 --  This file contains the @{TimerTable} object.
 
---- A table of monotoninc integer clocks.
+--- A table of monotonic integer clocks.
 -- Checked every frame to determine whether to send a click or hold event.
 TimerTable = {};
 
@@ -14,11 +14,7 @@ TimerTable = {};
 --
 -- @return the new TimerTable instance
 function TimerTable:new()
-    local t = {
-        -- threshold defaulted to 8 frames
-        -- TODO: review if click/hold detection seems sticky or forgiving
-        threshold = 8,
-    };
+    local t = {};
     setmetatable(t, self);
     self.__index = self;
     return t;
@@ -68,9 +64,9 @@ end
 --
 -- @return the @{TimerTable} instance for chain-calling
 function TimerTable:increment()
-    for i, v in pairs(self) do
-        self[i] = v + 1;
-        self:check_overflow(i);
+    for button, time in pairs(self) do
+        self[button] = time + 1;
+        self:check_overflow(button);
     end
     return self;
 end
@@ -78,13 +74,26 @@ end
 --- Checks all active timers for overflow.
 -- If a timer has overflowed, it is a hold event that must be started.
 --
+-- @param button the keycode to check
 -- @return the @{TimerTable} instance for chain-calling
 function TimerTable:check_overflow(button)
-    if self[button] >= self.threshold then
+    if self[button] >= STATE.bind_map.click_hold_threshold then
         self[button] = nil;
         STATE.bind_map
             :get(button)
             :hold_start();
     end
     return self;
+end
+
+--- Old Controller update loop
+local old_update = G.CONTROLLER.update;
+
+--- Controller update loop hook
+-- Runs all game code first, then does all per-frame mod functions
+--
+-- @param dt some fallthrough param needed by the old update loop
+function G.CONTROLLER:update(dt)
+    old_update(self, dt);
+    STATE.timers:increment();
 end
