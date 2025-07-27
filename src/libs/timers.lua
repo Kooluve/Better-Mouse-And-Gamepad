@@ -14,7 +14,11 @@ TimerTable = {};
 --
 -- @return the new TimerTable instance
 function TimerTable:new()
-    local t = {};
+    local t = {
+        -- threshold defaulted to 8 frames
+        -- TODO: review if click/hold detection seems sticky or forgiving
+        threshold = 8,
+    };
     setmetatable(t, self);
     self.__index = self;
     return t;
@@ -36,6 +40,15 @@ end
 -- @param button the keycode to stop the timer for
 -- @return the @{TimerTable} instance for chain-calling
 function TimerTable:stop(button)
+    if self[button] == nil then
+        STATE.bind_map
+            :get(button)
+            :hold_end();
+    else
+        STATE.bind_map
+            :get(button)
+            :click();
+    end
     self[button] = nil;
     return self;
 end
@@ -55,8 +68,23 @@ end
 --
 -- @return the @{TimerTable} instance for chain-calling
 function TimerTable:increment()
-    for i, v in self do
+    for i, v in pairs(self) do
         self[i] = v + 1;
+        self:check_overflow(i);
+    end
+    return self;
+end
+
+--- Checks all active timers for overflow.
+-- If a timer has overflowed, it is a hold event that must be started.
+--
+-- @return the @{TimerTable} instance for chain-calling
+function TimerTable:check_overflow(button)
+    if self[button] >= self.threshold then
+        self[button] = nil;
+        STATE.bind_map
+            :get(button)
+            :hold_start();
     end
     return self;
 end

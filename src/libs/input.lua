@@ -18,8 +18,11 @@ local gamepadreleased_fb = love.gamepadreleased;
 -- @param button cursor button pressed
 -- @param istouch boolean true if from a touchscreen
 function love.mousepressed(x, y, button, istouch)
-    local mapped_input = STATE.bind_map:get(button);
-    if mapped_input then
+    if 
+        STATE.bind_map:is_bound(button)
+        and not G.CONTROLLER.locks.frame
+        and not G.SETTINGS.PAUSED
+    then
         STATE.timers.start(button);
     else
         mousepressed_fb(x, y, button, istouch);
@@ -34,8 +37,11 @@ end
 -- @param button cursor button released
 -- @param istouch boolean true if from a touchscreen
 function love.mousereleased(x, y, button, istouch)
-    local mapped_input = STATE.bind_map:get(button);
-    if mapped_input then
+    if 
+        STATE.bind_map:is_bound(button)
+        and not G.CONTROLLER.locks.frame
+        and not G.SETTINGS.PAUSED
+    then
         STATE.timers.stop(button);
     else
         mousereleased_fb(x, y, button, istouch);
@@ -59,8 +65,11 @@ function love.wheelmoved(x, y)
         button = 'wheel_down';
     end
 
-    local mapped_input = STATE.bind_map:get(button);
-    if mapped_input then
+    if
+        STATE.bind_map:is_bound(button)
+        and not G.CONTROLLER.locks.frame
+        and not G.SETTINGS.PAUSED
+    then
         STATE.timers:start(button);
         STATE.timers:stop(button);
     else
@@ -74,8 +83,11 @@ end
 -- @param joystick the @{love.Joystick} object
 -- @param button the button being pressed
 function love.gamepadpressed(joystick, button)
-    local mapped_input = STATE.bind_map:get(button);
-    if mapped_input then
+    if
+        STATE.bind_map:is_bound(button)
+        and not G.CONTROLLER.locks.frame
+        and not G.SETTINGS.PAUSED
+    then
         STATE.timers:start(button);
     else
         gamepadpressed_fb(joystick, button);
@@ -88,8 +100,11 @@ end
 -- @param joystick the @{love.Joystick} object
 -- @param button the button being released
 function love.gamepadreleased(joystick, button)
-    local mapped_input = STATE.bind_map:get(button);
-    if mapped_input then
+    if
+        STATE.bind_map:is_bound(button)
+        and not G.CONTROLLER.locks.frame
+        and not G.SETTINGS.PAUSED
+    then
         STATE.timers:stop(button);
     else
         gamepadreleased_fb(joystick, button);
