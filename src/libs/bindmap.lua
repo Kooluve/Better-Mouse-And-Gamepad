@@ -70,11 +70,25 @@ end
 --- Clears the button from a given @{Binding}.
 -- Clears the button from a given @{Binding}, regardless of bound button.
 --
--- @param button the @{Binding} to clear the button for
+-- @param binding the @{Binding} to clear the button for
 -- @return the @{BindMap} instance for chain-calling
 function BindMap:clear_binding(binding)
     local button = self.binding_to_button[binding];
     self.button_to_binding[button] = nil;
     self.binding_to_button[binding] = nil;
     return self;
+end
+
+--- Checks whether a button is bound or not
+-- A boolean representing whether or not a key has been bound to anything.
+--
+-- @param button the keycode to check
+-- @return true if bound, false if not
+function BindMap:is_bound(button)
+    local b = self:get(button);
+    if b == nil then
+        return false;
+    else
+        return true;
+    end
 end
