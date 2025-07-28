@@ -63,9 +63,9 @@ end
 -- and adds `1` to the value of all of the timers.
 --
 -- @return the @{TimerTable} instance for chain-calling
-function TimerTable:increment()
+function TimerTable:increment(dt)
     for button, time in pairs(self) do
-        self[button] = time + 1;
+        self[button] = time + dt;
         self:check_overflow(button);
     end
     return self;
@@ -77,7 +77,7 @@ end
 -- @param button the keycode to check
 -- @return the @{TimerTable} instance for chain-calling
 function TimerTable:check_overflow(button)
-    if self[button] >= STATE.bind_map.click_hold_threshold then
+    if self[button] >= 0.7 then
         self[button] = nil;
         STATE.bind_map
             :get(button)
@@ -92,8 +92,8 @@ local old_update = G.CONTROLLER.update;
 --- Controller update loop hook
 -- Runs all game code first, then does all per-frame mod functions
 --
--- @param dt some fallthrough param needed by the old update loop
+-- @param dt delta time since last frame
 function G.CONTROLLER:update(dt)
     old_update(self, dt);
-    STATE.timers:increment();
+    STATE.timers:increment(dt);
 end
