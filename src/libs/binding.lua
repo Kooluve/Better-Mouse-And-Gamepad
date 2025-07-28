@@ -3,6 +3,7 @@
 -- @field click_fn Option<Fn(x, y, button, touch)>
 -- @field hold_fn Option<Fn(x, y, button, touch)>
 Binding = {
+    name = nil,
     click_fn = nil,
     hold_start_fn = nil,
     hold_end_fn = nil,
@@ -15,6 +16,7 @@ Binding = {
 --  @return the new @{Binding}
 function Binding:new()
     local b = {
+        name = nil,
         click_fn = nil,
         hold_start_fn = nil,
         hold_end_fn = nil,
@@ -106,5 +108,13 @@ end
 -- @return the @{Binding} instance for chain-calling
 function Binding:unset_hold_end()
     self.hold_end_fn = nil;
+    return self;
+end
+
+--- Sets the name of the @{Binding}.
+-- @param name the name
+-- @return the @{Binding} instance for chain-calling
+function Binding:set_name(name)
+    self.name = name;
     return self;
 end

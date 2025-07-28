@@ -35,7 +35,7 @@ end
 -- @return the @{BindMap} instance for chain-calling
 function BindMap:insert(button, binding)
     self.button_to_binding[button] = binding;
-    self.binding_to_button[binding] = button;
+    self.binding_to_button[binding.name] = button;
     return self;
 end
 
@@ -52,7 +52,7 @@ end
 -- @param binding the @{Binding} to query
 -- @return the queried button, or nil
 function BindMap:get_button(binding)
-    return self.binding_to_button[binding];
+    return self.binding_to_button[binding.name];
 end
 
 --- Clears the @{Binding} from a given button.
@@ -63,7 +63,7 @@ end
 function BindMap:clear(button)
     local binding = self.button_to_binding[button];
     self.button_to_binding[button] = nil;
-    self.binding_to_button[binding] = nil;
+    self.binding_to_button[binding.name] = nil;
     return self;
 end
 
@@ -73,9 +73,9 @@ end
 -- @param binding the @{Binding} to clear the button for
 -- @return the @{BindMap} instance for chain-calling
 function BindMap:clear_binding(binding)
-    local button = self.binding_to_button[binding];
+    local button = self.binding_to_button[binding.name];
     self.button_to_binding[button] = nil;
-    self.binding_to_button[binding] = nil;
+    self.binding_to_button[binding.name] = nil;
     return self;
 end
 
