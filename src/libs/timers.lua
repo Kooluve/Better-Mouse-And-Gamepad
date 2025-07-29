@@ -36,6 +36,16 @@ end
 -- @param button the keycode to stop the timer for
 -- @return the @{TimerTable} instance for chain-calling
 function TimerTable:stop(button)
+    -- binds to config if listening here
+    if STATE.listening then
+        if self[button] ~= nil then
+            STATE.bind_map:bind_click(button, STATE.listening);
+            self[button] = nil;
+        end
+        stop_listening();
+        return self;
+    end
+
     if self[button] == nil then
         STATE.bind_map
             :get(button)
@@ -79,9 +89,16 @@ end
 function TimerTable:check_overflow(button)
     if self[button] >= 0.7 then
         self[button] = nil;
-        STATE.bind_map
-            :get(button)
-            :hold_start();
+        if STATE.listening then
+            STATE.bind_map:bind_hold(button, STATE.listening);
+            stop_listening();
+            return self;
+        end
+        if STATE.bind_map:get(button) then
+            STATE.bind_map
+                :get(button)
+                :hold_start();
+        end
     end
     return self;
 end

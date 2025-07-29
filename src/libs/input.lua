@@ -6,9 +6,10 @@
 -- old event hooks used for fallback
 local mousepressed_fb = love.mousepressed;
 local mousereleased_fb = love.mousereleased;
-local wheelmoved_fb = love.wheelmoved;
 local gamepadpressed_fb = love.gamepadpressed;
 local gamepadreleased_fb = love.gamepadreleased;
+local keypressed_fb = love.keypressed;
+local keyreleased_fb = love.keyreleased;
 
 --- Mouse press event hook.
 -- Love2D mouse button press event override.
@@ -18,12 +19,14 @@ local gamepadreleased_fb = love.gamepadreleased;
 -- @param button cursor button pressed
 -- @param istouch boolean true if from a touchscreen
 function love.mousepressed(x, y, button, istouch)
-    if 
-        STATE.bind_map:is_bound(button)
+    if
+        button ~= 1 and
+        (STATE.bind_map:is_bound(button)
+        or STATE.listening)
         and not G.CONTROLLER.locks.frame
         and not G.SETTINGS.PAUSED
     then
-        STATE.timers.start(button);
+        STATE.timers:start('mouse'..button);
     else
         mousepressed_fb(x, y, button, istouch);
     end
@@ -37,12 +40,14 @@ end
 -- @param button cursor button released
 -- @param istouch boolean true if from a touchscreen
 function love.mousereleased(x, y, button, istouch)
-    if 
-        STATE.bind_map:is_bound(button)
+    if
+        button ~= 1 and
+        (STATE.bind_map:is_bound(button)
+        or STATE.listening)
         and not G.CONTROLLER.locks.frame
         and not G.SETTINGS.PAUSED
     then
-        STATE.timers.stop(button);
+        STATE.timers:stop('mouse'..button);
     else
         mousereleased_fb(x, y, button, istouch);
     end
@@ -66,14 +71,13 @@ function love.wheelmoved(x, y)
     end
 
     if
-        STATE.bind_map:is_bound(button)
+        (STATE.bind_map:is_bound(button)
+        or STATE.listening)
         and not G.CONTROLLER.locks.frame
         and not G.SETTINGS.PAUSED
     then
         STATE.timers:start(button);
         STATE.timers:stop(button);
-    else
-        wheelmoved_fb(x, y);
     end
 end
 
@@ -84,12 +88,19 @@ end
 -- @param button the button being pressed
 function love.gamepadpressed(joystick, button)
     if
-        STATE.bind_map:is_bound(button)
+        (STATE.bind_map:is_bound(button)
+        or (STATE.listening and button ~= 'start'))
         and not G.CONTROLLER.locks.frame
         and not G.SETTINGS.PAUSED
     then
         STATE.timers:start(button);
     else
+        if
+            key == 'start' and
+            STATE.listening
+        then
+            return;
+        end
         gamepadpressed_fb(joystick, button);
     end
 end
@@ -101,12 +112,72 @@ end
 -- @param button the button being released
 function love.gamepadreleased(joystick, button)
     if
-        STATE.bind_map:is_bound(button)
+        (STATE.bind_map:is_bound(button)
+        or (STATE.listening and button ~= 'start'))
         and not G.CONTROLLER.locks.frame
         and not G.SETTINGS.PAUSED
     then
         STATE.timers:stop(button);
     else
+        if
+            key == 'start' and
+            STATE.listening
+        then
+            stop_listening()
+            return;
+        end
         gamepadreleased_fb(joystick, button);
     end
 end
+
+--- Keyboard button press event hook.
+-- Love2D keyboard button press event override.
+--
+-- @param joystick the @{love.Joystick} object
+-- @param button the button being pressed
+function love.keypressed(key)
+    if
+        (STATE.bind_map:is_bound(key)
+        or (STATE.listening and key ~= 'escape'))
+        and not G.CONTROLLER.locks.frame
+        and not G.SETTINGS.PAUSED
+    then
+        STATE.timers:start(key);
+    else
+        if
+            key == 'escape' and
+            STATE.listening
+        then
+            return;
+        end
+        keypressed_fb(key);
+    end
+end
+
+--- Gamepad button release event hook.
+-- Love2D gamepad button release event override.
+--
+-- @param joystick the @{love.Joystick} object
+-- @param button the button being released
+function love.keyreleased(key)
+    if
+        (STATE.bind_map:is_bound(key)
+        or (STATE.listening and key ~= 'escape'))
+        and not G.CONTROLLER.locks.frame
+        and not G.SETTINGS.PAUSED
+    then
+        STATE.timers:stop(key);
+    else
+        if
+            key == 'escape' and
+            STATE.listening
+        then
+            STATE.bind_map:remove_binding(STATE.listening);
+            stop_listening()
+            return;
+        end
+        keyreleased_fb(key);
+    end
+end
+
+

@@ -3,7 +3,6 @@
 -- @field click_fn Option<Fn(x, y, button, touch)>
 -- @field hold_fn Option<Fn(x, y, button, touch)>
 Binding = {
-    name = nil,
     click_fn = nil,
     hold_start_fn = nil,
     hold_end_fn = nil,
@@ -16,7 +15,6 @@ Binding = {
 --  @return the new @{Binding}
 function Binding:new()
     local b = {
-        name = nil,
         click_fn = nil,
         hold_start_fn = nil,
         hold_end_fn = nil,
@@ -32,7 +30,7 @@ end
 -- @return the @{Binding} instance for chain-calling
 function Binding:click()
     if self.click_fn == nil then
-        error('attempted to click a binding without a click function');
+        return self;
     end
     self.click_fn();
     return self;
@@ -59,7 +57,7 @@ end
 -- @return the @{Binding} instance for chain-calling
 function Binding:hold_start()
     if self.hold_start_fn == nil then
-        error('attempted to hold a binding without a hold function');
+        return self;
     end
     self.hold_start_fn();
     return self;
@@ -88,11 +86,11 @@ end
 -- @param button the keycode for the button held
 -- @param istouch boolean indicating whether touchscreen sent signal
 -- @return the @{Binding} instance for chain-calling
-function Binding:hold_end(x, y, button, istouch)
+function Binding:hold_end()
     if self.hold_end_fn == nil then
-        error('attempted to hold a binding without a hold function');
+        return self;
     end
-    self.hold_end_fn(x, y, button, istouch);
+    self.hold_end_fn();
     return self;
 end
 
@@ -111,10 +109,21 @@ function Binding:unset_hold_end()
     return self;
 end
 
---- Sets the name of the @{Binding}.
--- @param name the name
--- @return the @{Binding} instance for chain-calling
-function Binding:set_name(name)
-    self.name = name;
-    return self;
+function Binding:is_click_bound()
+    if self.click_fn then
+        return true;
+    else
+        return false;
+    end
+end
+
+function Binding:is_hold_bound()
+    if
+        self.hold_start_fn
+        or self.hold_end_fn
+    then
+        return true;
+    else
+        return false;
+    end
 end
