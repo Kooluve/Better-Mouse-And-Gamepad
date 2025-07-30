@@ -1,7 +1,9 @@
 function multiselect_hold()
     if STATE.multiselecting == true then
-        G.CONTROLLER.hovering.target:click();
         STATE.multiselecting = false;
+        STATE.prev_prev_target = G.CONTROLLER.hovering.prev_target;
+        G.CONTROLLER.hovering.prev_target = G.CONTROLLER.hovering.target;
+        G.CONTROLLER.hovering.target:click();
     elseif G.CONTROLLER.hovering.prev_target ~= G.CONTROLLER.hovering.target then
         if
             STATE.prev_prev_target == G.CONTROLLER.hovering.target and
