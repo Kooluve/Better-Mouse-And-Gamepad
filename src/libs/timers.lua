@@ -26,6 +26,13 @@ end
 -- @param button the keycode to begin a timer for
 -- @return the @{TimerTable} instance for chain-calling
 function TimerTable:start(button)
+    if
+        STATE.bind_map.binding_to_button['multiselect'] and
+        STATE.bind_map.binding_to_button['multiselect'].button == button
+    then
+        STATE.multiselecting = true;
+        STATE.first_multiselect_iter = true;
+    end
     self[button] = 0;
     return self;
 end
@@ -36,6 +43,12 @@ end
 -- @param button the keycode to stop the timer for
 -- @return the @{TimerTable} instance for chain-calling
 function TimerTable:stop(button)
+    if
+        STATE.bind_map.binding_to_button['multiselect'] and
+        STATE.bind_map.binding_to_button['multiselect'].button == button
+    then
+        STATE.multiselecting = false;
+    end
     -- binds to config if listening here
     if STATE.listening then
         if self[button] ~= nil then
@@ -46,14 +59,8 @@ function TimerTable:stop(button)
         return self;
     end
 
-    if self[button] == nil then
-        STATE.bind_map
-            :get(button)
-            :hold_end();
-    else
-        STATE.bind_map
-            :get(button)
-            :click();
+    if self[button] ~= nil then
+        STATE.bind_map:on_click(button);
     end
     self[button] = nil;
     return self;
@@ -87,18 +94,14 @@ end
 -- @param button the keycode to check
 -- @return the @{TimerTable} instance for chain-calling
 function TimerTable:check_overflow(button)
-    if self[button] >= 0.7 then
+    if self[button] >= 0.2 then
         self[button] = nil;
         if STATE.listening then
             STATE.bind_map:bind_hold(button, STATE.listening);
             stop_listening();
             return self;
         end
-        if STATE.bind_map:get(button) then
-            STATE.bind_map
-                :get(button)
-                :hold_start();
-        end
+        STATE.bind_map:hold_start(button);
     end
     return self;
 end
@@ -113,4 +116,7 @@ local old_update = G.CONTROLLER.update;
 function G.CONTROLLER:update(dt)
     old_update(self, dt);
     STATE.timers:increment(dt);
+    if STATE.multiselecting then
+        multiselect_hold();
+    end
 end

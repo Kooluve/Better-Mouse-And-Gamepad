@@ -168,6 +168,11 @@ local function conf_menu()
         },
         bind_row("multiselect"),
         bind_row("deselect"),
+        bind_row("sort_suit"),
+        bind_row("sort_val"),
+        bind_row("play"),
+        bind_row("discard"),
+        bind_row("restart"),
     };
 end
 

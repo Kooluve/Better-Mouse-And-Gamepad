@@ -21,10 +21,10 @@ local keyreleased_fb = love.keyreleased;
 function love.mousepressed(x, y, button, istouch)
     if
         button ~= 1 and
-        (STATE.bind_map:is_bound(button)
-        or STATE.listening)
-        and not G.CONTROLLER.locks.frame
-        and not G.SETTINGS.PAUSED
+        (STATE.bind_map:is_bound('mouse' .. button) ~= nil or
+        STATE.listening) and not
+        G.CONTROLLER.locks.frame and not
+        G.SETTINGS.PAUSED
     then
         STATE.timers:start('mouse'..button);
     else
@@ -42,7 +42,7 @@ end
 function love.mousereleased(x, y, button, istouch)
     if
         button ~= 1 and
-        (STATE.bind_map:is_bound(button)
+        (STATE.bind_map:is_bound('mouse' .. button) ~= nil
         or STATE.listening)
         and not G.CONTROLLER.locks.frame
         and not G.SETTINGS.PAUSED

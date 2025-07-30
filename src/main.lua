@@ -1,11 +1,9 @@
 --- Imports
--- `./binding.lua`: A keybind object; stored in the BindMap
 -- `./bindmap.lua`: A keybind map for ease of lookup and management
 -- `./config.lua`: Includes all config menu declarations and functions
 -- `./input.lua`: The Love2D event hook override functions
 -- `./feats.lua`: The main "feature" functions for the mod
 -- `./timers.lua`: A timer table for checking keypress duration
-assert(SMODS.load_file('src/libs/binding.lua'))();
 assert(SMODS.load_file('src/libs/bindmap.lua'))();
 assert(SMODS.load_file('src/libs/config.lua'))();
 assert(SMODS.load_file('src/libs/input.lua'))();
@@ -24,4 +22,7 @@ STATE = {
     timers = TimerTable:new(),
     listening = nil,
     cfg_gui_parent = nil,
+    multiselecting = false,
+    prev_prev_target = nil,
+    first_multiselect_iter = true,
 };

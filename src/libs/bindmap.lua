@@ -10,7 +10,6 @@
 -- @field button_to_binding an associative array of keycodes to @{Binding} objects
 -- @field binding_to_button an associative array of @{Binding} objects to keycodes
 BindMap = {
-    button_to_binding = {},
     binding_to_button = {},
     click = {},
     hold = {},
@@ -22,39 +21,25 @@ BindMap = {
 -- @return the new @{BindMap}
 function BindMap:new()
     local im = {
-        button_to_binding = {},
         binding_to_button = {},
+        click = {},
+        hold = {},
     };
     setmetatable(im, self);
     self.__index = self;
     return im;
 end
 
---- Inserts a @{Binding} into the input map.
---
--- @param button the keycode to bind the @{Binding} to
--- @param binding the @{Binding} to be bound
--- @return the @{BindMap} instance for chain-calling
-function BindMap:insert(button, binding, name, hold)
-    self.button_to_binding[button] = binding;
-    self.binding_to_button[name] = {
-        button = button,
-        hold = hold
-    };
-    if hold then
-        self.hold[button] = true;
-    else
-        self.click[button] = true;
-    end
-    return self;
-end
-
 --- Gets the associated @{Binding} for a button.
 --
 -- @param button the keycode to query
 -- @return the queried @{Binding}, or nil
-function BindMap:get(button)
-    return self.button_to_binding[button];
+function BindMap:get(button, hold)
+    if hold then
+        return self.hold[button];
+    else
+        return self.click[button];
+    end
 end
 
 --- Gets the associated button for a binding id.
@@ -69,8 +54,12 @@ end
 --
 -- @param button the keycode to remove
 -- @return the BindMap instance
-function BindMap:remove(button)
-    self.button_to_binding[button] = nil;
+function BindMap:remove(button, hold)
+    if hold then
+        self.hold[button] = nil;
+    else
+        self.click[button] = nil;
+    end
     return self;
 end
 
@@ -82,23 +71,7 @@ function BindMap:remove_binding(binding)
     local b = self.binding_to_button[binding];
     self.binding_to_button[binding] = nil;
     if b == nil then return self; end
-    local bind = self.button_to_binding[b.button];
-    if bind == nil then return self; end
-    if b.hold then
-        bind:unset_hold_start():unset_hold_end();
-        self.hold[b.button] = false;
-    else
-        self.click[b.button] = false;
-        bind:unset_click();
-    end
-    if
-        bind:is_click_bound() or
-        bind:is_hold_bound()
-    then
-        self.button_to_binding[b.button] = bind;
-    else
-        self:remove(b.button);
-    end
+    self:remove(b.button, b.hold);
     return self;
 end
 
@@ -108,11 +81,22 @@ end
 -- @param button the keycode to check
 -- @return true if bound, false if not
 function BindMap:is_bound(button)
-    local b = self:get(button);
-    if b == nil then
-        return false;
+    local click = false;
+    local hold = false;
+    if self:get(button, false) then
+        click = true;
+    elseif self:get(button, true) then
+        hold = true;
+    end
+
+    if click and hold then
+        return 'both';
+    elseif click then
+        return 'click';
+    elseif hold then
+        return 'hold';
     else
-        return true;
+        return nil;
     end
 end
 
@@ -120,49 +104,66 @@ function BindMap:bind_hold(button, fn_id)
     if self:get_button(fn_id) then
         self:remove_binding(fn_id);
     end
-    local b = self:get(button) or Binding:new();
     if self.hold[button] then return self; end
-    local st_fn = nil;
-    local fn = nil;
-    -- TODO: add multiselect fns here
-    if fn_id == 'deselect' then
-        fn = deselect_all;
-    elseif fn_id == 'sort_suit' then
-        fn = sort_by_suit;
-    elseif fn_id == 'sort_val' then
-        fn = sort_by_value;
-    elseif fn_id == 'play' then
-        fn = play_hand;
-    elseif fn_id == 'discard' then
-        fn = discard_hand;
-    elseif fn_id == 'restart' then
-        fn = restart_game;
-    end
-    b:set_hold_start(st_fn);
-    b:set_hold_end(fn);
-    return self:insert(button, b, fn_id, true);
+    self.hold[button] = fn_id;
+    self.binding_to_button[fn_id] = {
+        button = button,
+        hold = true,
+    };
+    return self;
 end
 
 function BindMap:bind_click(button, fn_id)
+    -- multiselect is hold-only
+    if fn_id == 'multiselect' then
+        return self;
+    end
     if self:get_button(fn_id) then
         self:remove_binding(fn_id);
     end
-    local b = self:get(button) or Binding:new();
     if self.click[button] then return self; end
-    local fn = nil;
-    if fn_id == 'deselect' then
-        fn = deselect_all;
-    elseif fn_id == 'sort_suit' then
-        fn = sort_by_suit;
-    elseif fn_id == 'sort_val' then
-        fn = sort_by_value;
-    elseif fn_id == 'play' then
-        fn = play_hand;
-    elseif fn_id == 'discard' then
-        fn = discard_hand;
-    elseif fn_id == 'restart' then
-        fn = restart_game;
+    self.click[button] = fn_id;
+    self.binding_to_button[fn_id] = {
+        button = button,
+        hold = false,
+    };
+    return self;
+end
+
+function BindMap:on_click(button)
+    local fn = self.click[button];
+    if fn == nil then
+        return;
+    elseif fn == 'deselect' then
+        deselect_all()
+    elseif fn == 'sort_suit' then
+        sort_by_suit();
+    elseif fn == 'sort_val' then
+        sort_by_value();
+    elseif fn == 'play' then
+        play_hand();
+    elseif fn == 'discard' then
+        discard_hand();
+    elseif fn == 'restart' then
+        restart_game();
     end
-    b:set_click(fn);
-    return self:insert(button, b, fn_id, false);
+end
+
+function BindMap:hold_start(button)
+    local fn = self.hold[button];
+    if fn == nil then
+        return;
+    elseif fn == 'deselect' then
+        deselect_all();
+    elseif fn == 'sort_suit' then
+        sort_by_suit();
+    elseif fn == 'sort_val' then
+        sort_by_value();
+    elseif fn == 'play' then
+        play_hand();
+    elseif fn == 'discard' then
+        discard_hand();
+    elseif fn == 'restart' then
+        restart_game();
+    end
 end

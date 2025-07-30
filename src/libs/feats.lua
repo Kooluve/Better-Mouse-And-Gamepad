@@ -1,13 +1,18 @@
---- feats.lua
---
--- This file contains the main features of the mod that extend default behaviour.
--- This includes, but is not limited to:
---  * Multiselect
---  * Deselect
---  * Sort (By value or suit)
---  * Play hand
---  * Discard hand
---  * Quick restart
+function multiselect_hold()
+    if STATE.first_multiselect_iter then
+        G.CONTROLLER.hovering.target:click();
+        STATE.first_multiselect_iter = false;
+    elseif G.CONTROLLER.hovering.prev_target ~= G.CONTROLLER.hovering.target then
+        if
+            STATE.prev_prev_target == G.CONTROLLER.hovering.target and
+            G.CONTROLLER.hovering.prev_target:is(Card)
+        then
+            G.CONTROLLER.hovering.prev_target:click();
+        end
+        G.CONTROLLER.hovering.target:click();
+        STATE.prev_prev_target = G.CONTROLLER.hovering.prev_target;
+    end
+end
 
 --- Deselects all cards currently selected
 -- Deselects all cards in the current hand
@@ -58,7 +63,7 @@ end
 -- bound to Mouse5 by default
 function play_hand()
     if
-        G.CONTROLLER.locked or
+        G.CONTROLLER.locks.frame or
         (
             G.CONTROLLER.target and             -- ...if currently dragging a card...
             G.CONTROLLER.target.states.drag.is
@@ -76,7 +81,7 @@ end
 -- bound to Mouse4 by default
 function discard_hand()
     if
-        G.CONTROLLER.locked or
+        G.CONTROLLER.locks.frame or
         (
             G.CONTROLLER.target and             -- ...if currently dragging a card...
             G.CONTROLLER.target.states.drag.is
