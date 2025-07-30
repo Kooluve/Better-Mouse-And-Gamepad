@@ -31,7 +31,6 @@ function TimerTable:start(button)
         STATE.bind_map.binding_to_button['multiselect'].button == button
     then
         STATE.multiselecting = true;
-        STATE.first_multiselect_iter = true;
     end
     self[button] = 0;
     return self;
@@ -47,7 +46,7 @@ function TimerTable:stop(button)
         STATE.bind_map.binding_to_button['multiselect'] and
         STATE.bind_map.binding_to_button['multiselect'].button == button
     then
-        STATE.multiselecting = false;
+        STATE.multiselecting = nil;
     end
     -- binds to config if listening here
     if STATE.listening then
@@ -116,7 +115,7 @@ local old_update = G.CONTROLLER.update;
 function G.CONTROLLER:update(dt)
     old_update(self, dt);
     STATE.timers:increment(dt);
-    if STATE.multiselecting then
+    if STATE.multiselecting ~= nil then
         multiselect_hold();
     end
 end

@@ -17,12 +17,13 @@ assert(SMODS.load_file('src/libs/timers.lua'))();
 -- @field timers @{TimerTable} for checking keypress duration
 -- @field listening an Option<string> of the binding function listening for keypresses
 -- @field cfg_gui_parent a reference to the keybind menu parent, for updating outside of button presses
+-- @field multiselecting true on first mousepress, false while multiselecting, and nil when not
+-- @field prev_prev_target contains the last value of G.CONTROLLER.prev_target for switching drag direction
 STATE = {
     bind_map = BindMap:new(),
     timers = TimerTable:new(),
     listening = nil,
     cfg_gui_parent = nil,
-    multiselecting = false,
+    multiselecting = nil,
     prev_prev_target = nil,
-    first_multiselect_iter = true,
 };
