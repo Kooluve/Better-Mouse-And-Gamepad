@@ -104,7 +104,11 @@ function BindMap:bind_hold(button, fn_id)
     if self:get_button(fn_id) then
         self:remove_binding(fn_id);
     end
-    if self.hold[button] then return self; end
+    local old_fn = self.hold[button];
+    if old_fn then
+        self.binding_to_button[old_fn] = nil;
+        regen_bindbar(STATE.cfg_gui_parent.UIBox:get_UIE_by_ID(old_fn));
+    end
     self.hold[button] = fn_id;
     self.binding_to_button[fn_id] = {
         button = button,
@@ -121,7 +125,11 @@ function BindMap:bind_click(button, fn_id)
     if self:get_button(fn_id) then
         self:remove_binding(fn_id);
     end
-    if self.click[button] then return self; end
+    local old_fn = self.click[button];
+    if old_fn then
+        self.binding_to_button[old_fn] = nil;
+        regen_bindbar(STATE.cfg_gui_parent.UIBox:get_UIE_by_ID(old_fn));
+    end
     self.click[button] = fn_id;
     self.binding_to_button[fn_id] = {
         button = button,
