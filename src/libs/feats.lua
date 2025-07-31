@@ -62,14 +62,19 @@ end
 --- Plays a selected hand
 -- Plays the highlighted cards
 function play_hand()
+    local remaining = G.GAME.current_round.hands_left;
+    print('hands left: ' .. remaining);
     if
         G.CONTROLLER.locks.frame or
         (
-            G.CONTROLLER.target and             -- ...if currently dragging a card...
+            G.CONTROLLER.target and                 -- ...if currently dragging a card...
             G.CONTROLLER.target.states.drag.is
         ) or
-        G.SETTINGS.paused or                    -- ...if the game is paused, or...
-        G.STATE ~= G.STATES.SELECTING_HAND      -- ...if not currently selecting a hand, return early.
+        G.SETTINGS.paused or                        -- ...if the game is paused, or...
+        G.STATE ~= G.STATES.SELECTING_HAND or       -- ...if not currently selecting a hand, return early.
+        G.hand.highlighted[1] == nil or
+        remaining == nil or
+        remaining == 0
     then
         return;
     end
@@ -79,14 +84,19 @@ end
 --- Discards a selected hand
 -- Discards the highlighted cards
 function discard_hand()
+    local remaining = G.GAME.current_round.discards_left;
+    print('discards left: ' .. remaining);
     if
         G.CONTROLLER.locks.frame or
         (
-            G.CONTROLLER.target and             -- ...if currently dragging a card...
+            G.CONTROLLER.target and                 -- ...if currently dragging a card...
             G.CONTROLLER.target.states.drag.is
         ) or
-        G.SETTINGS.paused or                    -- ...if the game is paused, or...
-        G.STATE ~= G.STATES.SELECTING_HAND      -- ...if not currently selecting a hand, return early.
+        G.SETTINGS.paused or                        -- ...if the game is paused, or...
+        G.STATE ~= G.STATES.SELECTING_HAND or       -- ...if not currently selecting a hand, return early.
+        G.hand.highlighted[1] == nil or
+        remaining == nil or
+        remaining == 0
     then
         return;
     end
