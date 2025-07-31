@@ -1,76 +1,81 @@
 --- bindmap.lua
 --
---  This file contains the @{BindMap} object.
+--  This file contains the @{BindMap} object and all relevant methods and functions.
 
 --- A map of all custom binds set by the mod.
 -- Binds a button code to a Lua function.
 -- Used to determine whether or not to fallback to the standard Love2D event handling.
--- Uses 2 maps, one for each association direction to make lookup much faster.
+-- Uses 3 maps, one for clicks, one for holds, and a reverse table to make lookup much faster.
 --
--- @field button_to_binding an associative array of keycodes to @{Binding} objects
--- @field binding_to_button an associative array of @{Binding} objects to keycodes
+-- @field binding_to_button an associative array of binding objects to keycodes
+--     elements are of the format { button = <keycode>, hold = <boolean> }
+-- @field click an array of feature names ('multiselect', 'deselect', etc) indexable by keycode.
+--     elements are nullable strings
+-- @field hold an array of feature names ('multiselect', 'deselect', etc) indexable by keycode.
+--     elements are nullable strings
 BindMap = {
     binding_to_button = {},
     click = {},
     hold = {},
 };
 
---- Creates a new @{BindMap}.
--- Creates a new @{BindMap}; should only be run once during runtime.
+--- Creates the default @{BindMap}.
+-- Creates the default @{BindMap}; should only be run once during runtime.
 --
 -- @return the new @{BindMap}
 function BindMap:new()
     local im = {
-        binding_to_button = {},
-        click = {},
-        hold = {},
+        binding_to_button = {
+            ['multiselect'] = {
+                button = 'mouse2',
+                hold = true,
+            },
+            ['deselect'] = {
+                button = 'mouse2',
+                hold = false,
+            },
+            ['sort_suit'] = {
+                button = 'wheel_up',
+                hold = false,
+            },
+            ['sort_val'] = {
+                button = 'wheel_down',
+                hold = false,
+            },
+            ['play'] = {
+                button = 'mouse5',
+                hold = false,
+            },
+            ['discard'] = {
+                button = 'mouse4',
+                hold = false,
+            },
+        },
+        click = {
+            ['mouse2'] = 'deselect',
+            ['wheel_up'] = 'sort_suit',
+            ['wheel_down'] = 'sort_val',
+            ['mouse5'] = 'play',
+            ['mouse4'] = 'discard',
+        },
+        hold = {
+            ['mouse2'] = 'multiselect',
+        },
     };
     setmetatable(im, self);
     self.__index = self;
     return im;
 end
 
---- Creates a new @{BindMap}.
--- Creates a new @{BindMap}; should only be run once during runtime.
+--- Creates a new @{BindMap} from populated fields.
+-- Creates a new @{BindMap}; can be used to apply metatables to a loaded bindmap.
 --
+-- @param bm an object of the format { binding_to_button = {}, click = {}, hold = {} }
 -- @return the new @{BindMap}
 function BindMap:from(bm)
     setmetatable(bm, self);
     self.__index = self;
     return bm;
-end
-
---- Gets the associated @{Binding} for a button.
---
--- @param button the keycode to query
--- @return the queried @{Binding}, or nil
-function BindMap:get(button, hold)
-    if hold then
-        return self.hold[button];
-    else
-        return self.click[button];
-    end
-end
-
---- Gets the associated button for a binding id.
---
--- @param binding the binding id to query
--- @return the queried button, or nil
-function BindMap:get_button(binding)
-    return self.binding_to_button[binding];
-end
-
---- Removes the associated @{Binding} for a button.
---
--- @param button the keycode to remove
--- @return the BindMap instance
-function BindMap:remove(button, hold)
-    if hold then
-        self.hold[button] = nil;
-    else
-        self.click[button] = nil;
-    end
-    return self;
 end
 
 --- Removes the associated button for a binding id.
@@ -81,23 +86,21 @@ function BindMap:remove_binding(binding)
     local b = self.binding_to_button[binding];
     self.binding_to_button[binding] = nil;
     if b == nil then return self; end
-    self:remove(b.button, b.hold);
+    if b.hold then
+        self.hold[b.button] = nil;
+    else
+        self.click[b.button] = nil;
+    end
     return self;
 end
 
 --- Checks whether a button is bound or not
--- A boolean representing whether or not a key has been bound to anything.
 --
 -- @param button the keycode to check
--- @return true if bound, false if not
+-- @return 'both', 'click', or 'hold' if bound, nil if not
 function BindMap:is_bound(button)
-    local click = false;
-    local hold = false;
-    if self:get(button, false) then
-        click = true;
-    elseif self:get(button, true) then
-        hold = true;
-    end
+    local click = self.click[button];
+    local hold = self.hold[button];
 
     if click and hold then
         return 'both';
@@ -110,8 +113,13 @@ function BindMap:is_bound(button)
     end
 end
 
+--- Binds a hold event to a particular function
+--
+-- @param button the keycode to bind
+-- @param fn_id the string representation of the function (e.g 'multiselect', 'deselect', etc.)
+-- @return the {@BindMap} instance for chain-calling
 function BindMap:bind_hold(button, fn_id)
-    if self:get_button(fn_id) then
+    if self.binding_to_button[fn_id] then
         self:remove_binding(fn_id);
     end
     local old_fn = self.hold[button];
@@ -127,12 +135,17 @@ function BindMap:bind_hold(button, fn_id)
     return self;
 end
 
+--- Binds a click event to a particular function
+--
+-- @param button the keycode to bind
+-- @param fn_id the string representation of the function (e.g 'multiselect', 'deselect', etc.)
+-- @return the {@BindMap} instance for chain-calling
 function BindMap:bind_click(button, fn_id)
     -- multiselect is hold-only
     if fn_id == 'multiselect' then
         return self;
     end
-    if self:get_button(fn_id) then
+    if self.binding_to_button[fn_id] then
         self:remove_binding(fn_id);
     end
     local old_fn = self.click[button];
@@ -148,6 +161,9 @@ function BindMap:bind_click(button, fn_id)
     return self;
 end
 
+--- Starts the bound `click` function for a given button
+--
+-- @param button the keycode to click
 function BindMap:on_click(button)
     local fn = self.click[button];
     if fn == nil then
@@ -167,6 +183,9 @@ function BindMap:on_click(button)
     end
 end
 
+--- Starts the bound `hold` function for a given button
+--
+-- @param button the keycode to hold
 function BindMap:hold_start(button)
     local fn = self.hold[button];
     if fn == nil then

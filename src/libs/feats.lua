@@ -1,3 +1,5 @@
+--- Update function for multiselect
+-- Only runs when `STATE.multiselecting` is not nil.
 function multiselect_hold()
     if STATE.multiselecting == true then
         STATE.multiselecting = false;
@@ -18,7 +20,6 @@ end
 
 --- Deselects all cards currently selected
 -- Deselects all cards in the current hand
--- bound to Mouse2 by default
 function deselect_all()
     if
         G.CONTROLLER.locked or
@@ -34,7 +35,6 @@ end
 
 --- Sorts hand by suit
 -- Sorts all cards in the hand by suit
--- bound to MouseWheelUp by default
 function sort_by_suit()
     if
         G.CONTROLLER.locked or
@@ -48,7 +48,6 @@ end
 
 --- Sorts hand by value
 -- Sorts all cards in the hand by value
--- bound to MouseWheelDown by default
 function sort_by_value()
     if
         G.CONTROLLER.locked or
@@ -62,7 +61,6 @@ end
 
 --- Plays a selected hand
 -- Plays the highlighted cards
--- bound to Mouse5 by default
 function play_hand()
     if
         G.CONTROLLER.locks.frame or
@@ -80,7 +78,6 @@ end
 
 --- Discards a selected hand
 -- Discards the highlighted cards
--- bound to Mouse4 by default
 function discard_hand()
     if
         G.CONTROLLER.locks.frame or

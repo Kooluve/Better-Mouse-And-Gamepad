@@ -78,6 +78,7 @@ end
 -- Runs on every controller update cycle; iterates over all entries in the TimerTable instance
 -- and adds `1` to the value of all of the timers.
 --
+-- @param dt delta time since last frame processed
 -- @return the @{TimerTable} instance for chain-calling
 function TimerTable:increment(dt)
     for button, time in pairs(self) do

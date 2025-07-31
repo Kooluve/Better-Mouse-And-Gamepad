@@ -2,28 +2,14 @@
 --
 -- This file declares both the config menu GUI and how it mutates internal mod state.
 
-local tab_root_layout = {
-    r = 0.1,
-    minh = 8,
-    minw = 10,
-    align = 'tm',
-    padding = 0.1,
-    colour = G.C.BLACK,
-};
-
-local function header_text_layout(text)
-    return {
-        align = 'cm',
-        colour = G.C.UI.TEXT_LIGHT,
-        text = text,
-        scale = 0.5,
-    };
-end
-
+--- Generates a UI element for binding a feature
+--
+-- @param fn_id the string representation of the function (e.g 'multiselect', 'deselect', etc.)
+-- @return the UI element to be rendered
 local function bind_row(fn_id)
     local text_str = localize(fn_id) .. ': ';
     local outline_colour = nil;
-    local button = STATE.bind_map:get_button(fn_id);
+    local button = STATE.bind_map.binding_to_button[fn_id];
     if button then
         text_str = text_str .. button.button;
         if button.hold then
@@ -62,6 +48,9 @@ local function bind_row(fn_id)
     };
 end
 
+--- Generates a UI element for saving the current keybind schema
+--
+-- @return the UI element to be rendered
 local function save_button()
     return {
         n = G.UIT.R,
@@ -99,10 +88,16 @@ local function save_button()
     };
 end
 
+--- Saves the current `STATE.bind_map` to persistent storage
+--
+-- @param e the save button UI element
 function G.FUNCS.save_config(e)
     MOD.config.bind_map = STATE.bind_map;
 end
 
+--- Handles the button press for the `bind_row` UI element
+--
+-- @param e the `bind_row` UI element
 function G.FUNCS.bind_button(e)
     if
         STATE.listening and
@@ -124,6 +119,7 @@ function G.FUNCS.bind_button(e)
     regen_bindbar(e);
 end
 
+--- Stops listening for bindable input; resets `bind_row` currently listening if applicable
 function stop_listening()
     if STATE.listening == nil then
         return
@@ -134,8 +130,9 @@ function stop_listening()
     regen_bindbar(e);
 end
 
+--- Regenerates the contents of the `bind_row` and updates the UI.
 function regen_bindbar(e)
-    local button = STATE.bind_map:get_button(e.config.id);
+    local button = STATE.bind_map.binding_to_button[e.config.id];
     local text = nil;
     local colour = nil;
     if STATE.listening == e.config.id then
@@ -158,6 +155,7 @@ function regen_bindbar(e)
     e.UIBox:recalculate();
 end
 
+--- The keybind menu header text UI element
 local function keybind_header()
     return {
         n = G.UIT.R,
@@ -174,49 +172,61 @@ local function keybind_header()
         nodes = {
             {
                 n = G.UIT.T,
-                config = header_text_layout(
-                    localize('keybinds')
-                ),
-            },
-        },
-    };
-end
-
-local function conf_menu()
-    return {
-        keybind_header(),
-        {
-            n = G.UIT.R,
-            config = {
-                align = 'cm',
-                padding = 0.25,
-            },
-            nodes = {
-                {
-                    n = G.UIT.T,
-                    config = {
-                        text = localize('bind_text'),
-                        scale = 0.25,
-                        colour = G.C.UI.TEXT_LIGHT,
-                    },
+                config = {
+                    align = 'cm',
+                    colour = G.C.UI.TEXT_LIGHT,
+                    text = localize('keybinds'),
+                    scale = 0.5,
                 },
             },
         },
-        bind_row("multiselect"),
-        bind_row("deselect"),
-        bind_row("sort_suit"),
-        bind_row("sort_val"),
-        bind_row("play"),
-        bind_row("discard"),
-        bind_row("restart"),
-        save_button(),
     };
 end
 
+--- The keybind menu description text UI element
+local function bind_description()
+    return {
+        n = G.UIT.R,
+        config = {
+            align = 'cm',
+            padding = 0.25,
+        },
+        nodes = {
+            {
+                n = G.UIT.T,
+                config = {
+                    text = localize('bind_text'),
+                    scale = 0.25,
+                    colour = G.C.UI.TEXT_LIGHT,
+                },
+            },
+        },
+    };
+end
+
+--- Sets the mod config menu
 function SMODS.current_mod.config_tab()
     return {
         n = G.UIT.ROOT,
-        config = tab_root_layout,
-        nodes = conf_menu(),
+        config = {
+            r = 0.1,
+            minh = 8,
+            minw = 10,
+            align = 'tm',
+            padding = 0.1,
+            colour = G.C.BLACK,
+        },
+        nodes = {
+            keybind_header(),
+            bind_description(),
+            bind_row("multiselect"),
+            bind_row("deselect"),
+            bind_row("sort_suit"),
+            bind_row("sort_val"),
+            bind_row("play"),
+            bind_row("discard"),
+            bind_row("restart"),
+            save_button(),
+        },
     };
 end

@@ -10,9 +10,8 @@ assert(SMODS.load_file('src/libs/input.lua'))();
 assert(SMODS.load_file('src/libs/feats.lua'))();
 assert(SMODS.load_file('src/libs/timers.lua'))();
 
-local bm = nil;
-
 MOD = SMODS.current_mod;
+local bm = nil;
 
 if
     MOD and
