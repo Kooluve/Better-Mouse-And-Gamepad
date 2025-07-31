@@ -1,42 +1,36 @@
-# Better Mouse And Gamepad
-
-English | [简体中文](/README_ZH.md) | [日本語](/README_JP.md)
+# Better Mouse and Gamepad
 
 A [*Balatro*](https://store.steampowered.com/app/2379780/Balatro/) quality of life
-mod that makes the mouse and gamepad controls more efficient and easier to use,
+mod that allows binding any key or button to a variety of quick functions,
 reducing hand strain. This is possibly one of the most essential mods for any
-regular *Balatro* player.
+regular *Balatro* player, allowing:
 
-## Controls
+* Multiselect: hold a key to select all cards your cursor passes over,
+* Deselect: deselect any selected cards,
+* Sort (by suit or value): rearrange all cards in your hand,
+* Play: play selected cards
+* Discard: discard selected cards
+* Restart: restart, keeping the current run settings
 
-### Mouse
-On right-handed mice, `Mouse 2` corresponds to the right mouse button.
-`Mouse 3` is the middle mouse button, usually a clickable scroll wheel.
-`Mouse 4` and `Mouse 5` are less common, but are usually found by the
-user's thumb.
+## Configuration
 
-| Binding               | Function                                         |
-| ---                   | ---                                              |
-| `Mouse 2`             | Deselect all cards (same as the unmodified game) |
-| `Mouse 2` (Hold/Drag) | Select multiple cards                            |
-| `Mouse 3`             | Open menu (same as `ESC`)                        |
-| `Mouse 3` (Hold)      | Start new run (same as `R`)                      |
-| `Mouse Wheel Up`      | Play hand                                        |
-| `Mouse Wheel Down`    | Discard cards                                    |
-| `Mouse 4`             | Sort hand by suit                                |
-| `Mouse 5`             | Sort hand by value                               |
+To set up bindings, go to the Mods menu, then click 'Better Mouse and Gamepad',
+then 'Config'.
 
-### Gamepad
+In this menu, clicking on any of the features will cause the game to listen for
+the next click or hold event, then bind the key to the feature.
 
-Gamepad bindings bind to the mouse bindings, allowing toggling via the
-`Features` config menu. See [Configuration](#configuration) for more details.
+Default configuration is as follows:
 
-| Binding                       | Function                               |
-| ---                           | ---                                    |
-| `B Button` (Hold)             | same as '`Mouse 2` (Hold)'             |
-| `Right Joystick` (Click/Hold) | same as '`Mouse 3`'/'`Mouse 3` (Hold)' |
-| `Left Shoulder Button`        | Same as '`Mouse 4`'                    |
-| `Right Shoulder Button`       | Same as '`Mouse 5`'                    |
+| Feature | Key |
+| --- | --- |
+| Multiselect | `Mouse2 (Hold)` |
+| Deselect | `Mouse2 (Click)` |
+| Sort by suit | `Mouse Wheel Up` |
+| Sort by value | `Mouse Wheel Down` |
+| Play | `Mouse5 (Click)` |
+| Discard | `Mouse4 (Click)` |
+| Restart | [Unbound by default] |
 
 ## Installation
 
@@ -52,41 +46,35 @@ this repository
 [here](https://github.com/uptudev/bmag/releases), and extract the source code
 archive into the `Mods` folder.
 
-### Supported Steamodded version
-
-| Steamodded version | BMAG version |
-| --- | --- |
-| `v1.0.0` or newer | [`latest`](https://github.com/uptudev/bmag/releases/latest) |
-| `v0.9.8` or older | `v1.0.5e` ([latest patch](https://github.com/uptudev/bmag/releases/tag/v1.0.5e)) |
-
-## Configuration
-
-Mod configuration is split into 3 menus: **Features**, **Modifiers**, and **Gamepad**.
-**Features** enables and disables the base functionality of the mod.
-**Modifiers** changes the behaviour of the mouse bindings.
-**Gamepad** binds gamepad buttons to the base functions
-(which can still be toggled under **Features**).
+Your Steamodded version should be at minimum **v1.0.0**.
 
 ## Known Issues
 
-Too much code is overwritten and may conflict with other mods which also modify
-key mapping.
+This mod might not be compatible with any others that override the Love2D
+press/release event hooks.
+
+Sometimes attempting to bind a key will not work for an unknown reason. If this
+happens, try to bind it to another feature and try again.
 
 ## Find More Mods
 
-By the way, you can find more mods in these places:
-[awesome-balatro](https://github.com/jie65535/awesome-balatro)
-[Balatro Mod Index](https://docs.google.com/spreadsheets/d/1aoJrrC7Y-dkvJwBu_U6amelYnoCrZgWqpoGRAfHN1ys)
-[discord--modding](https://discord.com/channels/1116389027176787968/1209506514763522108)
-[mod wiki](https://balatromods.miraheze.org/wiki/Main_Page)
-[nexus](https://www.nexusmods.com/games/balatro/mods)
+You can find more mods here:
+
+* [awesome-balatro](https://github.com/jie65535/awesome-balatro)
+* [Balatro Mod Index](https://docs.google.com/spreadsheets/d/1aoJrrC7Y-dkvJwBu_U6amelYnoCrZgWqpoGRAfHN1ys)
+* [discord--modding](https://discord.com/channels/1116389027176787968/1209506514763522108)
+* [mod wiki](https://balatromods.miraheze.org/wiki/Main_Page)
+* [nexus](https://www.nexusmods.com/games/balatro/mods)
 
 ## Contributing
 
-Pull requests are welcome!
+Please review our [CONTIBUTING](/CONTIBUTING.md) file before attempting to contribute
+in any fashion. All contributions must align with both the guidelines there and
+those in the [Code of Conduct](/CODE_OF_CONDUCT.md).
 
 ## License
 
-This project is licensed under the GNU General Public License. This ensures that
-the software is free to use, modify, and distribute. For more details, see the
-LICENSE file in the repository
+This project in its entirety is licensed under [the MIT/X11 license](/LICENSE).
+Versions of this mod before `v2.0.0` were licensed under the GPLv3 license, but
+the entire project was rewritten from scratch with the intent to re-license it under
+a more suitable copyleft license.
