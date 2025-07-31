@@ -10,6 +10,20 @@ assert(SMODS.load_file('src/libs/input.lua'))();
 assert(SMODS.load_file('src/libs/feats.lua'))();
 assert(SMODS.load_file('src/libs/timers.lua'))();
 
+local bm = nil;
+
+MOD = SMODS.current_mod;
+
+if
+    MOD and
+    MOD.config and
+    MOD.config.bind_map
+then
+    bm = BindMap:from(SMODS.current_mod.config.bind_map);
+else
+    bm = BindMap:new();
+end
+
 --- BMAG mutable state.
 -- Contains all mutable state for the mod.
 --
@@ -20,7 +34,7 @@ assert(SMODS.load_file('src/libs/timers.lua'))();
 -- @field multiselecting true on first mousepress, false while multiselecting, and nil when not
 -- @field prev_prev_target contains the last value of G.CONTROLLER.prev_target for switching drag direction
 STATE = {
-    bind_map = BindMap:new(),
+    bind_map = bm,
     timers = TimerTable:new(),
     listening = nil,
     cfg_gui_parent = nil,

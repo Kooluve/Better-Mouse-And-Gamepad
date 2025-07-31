@@ -30,6 +30,16 @@ function BindMap:new()
     return im;
 end
 
+--- Creates a new @{BindMap}.
+-- Creates a new @{BindMap}; should only be run once during runtime.
+--
+-- @return the new @{BindMap}
+function BindMap:from(bm)
+    setmetatable(bm, self);
+    self.__index = self;
+    return bm;
+end
+
 --- Gets the associated @{Binding} for a button.
 --
 -- @param button the keycode to query

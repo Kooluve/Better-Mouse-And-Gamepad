@@ -5,7 +5,7 @@ return {
             keybinds = 'Keybinds',
             bind_text = 'Click a feature, then press or hold a button to bind it to that key.',
 
-            multiselect = 'Multiselect',
+            multiselect = 'Multiselect (Hold only)',
             deselect = 'Deselect',
             sort_suit = 'Sort by suit',
             sort_val = 'Sort by value',
@@ -13,10 +13,11 @@ return {
             discard = 'Discard current hand',
             restart = 'Restart run',
 
-            click = '(Click)',
-            hold = '(Hold)',
+            click = '[CLICK]',
+            hold = '[HOLD]',
             listening = '[LISTENING]',
             none = '[NONE]',
+            save = '[SAVE]'
         },
     },
 };

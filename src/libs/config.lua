@@ -2,10 +2,6 @@
 --
 -- This file declares both the config menu GUI and how it mutates internal mod state.
 
-SMODS.current_mod.config = {
-    -- settings go here
-};
-
 local tab_root_layout = {
     r = 0.1,
     minh = 8,
@@ -66,6 +62,47 @@ local function bind_row(fn_id)
     };
 end
 
+local function save_button()
+    return {
+        n = G.UIT.R,
+        config = {
+            align = 'cm',
+            h = 0.25,
+            w = 8,
+            colour = G.C.BLACK,
+        },
+        nodes = {
+            {
+                n = G.UIT.C,
+                config = {
+                    align = 'cm',
+                    button = "save_config",
+                    h = 0.25,
+                    w = 3,
+                    colour = G.C.RED,
+                    padding = 0.125,
+                    outline = 0.5,
+                    outline_colour = G.C.UI.TEXT_LIGHT,
+                },
+                nodes = {
+                    {
+                        n = G.UIT.T,
+                        config = {
+                            colour = G.C.UI.TEXT_LIGHT,
+                            text = localize('save'),
+                            scale = 0.4,
+                        },
+                    },
+                },
+            }, 
+        },
+    };
+end
+
+function G.FUNCS.save_config(e)
+    MOD.config.bind_map = STATE.bind_map;
+end
+
 function G.FUNCS.bind_button(e)
     if
         STATE.listening and
@@ -119,7 +156,6 @@ function regen_bindbar(e)
     e.children[1].config.text = text;
     e.config.outline_colour = colour;
     e.UIBox:recalculate();
-
 end
 
 local function keybind_header()
@@ -173,6 +209,7 @@ local function conf_menu()
         bind_row("play"),
         bind_row("discard"),
         bind_row("restart"),
+        save_button(),
     };
 end
 
