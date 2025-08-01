@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed a bug allowing a user to discard a hand with no discards left, or play a
 hand with no cards selected.
+- Fixed a bug where multiselecting (via clicking and holding the background, then
+a card, then the background) could cause a card to be deselected.
 
 ## v2.0.0
 
