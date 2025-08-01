@@ -8,6 +8,7 @@ function multiselect_hold()
         G.CONTROLLER.hovering.target:click();
     elseif G.CONTROLLER.hovering.prev_target ~= G.CONTROLLER.hovering.target then
         if
+            G.CONTROLLER.hovering.target:is(Card) and
             STATE.prev_prev_target == G.CONTROLLER.hovering.target and
             G.CONTROLLER.hovering.prev_target:is(Card)
         then
