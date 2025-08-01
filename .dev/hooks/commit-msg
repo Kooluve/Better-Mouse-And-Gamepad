@@ -1,0 +1,9 @@
+#!/bin/sh
+# This script adds a `Signed-off-by` trailer to the end of the proposed commit message.
+git interpret-trailers --trailer sign --in-place "$1"
+
+test "" = "$(grep '^Signed-off-by: ' "$1" |
+	 sort | uniq -c | sed -e '/^[ 	]*1[ 	]/d')" || {
+	echo >&2 Duplicate Signed-off-by lines.
+	exit 1
+}

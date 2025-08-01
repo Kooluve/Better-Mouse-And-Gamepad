@@ -1,0 +1,13 @@
+<type>(scope): <description>
+
+# See Conventional Commits for more info on commit header formatting
+# https://www.conventionalcommits.org/
+
+create:
++ `./foo`: add a file that does something
+
+modify:
+* `./bar`: change the contents of the file
+
+delete:
+- `./baz`: remove the file
