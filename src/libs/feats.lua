@@ -64,7 +64,6 @@ end
 -- Plays the highlighted cards
 function play_hand()
     local remaining = G.GAME.current_round.hands_left;
-    print('hands left: ' .. remaining);
     if
         G.CONTROLLER.locks.frame or
         (
@@ -86,7 +85,6 @@ end
 -- Discards the highlighted cards
 function discard_hand()
     local remaining = G.GAME.current_round.discards_left;
-    print('discards left: ' .. remaining);
     if
         G.CONTROLLER.locks.frame or
         (
