@@ -12,7 +12,7 @@ regular *Balatro* player, allowing:
 * Discard: discard selected cards
 * Restart: restart, keeping the current run settings
 
-![Preview video of functionality](https://i.imgur.com/WKeulyI.mp4 "Preview video")
+https://github.com/user-attachments/assets/5e02ac8d-0474-43d4-84a5-63057609a308
 
 ## Configuration
 
