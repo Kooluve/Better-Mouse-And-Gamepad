@@ -12,6 +12,8 @@ regular *Balatro* player, allowing:
 * Discard: discard selected cards
 * Restart: restart, keeping the current run settings
 
+![Preview video of functionality](https://i.imgur.com/WKeulyI.mp4 "Preview video")
+
 ## Configuration
 
 To set up bindings, go to the Mods menu, then click 'Better Mouse and Gamepad',
