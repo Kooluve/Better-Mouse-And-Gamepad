@@ -1,0 +1,69 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Changed
+
+- `README.md`: Added a video clip showing the mod at work.
+- `CHANGELOG.md`: Added links to diffs.
+
+## [v2.0.1] - 2025-08-03
+
+### Changed
+
+- Fixed a bug allowing a user to discard a hand with no discards left, or play a
+hand with no cards selected.
+- Fixed a bug where multiselecting (via clicking and holding the background, then
+a card, then the background) could cause a card to be deselected.
+
+## [v2.0.0] - 2025-07-31
+
+### Added
+
+- `.gitignore`: Set up to ignore my notes (because they keep getting tracked).
+- `bmag.json`: The mod metadata.
+- `CHANGELOG.md`: This repository should have a changelog (this file).
+- `CODE_OF_CONDUCT.md`: This repository should have a CoC.
+- `CONTRIBUTING.md`: This repository should have a set of contribution guidelines.
+- `src/`: All source code has moved here except localization. If there was a way
+to get Steamodded to point to a custom directory, it would be in here too.
+  - `src/libs/`: Handwritten Lua libraries put in here so as to not pollute the
+  main Lua file.
+    - `src/libs/bindmap.lua`: A keybind table implementation
+    - `src/libs/config.lua`: The config menu and its functions
+    - `src/libs/feats.lua`: All feature functions
+    - `src/libs/input.lua`: Love2D input hooks
+    - `src/libs/timers.lua`: A timer table implementation
+  - `src/main.lua`: The main entry point for the mod. Loaded by `./bmag.lua` immediately.
+
+### Changed
+
+- Rewrite of all mod code from scratch, moving it into a proper directory structure.
+- `LICENSE`: Replacement of the GPLv3 license with the MIT/X11 license. This is
+mainly due to unnecessary restrictions in the GPLv3 license which do not fit the
+project, including the restriction against bundling with proprietary code, which
+the base game of Balatro might include.
+- `localization/en-us.lua`: Removed all old keys and rewrote
+- `README.md`: Rewrote to fit v2 release
+
+### Removed
+
+- All old code that falls under GPLv3, including:
+  - `BetterMouseAndGamepad.lua`,
+  - `config.lua`,
+  - `localization/ja.lua`,
+  - `localization/zh_CN.lua`,
+  - `README_JP.md`,
+  - `README_ZH.md`,
+
+  The base `README.md` stays for now, largely because documentation does not fall
+  under GPLv3 restrictions and because I am the author of the file anyways.
+
+  [Unreleased]: https://github.com/uptudev/bmag/compare/v2.0.1...HEAD
+  [v2.0.1]: https://github.com/uptudev/bmag/compare/v2.0.0...v2.0.1
+  [v2.0.0]: https://github.com/uptudev/bmag/compare/v1.1.0...v2.0.0
